@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import logo from "@/assets/images/logo.png";
 
 export function Navigation() {
   const [location] = useLocation();
@@ -35,9 +36,12 @@ export function Navigation() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
           <Link href="/">
-            <span className="font-serif text-2xl font-bold text-primary cursor-pointer" data-testid="link-logo">
-              Pratap Living
-            </span>
+            <div className="flex items-center gap-2 cursor-pointer" data-testid="link-logo">
+              <img src={logo} alt="Pratap Living" className="h-10 w-10 object-contain dark:invert" />
+              <span className="font-serif text-xl font-bold text-primary hidden sm:inline">
+                Pratap Living
+              </span>
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-6">

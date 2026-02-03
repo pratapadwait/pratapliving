@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { MapPin, Phone, Mail, Facebook, Instagram, Twitter } from "lucide-react";
+import logo from "@/assets/images/logo.png";
 
 export function Footer() {
   return (
@@ -7,9 +8,12 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-serif text-2xl font-bold text-primary mb-4">
-              Pratap Living
-            </h3>
+            <div className="flex items-center gap-3 mb-4">
+              <img src={logo} alt="Pratap Living" className="h-12 w-12 object-contain dark:invert" />
+              <h3 className="font-serif text-2xl font-bold text-primary">
+                Pratap Living
+              </h3>
+            </div>
             <p className="text-muted-foreground text-sm leading-relaxed mb-4">
               Experience exceptional hospitality with our curated collection of premium homestays, suites, apartments, and villas in Lucknow.
             </p>
