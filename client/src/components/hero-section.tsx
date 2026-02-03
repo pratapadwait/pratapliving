@@ -70,7 +70,7 @@ export function HeroSection() {
               </div>
               <div>
                 <p className="text-white font-semibold">100%</p>
-                <p className="text-white/70 text-sm">Verified Stays</p>
+                <p className="text-white/70 text-sm">Company-Managed Stays</p>
               </div>
             </div>
           </div>
