@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { MapPin, Phone, Mail, Facebook, Instagram, Twitter } from "lucide-react";
+import { MapPin, Phone, Mail, Instagram, Youtube } from "lucide-react";
 import logo from "@/assets/images/logo.png";
 
 export function Footer() {
@@ -19,25 +19,22 @@ export function Footer() {
             </p>
             <div className="flex gap-4">
               <a
-                href="#"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                data-testid="link-social-facebook"
-              >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
+                href="https://www.instagram.com/pratapliving"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
                 data-testid="link-social-instagram"
               >
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href="https://www.youtube.com/@pratapliving"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
-                data-testid="link-social-twitter"
+                data-testid="link-social-youtube"
               >
-                <Twitter className="h-5 w-5" />
+                <Youtube className="h-5 w-5" />
               </a>
             </div>
           </div>
@@ -109,14 +106,14 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                 <span className="text-muted-foreground text-sm">
-                  Hazratganj, Lucknow, Uttar Pradesh, India
+                  Omaxe Hazratganj, Sec-7, Amar Shaheed Path, Gomati Nagar Extension, Lucknow, Uttar Pradesh 226002
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary shrink-0" />
-                <span className="text-muted-foreground text-sm">
-                  +91 98765 43210
-                </span>
+                <a href="tel:+917460985009" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                  +91 7460985009
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-primary shrink-0" />
