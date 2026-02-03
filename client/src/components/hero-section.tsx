@@ -16,21 +16,7 @@ export function HeroSection() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl">
-          <div className="flex items-center gap-2 mb-6">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className="h-5 w-5 fill-primary text-primary"
-                />
-              ))}
-            </div>
-            <span className="text-white/90 text-sm font-medium">
-              Rated 4.9 by 500+ Guests
-            </span>
-          </div>
-
+        <div className="max-w-3xl pt-16">
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
             Experience Exceptional{" "}
             <span className="text-primary">Hospitality</span> in Lucknow
