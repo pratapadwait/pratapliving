@@ -89,8 +89,9 @@ export default function Contact() {
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Our Office</h3>
                     <p className="text-muted-foreground text-sm">
-                      Hazratganj, Lucknow<br />
-                      Uttar Pradesh, India 226001
+                      Omaxe Hazratganj, Sec-7, Amar Shaheed Path,<br />
+                      Gomati Nagar Extension, Lucknow,<br />
+                      Uttar Pradesh 226002
                     </p>
                   </div>
                 </div>
@@ -100,10 +101,9 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Phone</h3>
-                    <p className="text-muted-foreground text-sm">
-                      +91 98765 43210<br />
-                      +91 12345 67890
-                    </p>
+                    <a href="tel:+917460985009" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                      +91 7460985009
+                    </a>
                   </div>
                 </div>
                 <div className="flex gap-4">
