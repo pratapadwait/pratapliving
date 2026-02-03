@@ -1,6 +1,5 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import logo from "@/assets/images/logo.png";
@@ -19,7 +18,6 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { href: "/", label: "Home" },
     { href: "/properties", label: "Properties" },
     { href: "/partner", label: "Partner With Us" },
     { href: "/contact", label: "Contact" },
@@ -36,11 +34,8 @@ export function Navigation() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
           <Link href="/">
-            <div className="flex items-center gap-2 cursor-pointer" data-testid="link-logo">
-              <img src={logo} alt="Pratap Living" className="h-10 w-10 object-contain dark:invert" />
-              <span className="font-serif text-xl font-bold text-primary hidden sm:inline">
-                Pratap Living
-              </span>
+            <div className="flex items-center cursor-pointer" data-testid="link-logo">
+              <img src={logo} alt="Pratap Living" className="h-10 w-10 object-contain" />
             </div>
           </Link>
 
@@ -62,7 +57,6 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center gap-2">
-            <ThemeToggle />
             <Button
               variant="ghost"
               size="icon"

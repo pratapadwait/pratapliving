@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <img src={logo} alt="Pratap Living" className="h-12 w-12 object-contain dark:invert" />
+              <img src={logo} alt="Pratap Living" className="h-12 w-12 object-contain" />
               <h3 className="font-serif text-2xl font-bold text-primary">
                 Pratap Living
               </h3>
