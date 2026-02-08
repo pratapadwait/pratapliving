@@ -3,11 +3,14 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertPropertySchema, insertPartnerInquirySchema, insertContactInquirySchema } from "@shared/schema";
 import { fromError } from "zod-validation-error";
+import { registerObjectStorageRoutes } from "./replit_integrations/object_storage";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  registerObjectStorageRoutes(app);
+
   // Get all properties
   app.get("/api/properties", async (req, res) => {
     try {

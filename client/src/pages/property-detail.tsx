@@ -26,8 +26,9 @@ import {
   ChevronRight,
   X,
   Phone,
+  Expand,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 import propertyHomestay from "@/assets/images/property-homestay.png";
 import propertySuite from "@/assets/images/property-suite.png";
@@ -58,23 +59,75 @@ function getAmenityIcon(amenity: string) {
   return Shield;
 }
 
+function useSwipe(onSwipeLeft: () => void, onSwipeRight: () => void) {
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  }, []);
+
+  const onTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      if (deltaX < 0) onSwipeLeft();
+      else onSwipeRight();
+    }
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+  }, [onSwipeLeft, onSwipeRight]);
+
+  return { onTouchStart, onTouchEnd };
+}
+
 function PhotoGallery({ images, propertyName }: { images: string[]; propertyName: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
   if (images.length === 0) return null;
 
+  const animateTransition = (newIndex: number, setter: (i: number) => void) => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setter(newIndex);
+      setIsTransitioning(false);
+    }, 150);
+  };
+
   const goTo = (index: number) => {
-    setCurrentIndex(index);
+    if (index === currentIndex) return;
+    animateTransition(index, setCurrentIndex);
+    scrollThumbnailIntoView(index);
   };
 
   const goToPrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    const newIdx = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+    animateTransition(newIdx, setCurrentIndex);
+    scrollThumbnailIntoView(newIdx);
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    const newIdx = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+    animateTransition(newIdx, setCurrentIndex);
+    scrollThumbnailIntoView(newIdx);
+  };
+
+  const scrollThumbnailIntoView = (index: number) => {
+    if (thumbnailContainerRef.current) {
+      const thumb = thumbnailContainerRef.current.children[index] as HTMLElement;
+      if (thumb) {
+        thumb.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      }
+    }
   };
 
   const openLightbox = (index: number) => {
@@ -83,26 +136,49 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
   };
 
   const lightboxPrev = () => {
-    setLightboxIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    const newIdx = lightboxIndex === 0 ? images.length - 1 : lightboxIndex - 1;
+    animateTransition(newIdx, setLightboxIndex);
   };
 
   const lightboxNext = () => {
-    setLightboxIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    const newIdx = lightboxIndex === images.length - 1 ? 0 : lightboxIndex + 1;
+    animateTransition(newIdx, setLightboxIndex);
   };
+
+  const mainSwipe = useSwipe(goToNext, goToPrev);
+  const lightboxSwipe = useSwipe(lightboxNext, lightboxPrev);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") lightboxPrev();
+      else if (e.key === "ArrowRight") lightboxNext();
+      else if (e.key === "Escape") setLightboxOpen(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightboxOpen, lightboxIndex]);
 
   return (
     <>
       <div className="relative">
         <div
-          className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-md cursor-pointer"
+          className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-md cursor-pointer relative"
           onClick={() => openLightbox(currentIndex)}
+          {...mainSwipe}
           data-testid="gallery-main-image"
         >
           <img
             src={images[currentIndex]}
             alt={`${propertyName} - Photo ${currentIndex + 1}`}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-200 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
+            loading="eager"
           />
+          <div className="absolute bottom-3 right-3">
+            <Button size="icon" variant="secondary" className="rounded-full opacity-80" data-testid="button-expand-gallery">
+              <Expand className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         {images.length > 1 && (
@@ -111,7 +187,7 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
               size="icon"
               variant="secondary"
               className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full opacity-80"
-              onClick={goToPrev}
+              onClick={(e) => { e.stopPropagation(); goToPrev(); }}
               data-testid="button-gallery-prev"
             >
               <ChevronLeft className="h-5 w-5" />
@@ -120,7 +196,7 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
               size="icon"
               variant="secondary"
               className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full opacity-80"
-              onClick={goToNext}
+              onClick={(e) => { e.stopPropagation(); goToNext(); }}
               data-testid="button-gallery-next"
             >
               <ChevronRight className="h-5 w-5" />
@@ -133,13 +209,16 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
       </div>
 
       {images.length > 1 && (
-        <div className="flex gap-2 mt-3 overflow-x-auto pb-2">
+        <div
+          ref={thumbnailContainerRef}
+          className="flex gap-2 mt-3 overflow-x-auto pb-2 scrollbar-thin"
+        >
           {images.map((img, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}
-              className={`shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-md overflow-hidden border-2 transition-colors ${
-                i === currentIndex ? "border-primary" : "border-transparent"
+              className={`shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-md overflow-hidden border-2 transition-all duration-200 ${
+                i === currentIndex ? "border-primary ring-1 ring-primary/30" : "border-transparent opacity-70"
               }`}
               data-testid={`button-thumbnail-${i}`}
             >
@@ -147,6 +226,7 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
                 src={img}
                 alt={`${propertyName} - Thumbnail ${i + 1}`}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </button>
           ))}
@@ -155,7 +235,10 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
 
       <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
         <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-0 bg-black/95">
-          <div className="relative flex items-center justify-center h-[90vh]">
+          <div
+            className="relative flex items-center justify-center h-[90vh]"
+            {...lightboxSwipe}
+          >
             <Button
               size="icon"
               variant="ghost"
@@ -169,7 +252,7 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
             <img
               src={images[lightboxIndex]}
               alt={`${propertyName} - Photo ${lightboxIndex + 1}`}
-              className="max-w-full max-h-full object-contain"
+              className={`max-w-full max-h-full object-contain transition-opacity duration-200 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
             />
 
             {images.length > 1 && (
@@ -237,6 +320,11 @@ export default function PropertyDetail() {
           <div className="container mx-auto px-4">
             <Skeleton className="h-8 w-32 mb-6 mt-4" />
             <Skeleton className="aspect-[4/3] md:aspect-[16/9] rounded-md mb-4" />
+            <div className="flex gap-2 mb-4">
+              {[1, 2, 3, 4].map(i => (
+                <Skeleton key={i} className="w-16 h-16 md:w-20 md:h-20 rounded-md shrink-0" />
+              ))}
+            </div>
             <Skeleton className="h-8 w-3/4 mb-2" />
             <Skeleton className="h-5 w-1/2 mb-6" />
             <Skeleton className="h-40 w-full" />

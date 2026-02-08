@@ -17,14 +17,14 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { insertPropertySchema, type InsertProperty, type Property } from "@shared/schema";
 import { Plus, Pencil, Trash2, Bed, Bath, Users } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { z } from "zod";
+import { ImageUploadManager } from "@/components/image-upload-manager";
 
 const propertyFormSchema = insertPropertySchema.extend({
   amenities: z.string().min(1, "Enter at least one amenity"),
-  images: z.string().optional(),
-});
+}).omit({ imageUrl: true, images: true });
 
 type PropertyFormValues = z.infer<typeof propertyFormSchema>;
 
@@ -40,6 +40,24 @@ function PropertyFormDialog({
   const { toast } = useToast();
   const isEditing = !!property;
 
+  const getInitialImages = (): string[] => {
+    if (!property) return [];
+    const imgs: string[] = [];
+    if (property.imageUrl) imgs.push(property.imageUrl);
+    if (property.images) {
+      for (const img of property.images) {
+        if (img && !imgs.includes(img)) imgs.push(img);
+      }
+    }
+    return imgs;
+  };
+
+  const [uploadedImages, setUploadedImages] = useState<string[]>(getInitialImages);
+
+  useEffect(() => {
+    setUploadedImages(getInitialImages());
+  }, [property, open]);
+
   const form = useForm<PropertyFormValues>({
     resolver: zodResolver(propertyFormSchema),
     defaultValues: {
@@ -52,8 +70,6 @@ function PropertyFormDialog({
       bathrooms: property?.bathrooms ?? 1,
       guests: property?.guests ?? 2,
       amenities: property?.amenities?.join(", ") ?? "",
-      imageUrl: property?.imageUrl ?? "",
-      images: property?.images?.join("\n") ?? "",
       featured: property?.featured ?? false,
     },
   });
@@ -67,6 +83,7 @@ function PropertyFormDialog({
       toast({ title: "Property added successfully!" });
       onOpenChange(false);
       form.reset();
+      setUploadedImages([]);
     },
     onError: () => {
       toast({ title: "Failed to add property", variant: "destructive" });
@@ -88,20 +105,21 @@ function PropertyFormDialog({
   });
 
   const onSubmit = (data: PropertyFormValues) => {
+    if (uploadedImages.length === 0) {
+      toast({ title: "Please upload at least one image", variant: "destructive" });
+      return;
+    }
+
     const amenitiesArray = (data.amenities as unknown as string)
       .split(",")
       .map((a: string) => a.trim())
       .filter((a: string) => a.length > 0);
 
-    const imagesArray = (data.images as unknown as string || "")
-      .split("\n")
-      .map((url: string) => url.trim())
-      .filter((url: string) => url.length > 0);
-
     const payload: InsertProperty = {
       ...data,
       amenities: amenitiesArray,
-      images: imagesArray,
+      imageUrl: uploadedImages[0],
+      images: uploadedImages.slice(1),
     };
 
     if (isEditing) {
@@ -297,39 +315,17 @@ function PropertyFormDialog({
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="imageUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Main Image URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://example.com/image.jpg" {...field} data-testid="input-property-image" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="images"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Additional Image URLs (one per line)</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder={"https://example.com/photo2.jpg\nhttps://example.com/photo3.jpg"}
-                      rows={3}
-                      {...field}
-                      value={field.value as unknown as string}
-                      data-testid="textarea-property-images"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div>
+              <label className="text-sm font-medium leading-none">Property Photos</label>
+              <p className="text-xs text-muted-foreground mt-1 mb-2">
+                Upload images for this property. The first image will be the main photo shown on listing cards.
+              </p>
+              <ImageUploadManager
+                images={uploadedImages}
+                onChange={setUploadedImages}
+                maxImages={20}
+              />
+            </div>
 
             <FormField
               control={form.control}

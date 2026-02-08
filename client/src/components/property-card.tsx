@@ -22,7 +22,7 @@ interface PropertyCardProps {
 }
 
 export function PropertyCard({ property }: PropertyCardProps) {
-  const imageUrl = propertyImages[property.type] || propertyHomestay;
+  const imageUrl = property.imageUrl || propertyImages[property.type] || propertyHomestay;
 
   return (
     <Link href={`/properties/${property.id}`}>
@@ -32,6 +32,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
             src={imageUrl}
             alt={property.name}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
           />
           {property.featured && (
             <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground">

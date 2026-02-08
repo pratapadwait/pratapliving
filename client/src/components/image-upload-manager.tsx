@@ -1,0 +1,223 @@
+import { useState, useRef, useCallback } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Upload, X, GripVertical, ImagePlus, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+interface ImageUploadManagerProps {
+  images: string[];
+  onChange: (images: string[]) => void;
+  maxImages?: number;
+}
+
+export function ImageUploadManager({ images, onChange, maxImages = 20 }: ImageUploadManagerProps) {
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+
+  const uploadFile = useCallback(async (file: File): Promise<string | null> => {
+    try {
+      const res = await fetch("/api/uploads/request-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: file.name,
+          size: file.size,
+          contentType: file.type,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to get upload URL");
+
+      const { uploadURL, objectPath } = await res.json();
+
+      await fetch(uploadURL, {
+        method: "PUT",
+        body: file,
+        headers: { "Content-Type": file.type },
+      });
+
+      return objectPath;
+    } catch (err) {
+      console.error("Upload error:", err);
+      return null;
+    }
+  }, []);
+
+  const handleFiles = useCallback(async (files: FileList | File[]) => {
+    const fileArray = Array.from(files).filter(f => f.type.startsWith("image/"));
+
+    if (fileArray.length === 0) {
+      toast({ title: "Please select image files only", variant: "destructive" });
+      return;
+    }
+
+    const remaining = maxImages - images.length;
+    if (remaining <= 0) {
+      toast({ title: `Maximum ${maxImages} images allowed`, variant: "destructive" });
+      return;
+    }
+
+    const filesToUpload = fileArray.slice(0, remaining);
+    setIsUploading(true);
+    setUploadProgress(0);
+
+    const newPaths: string[] = [];
+    for (let i = 0; i < filesToUpload.length; i++) {
+      setUploadProgress(Math.round(((i) / filesToUpload.length) * 100));
+      const path = await uploadFile(filesToUpload[i]);
+      if (path) newPaths.push(path);
+    }
+
+    setUploadProgress(100);
+    setIsUploading(false);
+
+    if (newPaths.length > 0) {
+      onChange([...images, ...newPaths]);
+      toast({ title: `${newPaths.length} image${newPaths.length > 1 ? "s" : ""} uploaded` });
+    }
+
+    if (newPaths.length < filesToUpload.length) {
+      toast({ title: "Some images failed to upload", variant: "destructive" });
+    }
+  }, [images, onChange, maxImages, uploadFile, toast]);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.dataTransfer.files.length > 0) {
+      handleFiles(e.dataTransfer.files);
+    }
+  }, [handleFiles]);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  const removeImage = useCallback((index: number) => {
+    const updated = images.filter((_, i) => i !== index);
+    onChange(updated);
+  }, [images, onChange]);
+
+  const handleReorderDragStart = useCallback((index: number) => {
+    setDragIndex(index);
+  }, []);
+
+  const handleReorderDragOver = useCallback((e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    setDragOverIndex(index);
+  }, []);
+
+  const handleReorderDrop = useCallback((e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (dragIndex === null || dragIndex === dropIndex) {
+      setDragIndex(null);
+      setDragOverIndex(null);
+      return;
+    }
+
+    const updated = [...images];
+    const [moved] = updated.splice(dragIndex, 1);
+    updated.splice(dropIndex, 0, moved);
+    onChange(updated);
+    setDragIndex(null);
+    setDragOverIndex(null);
+  }, [dragIndex, images, onChange]);
+
+  const getImageSrc = (path: string) => {
+    if (path.startsWith("http://") || path.startsWith("https://")) return path;
+    return path;
+  };
+
+  return (
+    <div className="space-y-3">
+      <div
+        className="border-2 border-dashed rounded-md p-6 text-center cursor-pointer transition-colors border-muted-foreground/25"
+        onClick={() => !isUploading && fileInputRef.current?.click()}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        data-testid="dropzone-images"
+      >
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => e.target.files && handleFiles(e.target.files)}
+          data-testid="input-file-upload"
+        />
+        {isUploading ? (
+          <div className="flex flex-col items-center gap-2">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="text-sm text-muted-foreground">Uploading... {uploadProgress}%</p>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-2">
+            <ImagePlus className="h-8 w-8 text-muted-foreground" />
+            <p className="text-sm text-muted-foreground">
+              Drag & drop images here, or click to browse
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {images.length}/{maxImages} images
+            </p>
+          </div>
+        )}
+      </div>
+
+      {images.length > 0 && (
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+          {images.map((img, index) => (
+            <div
+              key={`${img}-${index}`}
+              className={`relative group aspect-square rounded-md overflow-visible ${
+                dragOverIndex === index ? "ring-2 ring-primary" : ""
+              } ${dragIndex === index ? "opacity-50" : ""}`}
+              draggable
+              onDragStart={() => handleReorderDragStart(index)}
+              onDragOver={(e) => handleReorderDragOver(e, index)}
+              onDrop={(e) => handleReorderDrop(e, index)}
+              onDragEnd={() => { setDragIndex(null); setDragOverIndex(null); }}
+              data-testid={`image-preview-${index}`}
+            >
+              <img
+                src={getImageSrc(img)}
+                alt={`Property photo ${index + 1}`}
+                className="w-full h-full object-cover rounded-md"
+                loading="lazy"
+              />
+              {index === 0 && (
+                <span className="absolute top-1 left-1 bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5 rounded-md font-medium">
+                  Main
+                </span>
+              )}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors rounded-md" />
+              <Button
+                size="icon"
+                variant="secondary"
+                className="absolute top-1 right-1 h-6 w-6 invisible group-hover:visible"
+                onClick={(e) => { e.stopPropagation(); removeImage(index); }}
+                data-testid={`button-remove-image-${index}`}
+              >
+                <X className="h-3 w-3" />
+              </Button>
+              <div className="absolute bottom-1 left-1 invisible group-hover:visible cursor-grab">
+                <GripVertical className="h-4 w-4 text-white drop-shadow-md" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {images.length > 0 && (
+        <p className="text-xs text-muted-foreground">
+          Drag images to reorder. First image is the main photo.
+        </p>
+      )}
+    </div>
+  );
+}
