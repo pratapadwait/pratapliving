@@ -16,14 +16,31 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { insertPropertySchema, type InsertProperty, type Property } from "@shared/schema";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Pencil, Trash2, Bed, Bath, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { z } from "zod";
 import { ImageUploadManager } from "@/components/image-upload-manager";
 
+const AMENITY_OPTIONS = [
+  "Wifi",
+  "Extra Mattress",
+  "Balcony",
+  "Kitchen-access",
+  "Round-the-clock cleaning service",
+  "Geyser",
+  "Iron",
+  "Air conditioning",
+  "Kettle",
+  "TV",
+  "Microwave",
+  "Dedicated workspace",
+  "Body soap",
+] as const;
+
 const propertyFormSchema = insertPropertySchema.extend({
-  amenities: z.string().min(1, "Enter at least one amenity"),
+  amenities: z.array(z.string()).min(1, "Select at least one amenity"),
 }).omit({ imageUrl: true, images: true });
 
 type PropertyFormValues = z.infer<typeof propertyFormSchema>;
@@ -67,7 +84,7 @@ function PropertyFormDialog({
     bedrooms: property?.bedrooms ?? 1,
     bathrooms: property?.bathrooms ?? 1,
     guests: property?.guests ?? 2,
-    amenities: property?.amenities?.join(", ") ?? "",
+    amenities: property?.amenities ?? [],
     featured: property?.featured ?? false,
   });
 
@@ -118,14 +135,9 @@ function PropertyFormDialog({
       return;
     }
 
-    const amenitiesArray = (data.amenities as unknown as string)
-      .split(",")
-      .map((a: string) => a.trim())
-      .filter((a: string) => a.length > 0);
-
     const payload: InsertProperty = {
       ...data,
-      amenities: amenitiesArray,
+      amenities: data.amenities,
       imageUrl: uploadedImages[0],
       images: uploadedImages.slice(1),
     };
@@ -307,17 +319,39 @@ function PropertyFormDialog({
             <FormField
               control={form.control}
               name="amenities"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
-                  <FormLabel>Amenities (comma separated)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="WiFi, AC, Kitchen, Parking"
-                      {...field}
-                      value={field.value as unknown as string}
-                      data-testid="input-property-amenities"
-                    />
-                  </FormControl>
+                  <FormLabel>Amenities</FormLabel>
+                  <div className="grid grid-cols-2 gap-2 mt-1">
+                    {AMENITY_OPTIONS.map((amenity) => (
+                      <FormField
+                        key={amenity}
+                        control={form.control}
+                        name="amenities"
+                        render={({ field }) => (
+                          <FormItem className="flex items-center gap-2 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={(field.value as string[])?.includes(amenity)}
+                                onCheckedChange={(checked) => {
+                                  const current = (field.value as string[]) || [];
+                                  if (checked) {
+                                    field.onChange([...current, amenity]);
+                                  } else {
+                                    field.onChange(current.filter((v: string) => v !== amenity));
+                                  }
+                                }}
+                                data-testid={`checkbox-amenity-${amenity.toLowerCase().replace(/\s+/g, "-")}`}
+                              />
+                            </FormControl>
+                            <FormLabel className="text-sm font-normal !mt-0 cursor-pointer">
+                              {amenity}
+                            </FormLabel>
+                          </FormItem>
+                        )}
+                      />
+                    ))}
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
