@@ -9,12 +9,14 @@ import Properties from "@/pages/properties";
 import Partner from "@/pages/partner";
 import Contact from "@/pages/contact";
 import AdminProperties from "@/pages/admin-properties";
+import PropertyDetail from "@/pages/property-detail";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/properties" component={Properties} />
+      <Route path="/properties/:id" component={PropertyDetail} />
       <Route path="/partner" component={Partner} />
       <Route path="/contact" component={Contact} />
       <Route path="/admin/properties" component={AdminProperties} />

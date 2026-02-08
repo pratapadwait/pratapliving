@@ -23,6 +23,7 @@ import { z } from "zod";
 
 const propertyFormSchema = insertPropertySchema.extend({
   amenities: z.string().min(1, "Enter at least one amenity"),
+  images: z.string().optional(),
 });
 
 type PropertyFormValues = z.infer<typeof propertyFormSchema>;
@@ -52,6 +53,7 @@ function PropertyFormDialog({
       guests: property?.guests ?? 2,
       amenities: property?.amenities?.join(", ") ?? "",
       imageUrl: property?.imageUrl ?? "",
+      images: property?.images?.join("\n") ?? "",
       featured: property?.featured ?? false,
     },
   });
@@ -91,9 +93,15 @@ function PropertyFormDialog({
       .map((a: string) => a.trim())
       .filter((a: string) => a.length > 0);
 
+    const imagesArray = (data.images as unknown as string || "")
+      .split("\n")
+      .map((url: string) => url.trim())
+      .filter((url: string) => url.length > 0);
+
     const payload: InsertProperty = {
       ...data,
       amenities: amenitiesArray,
+      images: imagesArray,
     };
 
     if (isEditing) {
@@ -294,9 +302,29 @@ function PropertyFormDialog({
               name="imageUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Image URL</FormLabel>
+                  <FormLabel>Main Image URL</FormLabel>
                   <FormControl>
                     <Input placeholder="https://example.com/image.jpg" {...field} data-testid="input-property-image" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="images"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Additional Image URLs (one per line)</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder={"https://example.com/photo2.jpg\nhttps://example.com/photo3.jpg"}
+                      rows={3}
+                      {...field}
+                      value={field.value as unknown as string}
+                      data-testid="textarea-property-images"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

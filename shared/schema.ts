@@ -15,6 +15,7 @@ export const properties = pgTable("properties", {
   guests: integer("guests").notNull(),
   amenities: text("amenities").array().notNull(),
   imageUrl: text("image_url").notNull(),
+  images: text("images").array().default(sql`'{}'::text[]`),
   featured: boolean("featured").default(false),
 });
 
