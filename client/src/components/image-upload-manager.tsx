@@ -1,7 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Upload, X, GripVertical, ImagePlus, Loader2 } from "lucide-react";
+import { X, GripVertical, ImagePlus, Loader2, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface ImageUploadManagerProps {
@@ -15,6 +14,7 @@ export function ImageUploadManager({ images, onChange, maxImages = 20 }: ImageUp
   const [uploadProgress, setUploadProgress] = useState(0);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -99,9 +99,20 @@ export function ImageUploadManager({ images, onChange, maxImages = 20 }: ImageUp
   }, []);
 
   const removeImage = useCallback((index: number) => {
+    setActiveIndex(null);
     const updated = images.filter((_, i) => i !== index);
     onChange(updated);
   }, [images, onChange]);
+
+  const setAsMain = useCallback((index: number) => {
+    if (index === 0) return;
+    setActiveIndex(null);
+    const updated = [...images];
+    const [moved] = updated.splice(index, 1);
+    updated.unshift(moved);
+    onChange(updated);
+    toast({ title: "Main photo updated" });
+  }, [images, onChange, toast]);
 
   const handleReorderDragStart = useCallback((index: number) => {
     setDragIndex(index);
@@ -128,10 +139,9 @@ export function ImageUploadManager({ images, onChange, maxImages = 20 }: ImageUp
     setDragOverIndex(null);
   }, [dragIndex, images, onChange]);
 
-  const getImageSrc = (path: string) => {
-    if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    return path;
-  };
+  const toggleActive = useCallback((index: number) => {
+    setActiveIndex(prev => prev === index ? null : index);
+  }, []);
 
   return (
     <div className="space-y-3">
@@ -148,7 +158,10 @@ export function ImageUploadManager({ images, onChange, maxImages = 20 }: ImageUp
           multiple
           accept="image/*"
           className="hidden"
-          onChange={(e) => e.target.files && handleFiles(e.target.files)}
+          onChange={(e) => {
+            if (e.target.files) handleFiles(e.target.files);
+            e.target.value = "";
+          }}
           data-testid="input-file-upload"
         />
         {isUploading ? (
@@ -171,51 +184,72 @@ export function ImageUploadManager({ images, onChange, maxImages = 20 }: ImageUp
 
       {images.length > 0 && (
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-          {images.map((img, index) => (
-            <div
-              key={`${img}-${index}`}
-              className={`relative group aspect-square rounded-md overflow-visible ${
-                dragOverIndex === index ? "ring-2 ring-primary" : ""
-              } ${dragIndex === index ? "opacity-50" : ""}`}
-              draggable
-              onDragStart={() => handleReorderDragStart(index)}
-              onDragOver={(e) => handleReorderDragOver(e, index)}
-              onDrop={(e) => handleReorderDrop(e, index)}
-              onDragEnd={() => { setDragIndex(null); setDragOverIndex(null); }}
-              data-testid={`image-preview-${index}`}
-            >
-              <img
-                src={getImageSrc(img)}
-                alt={`Property photo ${index + 1}`}
-                className="w-full h-full object-cover rounded-md"
-                loading="lazy"
-              />
-              {index === 0 && (
-                <span className="absolute top-1 left-1 bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5 rounded-md font-medium">
-                  Main
-                </span>
-              )}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors rounded-md" />
-              <Button
-                size="icon"
-                variant="secondary"
-                className="absolute top-1 right-1 h-6 w-6 invisible group-hover:visible"
-                onClick={(e) => { e.stopPropagation(); removeImage(index); }}
-                data-testid={`button-remove-image-${index}`}
+          {images.map((img, index) => {
+            const isActive = activeIndex === index;
+            return (
+              <div
+                key={`${img}-${index}`}
+                className={`relative aspect-square rounded-md cursor-pointer select-none ${
+                  dragOverIndex === index ? "ring-2 ring-primary" : ""
+                } ${dragIndex === index ? "opacity-50" : ""}`}
+                draggable
+                onDragStart={() => handleReorderDragStart(index)}
+                onDragOver={(e) => handleReorderDragOver(e, index)}
+                onDrop={(e) => handleReorderDrop(e, index)}
+                onDragEnd={() => { setDragIndex(null); setDragOverIndex(null); }}
+                onClick={() => toggleActive(index)}
+                data-testid={`image-preview-${index}`}
               >
-                <X className="h-3 w-3" />
-              </Button>
-              <div className="absolute bottom-1 left-1 invisible group-hover:visible cursor-grab">
-                <GripVertical className="h-4 w-4 text-white drop-shadow-md" />
+                <img
+                  src={img}
+                  alt={`Property photo ${index + 1}`}
+                  className="w-full h-full object-cover rounded-md"
+                  loading="lazy"
+                />
+                {index === 0 && (
+                  <span className="absolute top-1 left-1 bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5 rounded-md font-medium z-10">
+                    Main
+                  </span>
+                )}
+                {isActive && (
+                  <>
+                    <div className="absolute inset-0 bg-black/40 rounded-md pointer-events-none" />
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="destructive"
+                      className="absolute top-1 right-1 z-20"
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); removeImage(index); }}
+                      data-testid={`button-remove-image-${index}`}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                    {index !== 0 && (
+                      <Button
+                        type="button"
+                        size="sm"
+                        className="absolute bottom-1 right-1 z-20 text-[10px] h-6 px-2"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setAsMain(index); }}
+                        data-testid={`button-set-main-${index}`}
+                      >
+                        <Star className="h-3 w-3 mr-1" />
+                        Set as main
+                      </Button>
+                    )}
+                    <div className="absolute bottom-1 left-1 cursor-grab z-20">
+                      <GripVertical className="h-4 w-4 text-white drop-shadow-md" />
+                    </div>
+                  </>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
       {images.length > 0 && (
         <p className="text-xs text-muted-foreground">
-          Drag images to reorder. First image is the main photo.
+          Click an image to see options. Drag to reorder. First image is the main photo.
         </p>
       )}
     </div>

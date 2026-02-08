@@ -58,21 +58,29 @@ function PropertyFormDialog({
     setUploadedImages(getInitialImages());
   }, [property, open]);
 
+  const getDefaultValues = (): PropertyFormValues => ({
+    name: property?.name ?? "",
+    type: property?.type ?? "homestay",
+    location: property?.location ?? "",
+    description: property?.description ?? "",
+    price: property?.price ?? 0,
+    bedrooms: property?.bedrooms ?? 1,
+    bathrooms: property?.bathrooms ?? 1,
+    guests: property?.guests ?? 2,
+    amenities: property?.amenities?.join(", ") ?? "",
+    featured: property?.featured ?? false,
+  });
+
   const form = useForm<PropertyFormValues>({
     resolver: zodResolver(propertyFormSchema),
-    defaultValues: {
-      name: property?.name ?? "",
-      type: property?.type ?? "homestay",
-      location: property?.location ?? "",
-      description: property?.description ?? "",
-      price: property?.price ?? 0,
-      bedrooms: property?.bedrooms ?? 1,
-      bathrooms: property?.bathrooms ?? 1,
-      guests: property?.guests ?? 2,
-      amenities: property?.amenities?.join(", ") ?? "",
-      featured: property?.featured ?? false,
-    },
+    defaultValues: getDefaultValues(),
   });
+
+  useEffect(() => {
+    if (open) {
+      form.reset(getDefaultValues());
+    }
+  }, [property, open]);
 
   const createMutation = useMutation({
     mutationFn: async (data: InsertProperty) => {
