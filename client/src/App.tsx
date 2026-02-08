@@ -8,6 +8,7 @@ import Home from "@/pages/home";
 import Properties from "@/pages/properties";
 import Partner from "@/pages/partner";
 import Contact from "@/pages/contact";
+import AdminProperties from "@/pages/admin-properties";
 
 function Router() {
   return (
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/properties" component={Properties} />
       <Route path="/partner" component={Partner} />
       <Route path="/contact" component={Contact} />
+      <Route path="/admin/properties" component={AdminProperties} />
       <Route component={NotFound} />
     </Switch>
   );

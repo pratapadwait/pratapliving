@@ -14,6 +14,8 @@ export interface IStorage {
   getProperty(id: string): Promise<Property | undefined>;
   getFeaturedProperties(): Promise<Property[]>;
   createProperty(property: InsertProperty): Promise<Property>;
+  updateProperty(id: string, property: Partial<InsertProperty>): Promise<Property | undefined>;
+  deleteProperty(id: string): Promise<boolean>;
   
   // Partner Inquiries
   createPartnerInquiry(inquiry: InsertPartnerInquiry): Promise<PartnerInquiry>;
@@ -47,6 +49,16 @@ export class DatabaseStorage implements IStorage {
   async createProperty(property: InsertProperty): Promise<Property> {
     const result = await db.insert(properties).values(property).returning();
     return result[0];
+  }
+
+  async updateProperty(id: string, property: Partial<InsertProperty>): Promise<Property | undefined> {
+    const result = await db.update(properties).set(property).where(eq(properties.id, id)).returning();
+    return result[0];
+  }
+
+  async deleteProperty(id: string): Promise<boolean> {
+    const result = await db.delete(properties).where(eq(properties.id, id)).returning();
+    return result.length > 0;
   }
 
   // Partner Inquiries

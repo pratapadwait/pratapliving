@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertPartnerInquirySchema, insertContactInquirySchema } from "@shared/schema";
+import { insertPropertySchema, insertPartnerInquirySchema, insertContactInquirySchema } from "@shared/schema";
 import { fromError } from "zod-validation-error";
 
 export async function registerRoutes(
@@ -30,6 +30,55 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error fetching property:", error);
       res.status(500).json({ message: "Failed to fetch property" });
+    }
+  });
+
+  // Create property
+  app.post("/api/properties", async (req, res) => {
+    try {
+      const parsed = insertPropertySchema.safeParse(req.body);
+      if (!parsed.success) {
+        const validationError = fromError(parsed.error);
+        return res.status(400).json({ message: validationError.toString() });
+      }
+      const property = await storage.createProperty(parsed.data);
+      res.status(201).json(property);
+    } catch (error) {
+      console.error("Error creating property:", error);
+      res.status(500).json({ message: "Failed to create property" });
+    }
+  });
+
+  // Update property
+  app.put("/api/properties/:id", async (req, res) => {
+    try {
+      const parsed = insertPropertySchema.partial().safeParse(req.body);
+      if (!parsed.success) {
+        const validationError = fromError(parsed.error);
+        return res.status(400).json({ message: validationError.toString() });
+      }
+      const property = await storage.updateProperty(req.params.id, parsed.data);
+      if (!property) {
+        return res.status(404).json({ message: "Property not found" });
+      }
+      res.json(property);
+    } catch (error) {
+      console.error("Error updating property:", error);
+      res.status(500).json({ message: "Failed to update property" });
+    }
+  });
+
+  // Delete property
+  app.delete("/api/properties/:id", async (req, res) => {
+    try {
+      const deleted = await storage.deleteProperty(req.params.id);
+      if (!deleted) {
+        return res.status(404).json({ message: "Property not found" });
+      }
+      res.json({ message: "Property deleted" });
+    } catch (error) {
+      console.error("Error deleting property:", error);
+      res.status(500).json({ message: "Failed to delete property" });
     }
   });
 
