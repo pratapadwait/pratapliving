@@ -17,7 +17,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { insertPropertySchema, type InsertProperty, type Property } from "@shared/schema";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Plus, Pencil, Trash2, Bed, Bath, Users } from "lucide-react";
+import { Plus, Pencil, Trash2, Bed, Bath, Users, ImagePlus } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { z } from "zod";
@@ -57,10 +57,15 @@ function PropertyFormDialog({
   const { toast } = useToast();
   const isEditing = !!property;
 
+  const isValidImagePath = (url: string | null | undefined): boolean => {
+    if (!url) return false;
+    return url.startsWith("/objects/") || url.startsWith("http");
+  };
+
   const getInitialImages = (): string[] => {
     if (!property) return [];
     const imgs: string[] = [];
-    if (property.imageUrl) imgs.push(property.imageUrl);
+    if (isValidImagePath(property.imageUrl)) imgs.push(property.imageUrl!);
     if (property.images) {
       for (const img of property.images) {
         if (img && !imgs.includes(img)) imgs.push(img);
@@ -437,6 +442,17 @@ export default function AdminProperties() {
     setIsDialogOpen(true);
   };
 
+  const getDisplayImage = (property: Property): string | null => {
+    const isValid = (url: string | null | undefined) =>
+      url && (url.startsWith("/objects/") || url.startsWith("http"));
+    if (isValid(property.imageUrl)) return property.imageUrl;
+    if (property.images) {
+      const first = property.images.find(img => isValid(img));
+      if (first) return first;
+    }
+    return null;
+  };
+
   const typeLabels: Record<string, string> = {
     homestay: "Homestay",
     suite: "Suite",
@@ -509,11 +525,18 @@ export default function AdminProperties() {
                         <TableRow key={property.id} data-testid={`row-property-${property.id}`}>
                           <TableCell>
                             <div className="flex items-center gap-3">
-                              <img
-                                src={property.imageUrl}
-                                alt={property.name}
-                                className="h-12 w-16 object-cover rounded-md"
-                              />
+                              {getDisplayImage(property) ? (
+                                <img
+                                  src={getDisplayImage(property)!}
+                                  alt={property.name}
+                                  className="h-12 w-16 object-cover rounded-md"
+                                  data-testid={`img-thumbnail-${property.id}`}
+                                />
+                              ) : (
+                                <div className="h-12 w-16 bg-muted rounded-md flex items-center justify-center">
+                                  <ImagePlus className="h-4 w-4 text-muted-foreground" />
+                                </div>
+                              )}
                               <span className="font-medium text-sm">{property.name}</span>
                             </div>
                           </TableCell>
@@ -557,11 +580,18 @@ export default function AdminProperties() {
                 {properties.map((property) => (
                   <Card key={property.id} data-testid={`card-property-${property.id}`}>
                     <CardContent className="p-0">
-                      <img
-                        src={property.imageUrl}
-                        alt={property.name}
-                        className="w-full h-40 object-cover rounded-t-md"
-                      />
+                      {getDisplayImage(property) ? (
+                        <img
+                          src={getDisplayImage(property)!}
+                          alt={property.name}
+                          className="w-full h-40 object-cover rounded-t-md"
+                          data-testid={`img-card-${property.id}`}
+                        />
+                      ) : (
+                        <div className="w-full h-40 bg-muted rounded-t-md flex items-center justify-center">
+                          <ImagePlus className="h-8 w-8 text-muted-foreground" />
+                        </div>
+                      )}
                       <div className="p-4">
                         <div className="flex items-start justify-between gap-2 mb-2">
                           <h3 className="font-semibold text-sm">{property.name}</h3>
