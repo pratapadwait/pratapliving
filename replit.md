@@ -2,7 +2,7 @@
 
 ## Overview
 
-Pratap Living is a hospitality platform for premium homestays, suites, apartments, and villas in Lucknow, India. The application serves two primary user types: guests looking to book accommodations and property owners who want to partner with the platform. It features property listings, partner inquiry forms, and contact functionality.
+Pratap Living is a hospitality platform for premium homestays, suites, apartments, and villas in Lucknow, India. The application serves two primary user types: guests looking to book accommodations and property owners who want to partner with the platform. It features property listings, partner inquiry forms, contact info, and a property CMS at /admin/properties for managing listings.
 
 ## User Preferences
 
