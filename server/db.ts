@@ -12,6 +12,13 @@ if (!connectionString) {
 
 export const pool = new Pool({
   connectionString,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
+  max: 5,
+});
+
+pool.on("error", (err) => {
+  console.error("Unexpected database pool error:", err.message);
 });
 
 export const db = drizzle(pool, { schema });
