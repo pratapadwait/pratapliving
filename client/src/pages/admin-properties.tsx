@@ -22,6 +22,7 @@ import { useState, useEffect } from "react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { z } from "zod";
 import { ImageUploadManager } from "@/components/image-upload-manager";
+import { OptimizedImage } from "@/components/optimized-image";
 
 const AMENITY_OPTIONS = [
   "Wifi",
@@ -526,10 +527,11 @@ export default function AdminProperties() {
                           <TableCell>
                             <div className="flex items-center gap-3">
                               {getDisplayImage(property) ? (
-                                <img
+                                <OptimizedImage
                                   src={getDisplayImage(property)!}
                                   alt={property.name}
-                                  className="h-12 w-16 object-cover rounded-md"
+                                  className="h-12 w-16 rounded-md"
+                                  loading="eager"
                                   data-testid={`img-thumbnail-${property.id}`}
                                 />
                               ) : (
@@ -581,10 +583,10 @@ export default function AdminProperties() {
                   <Card key={property.id} data-testid={`card-property-${property.id}`}>
                     <CardContent className="p-0">
                       {getDisplayImage(property) ? (
-                        <img
+                        <OptimizedImage
                           src={getDisplayImage(property)!}
                           alt={property.name}
-                          className="w-full h-40 object-cover rounded-t-md"
+                          className="w-full h-40 rounded-t-md"
                           data-testid={`img-card-${property.id}`}
                         />
                       ) : (

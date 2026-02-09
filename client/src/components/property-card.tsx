@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Bed, Bath, Users, MapPin, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
+import { OptimizedImage } from "@/components/optimized-image";
 import type { Property } from "@shared/schema";
 
 import propertyHomestay from "@/assets/images/property-homestay.png";
@@ -10,38 +11,50 @@ import propertySuite from "@/assets/images/property-suite.png";
 import propertyApartment from "@/assets/images/property-apartment.png";
 import propertyVilla from "@/assets/images/property-villa.png";
 
-const propertyImages: Record<string, string> = {
+const fallbackImages: Record<string, string> = {
   homestay: propertyHomestay,
   suite: propertySuite,
   apartment: propertyApartment,
   villa: propertyVilla,
 };
 
+function getPropertyImage(property: Property): string {
+  const isValid = (url: string | null | undefined) =>
+    url && (url.startsWith("/objects/") || url.startsWith("http"));
+  if (isValid(property.imageUrl)) return property.imageUrl!;
+  if (property.images) {
+    const first = property.images.find(img => isValid(img));
+    if (first) return first;
+  }
+  return fallbackImages[property.type] || propertyHomestay;
+}
+
 interface PropertyCardProps {
   property: Property;
 }
 
 export function PropertyCard({ property }: PropertyCardProps) {
-  const imageUrl = property.imageUrl || propertyImages[property.type] || propertyHomestay;
+  const imageUrl = getPropertyImage(property);
 
   return (
     <Link href={`/properties/${property.id}`}>
       <Card className="overflow-hidden hover-elevate transition-all duration-300 group cursor-pointer" data-testid={`card-property-${property.id}`}>
         <div className="relative overflow-hidden aspect-[4/3]">
-          <img
+          <OptimizedImage
             src={imageUrl}
             alt={property.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
+            className="w-full h-full"
+            data-testid={`img-property-${property.id}`}
           />
+          <div className="absolute inset-0 pointer-events-none" />
           {property.featured && (
-            <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground">
+            <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground z-10">
               Featured
             </Badge>
           )}
           <Badge
             variant="secondary"
-            className="absolute top-3 right-3 capitalize"
+            className="absolute top-3 right-3 capitalize z-10"
           >
             {property.type}
           </Badge>

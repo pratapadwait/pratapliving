@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { OptimizedImage } from "@/components/optimized-image";
 import { useQuery } from "@tanstack/react-query";
 import { useRoute, Link } from "wouter";
 import type { Property } from "@shared/schema";
@@ -168,10 +169,10 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
           {...mainSwipe}
           data-testid="gallery-main-image"
         >
-          <img
+          <OptimizedImage
             src={images[currentIndex]}
             alt={`${propertyName} - Photo ${currentIndex + 1}`}
-            className={`w-full h-full object-cover transition-opacity duration-200 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
+            className={`w-full h-full transition-opacity duration-200 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
             loading="eager"
           />
           <div className="absolute bottom-3 right-3">
@@ -222,11 +223,10 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
               }`}
               data-testid={`button-thumbnail-${i}`}
             >
-              <img
+              <OptimizedImage
                 src={img}
                 alt={`${propertyName} - Thumbnail ${i + 1}`}
-                className="w-full h-full object-cover"
-                loading="lazy"
+                className="w-full h-full"
               />
             </button>
           ))}
@@ -301,9 +301,12 @@ export default function PropertyDetail() {
     property ? property.description.slice(0, 160) : "View property details and photos."
   );
 
+  const isValidImage = (url: string | null | undefined) =>
+    url && (url.startsWith("/objects/") || url.startsWith("http"));
+
   const allImages = property
     ? [
-        property.imageUrl,
+        ...(isValidImage(property.imageUrl) ? [property.imageUrl] : []),
         ...(property.images || []).filter((img) => img && img !== property.imageUrl),
       ]
     : [];
