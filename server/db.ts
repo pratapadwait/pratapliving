@@ -7,8 +7,11 @@ const { Pool } = pg;
 const connectionString = process.env.EXTERNAL_DATABASE_URL || process.env.DATABASE_URL;
 
 if (!connectionString) {
+  console.error("Available env vars:", Object.keys(process.env).filter(k => k.includes("DATABASE") || k.includes("PG")).join(", "));
   throw new Error("DATABASE_URL environment variable is not set");
 }
+
+console.log("Database connection configured:", connectionString.replace(/:[^@]+@/, ":***@"));
 
 export const pool = new Pool({
   connectionString,
