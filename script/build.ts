@@ -10,7 +10,6 @@ const allowlist = [
   "connect-pg-simple",
   "cors",
   "date-fns",
-  "dotenv",
   "drizzle-orm",
   "drizzle-zod",
   "express",
@@ -57,7 +56,7 @@ async function buildAll() {
       "process.env.NODE_ENV": '"production"',
     },
     minify: true,
-    external: externals,
+    external: [...externals, "dotenv"],
     logLevel: "info",
   });
 }
