@@ -1,0 +1,63 @@
+Last login: Mon Feb  9 14:41:31 on ttys000
+pratapsingh@Prataps-MacBook-Air ~ % Qwertyuiop@123
+zsh: command not found: Qwertyuiop@123
+pratapsingh@Prataps-MacBook-Air ~ % ssh root@82.112.231.43
+root@82.112.231.43's password: 
+Welcome to Ubuntu 24.04.2 LTS (GNU/Linux 6.8.0-60-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Feb  9 09:42:59 UTC 2026
+
+  System load:  0.11               Processes:             119
+  Usage of /:   17.2% of 47.39GB   Users logged in:       1
+  Memory usage: 25%                IPv4 address for eth0: 82.112.231.43
+  Swap usage:   0%                 IPv6 address for eth0: 2a02:4780:12:ee83::1
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+88 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+1 updates could not be installed automatically. For more details,
+see /var/log/unattended-upgrades/unattended-upgrades.log
+
+*** System restart required ***
+Last login: Mon Feb  9 09:30:54 2026 from 183.82.161.170
+root@srv578562:~# nano /var/www/pratapliving.com/html/.env
+
+  GNU nano 7.2           /var/www/pratapliving.com/html/.env                    
+PORT=5001
+PGHOST="ep-old-art-afaw8wfy.c-2.us-west-2.aws.neon.tech"
+PGDATABASE="neondb"
+PGUSER="neondb_owner"
+PGPASSWORD="npg_SkwgAMK32dLb"
+PGPORT="5432"
+DATABASE_URL="postgresql://neondb_owner:npg_SkwgAMK32dLb@ep-old-art-afaw8wfy.c->
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                [ Read 7 lines ]
+^G Help      ^O Write Out ^W Where Is  ^K Cut       ^T Execute   ^C Location
+^X Exit      ^R Read File ^\ Replace   ^U Paste     ^J Justify   ^/ Go To Line
