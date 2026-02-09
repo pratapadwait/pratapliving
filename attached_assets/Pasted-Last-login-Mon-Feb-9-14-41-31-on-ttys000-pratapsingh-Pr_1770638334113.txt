@@ -1,0 +1,322 @@
+Last login: Mon Feb  9 14:41:31 on ttys000
+pratapsingh@Prataps-MacBook-Air ~ % Qwertyuiop@123
+zsh: command not found: Qwertyuiop@123
+pratapsingh@Prataps-MacBook-Air ~ % ssh root@82.112.231.43
+root@82.112.231.43's password: 
+Welcome to Ubuntu 24.04.2 LTS (GNU/Linux 6.8.0-60-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Feb  9 09:42:59 UTC 2026
+
+  System load:  0.11               Processes:             119
+  Usage of /:   17.2% of 47.39GB   Users logged in:       1
+  Memory usage: 25%                IPv4 address for eth0: 82.112.231.43
+  Swap usage:   0%                 IPv6 address for eth0: 2a02:4780:12:ee83::1
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+88 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+1 updates could not be installed automatically. For more details,
+see /var/log/unattended-upgrades/unattended-upgrades.log
+
+*** System restart required ***
+Last login: Mon Feb  9 09:30:54 2026 from 183.82.161.170
+root@srv578562:~# nano /var/www/pratapliving.com/html/.env
+root@srv578562:~# nano /var/www/pratapliving.com/html/.env
+root@srv578562:~# cd /var/www/pratapliving.com/html
+git pull origin main
+fatal: detected dubious ownership in repository at '/var/www/pratapliving.com/html'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /var/www/pratapliving.com/html
+root@srv578562:/var/www/pratapliving.com/html# git config --global --add safe.directory /var/www/pratapliving.com/html
+root@srv578562:/var/www/pratapliving.com/html# git pull origin main
+remote: Enumerating objects: 7, done.
+remote: Counting objects: 100% (7/7), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 5 (delta 2), reused 5 (delta 2), pack-reused 0 (from 0)
+Unpacking objects: 100% (5/5), 1.97 KiB | 183.00 KiB/s, done.
+From https://github.com/pratapadwait/pratapliving
+ * branch            main       -> FETCH_HEAD
+   01d3168..191aa5d  main       -> origin/main
+Updating 01d3168..191aa5d
+Fast-forward
+ ...-31-on-ttys000-pratapsingh-Pr_1770630215546.txt | 63 ++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
+ create mode 100644 attached_assets/Pasted-Last-login-Mon-Feb-9-14-41-31-on-ttys000-pratapsingh-Pr_1770630215546.txt
+root@srv578562:/var/www/pratapliving.com/html# npm install
+
+added 115 packages, and audited 707 packages in 4s
+
+105 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+root@srv578562:/var/www/pratapliving.com/html# npm run build
+
+> rest-express@1.0.0 build
+> tsx script/build.ts
+
+building client...
+vite v7.3.0 building client environment for production...
+transforming (4) src/App.tsx
+A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
+✓ 1859 modules transformed.
+../dist/public/index.html                                    1.37 kB │ gzip:   0.62 kB
+../dist/public/assets/logo-C0ePa-xK.png                    132.21 kB
+../dist/public/assets/testimonial-business-CJ5O5adx.png  1,391.25 kB
+../dist/public/assets/testimonial-family-De9j8I8i.png    1,503.74 kB
+../dist/public/assets/property-suite-YtcLrjoa.png        1,533.50 kB
+../dist/public/assets/testimonial-couple-BrWv45-E.png    1,649.57 kB
+../dist/public/assets/property-apartment-CCVpnStm.png    1,708.27 kB
+../dist/public/assets/hero-lucknow-C5m0nadS.png          1,785.48 kB
+../dist/public/assets/property-homestay-Dwqw8HTL.png     1,864.21 kB
+../dist/public/assets/property-villa-COoQEfyt.png        1,977.17 kB
+../dist/public/assets/index-ozwtbHfb.css                    77.55 kB │ gzip:  12.66 kB
+../dist/public/assets/index-BJe8-_97.js                    531.07 kB │ gzip: 161.23 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 11.34s
+building server...
+
+  dist/index.cjs  1.0mb ⚠️
+
+⚡ Done in 2137ms
+root@srv578562:/var/www/pratapliving.com/html# npx drizzle-kit push
+No config path provided, using default 'drizzle.config.ts'
+Reading config file '/var/www/pratapliving.com/html/drizzle.config.ts'
+Using 'pg' driver for database querying
+[⢿] Pulling schema from database...
+error: terminating connection due to administrator command
+    at /var/www/pratapliving.com/html/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.query (/var/www/pratapliving.com/html/node_modules/drizzle-kit/bin.cjs:80622:26)
+    at async fromDatabase2 (/var/www/pratapliving.com/html/node_modules/drizzle-kit/bin.cjs:19341:24) {
+  length: 116,
+  severity: 'FATAL',
+  code: '57P01',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'postgres.c',
+  line: '3289',
+  routine: 'ProcessInterrupts'
+}
+root@srv578562:/var/www/pratapliving.com/html# pm2 restart pratap-living --update-env
+
+>>>> In-memory PM2 is out-of-date, do:
+>>>> $ pm2 update
+In memory PM2 version: 6.0.8
+Local PM2 version: 6.0.14
+
+[PM2] Applying action restartProcessId on app [pratap-living](ids: [ 16 ])
+[PM2] [pratap-living](16) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 11 │ litcrm-prod        │ fork     │ 16   │ online    │ 0%       │ 160.3mb  │
+│ 4  │ livincompany       │ fork     │ 7    │ online    │ 0%       │ 74.4mb   │
+│ 16 │ pratap-living      │ fork     │ 5    │ online    │ 0%       │ 21.6mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+root@srv578562:/var/www/pratapliving.com/html# git pull origin main
+remote: Enumerating objects: 22, done.
+remote: Counting objects: 100% (22/22), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 17 (delta 15), reused 17 (delta 15), pack-reused 0 (from 0)
+Unpacking objects: 100% (17/17), 2.86 KiB | 172.00 KiB/s, done.
+From https://github.com/pratapadwait/pratapliving
+ * branch            main       -> FETCH_HEAD
+   191aa5d..4501259  main       -> origin/main
+Updating 191aa5d..4501259
+Fast-forward
+ .replit          |  5 +++++
+ server/db.ts     | 13 +++++++++++--
+ server/static.ts |  6 ++++--
+ 3 files changed, 20 insertions(+), 4 deletions(-)
+root@srv578562:/var/www/pratapliving.com/html# npm install
+
+up to date, audited 707 packages in 3s
+
+105 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+root@srv578562:/var/www/pratapliving.com/html# npm run build
+
+> rest-express@1.0.0 build
+> tsx script/build.ts
+
+building client...
+vite v7.3.0 building client environment for production...
+transforming (5) ../node_modules/@tanstack/react-query/build/modern/index.j
+A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
+✓ 1859 modules transformed.
+../dist/public/index.html                                    1.37 kB │ gzip:   0.62 kB
+../dist/public/assets/logo-C0ePa-xK.png                    132.21 kB
+../dist/public/assets/testimonial-business-CJ5O5adx.png  1,391.25 kB
+../dist/public/assets/testimonial-family-De9j8I8i.png    1,503.74 kB
+../dist/public/assets/property-suite-YtcLrjoa.png        1,533.50 kB
+../dist/public/assets/testimonial-couple-BrWv45-E.png    1,649.57 kB
+../dist/public/assets/property-apartment-CCVpnStm.png    1,708.27 kB
+../dist/public/assets/hero-lucknow-C5m0nadS.png          1,785.48 kB
+../dist/public/assets/property-homestay-Dwqw8HTL.png     1,864.21 kB
+../dist/public/assets/property-villa-COoQEfyt.png        1,977.17 kB
+../dist/public/assets/index-ozwtbHfb.css                    77.55 kB │ gzip:  12.66 kB
+../dist/public/assets/index-BJe8-_97.js                    531.07 kB │ gzip: 161.23 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 10.40s
+building server...
+
+  dist/index.cjs  1.0mb ⚠️
+
+⚡ Done in 2455ms
+root@srv578562:/var/www/pratapliving.com/html# npx drizzle-kit push
+No config path provided, using default 'drizzle.config.ts'
+Reading config file '/var/www/pratapliving.com/html/drizzle.config.ts'
+Using 'pg' driver for database querying
+[✓] Pulling schema from database...
+[✓] Changes applied
+root@srv578562:/var/www/pratapliving.com/html# pm2 restart pratap-living --update-env
+
+>>>> In-memory PM2 is out-of-date, do:
+>>>> $ pm2 update
+In memory PM2 version: 6.0.8
+Local PM2 version: 6.0.14
+
+[PM2] Applying action restartProcessId on app [pratap-living](ids: [ 16 ])
+[PM2] [pratap-living](16) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 11 │ litcrm-prod        │ fork     │ 16   │ online    │ 0%       │ 160.3mb  │
+│ 4  │ livincompany       │ fork     │ 7    │ online    │ 0%       │ 74.4mb   │
+│ 16 │ pratap-living      │ fork     │ 6    │ online    │ 0%       │ 21.6mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+root@srv578562:/var/www/pratapliving.com/html# git pull origin main
+remote: Enumerating objects: 15, done.
+remote: Counting objects: 100% (15/15), done.
+remote: Compressing objects: 100% (1/1), done.
+remote: Total 9 (delta 8), reused 9 (delta 8), pack-reused 0 (from 0)
+Unpacking objects: 100% (9/9), 1.49 KiB | 89.00 KiB/s, done.
+From https://github.com/pratapadwait/pratapliving
+ * branch            main       -> FETCH_HEAD
+   4501259..e1758e3  main       -> origin/main
+Updating 4501259..e1758e3
+Fast-forward
+ .gitignore        |  3 ++-
+ package-lock.json | 13 +++++++++++++
+ package.json      |  1 +
+ server/index.ts   |  1 +
+ 4 files changed, 17 insertions(+), 1 deletion(-)
+root@srv578562:/var/www/pratapliving.com/html# npm install
+
+added 1 package, and audited 708 packages in 2s
+
+106 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+root@srv578562:/var/www/pratapliving.com/html# npm run build
+
+> rest-express@1.0.0 build
+> tsx script/build.ts
+
+building client...
+vite v7.3.0 building client environment for production...
+transforming (4) src/App.tsx
+A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
+✓ 1859 modules transformed.
+../dist/public/index.html                                    1.37 kB │ gzip:   0.62 kB
+../dist/public/assets/logo-C0ePa-xK.png                    132.21 kB
+../dist/public/assets/testimonial-business-CJ5O5adx.png  1,391.25 kB
+../dist/public/assets/testimonial-family-De9j8I8i.png    1,503.74 kB
+../dist/public/assets/property-suite-YtcLrjoa.png        1,533.50 kB
+../dist/public/assets/testimonial-couple-BrWv45-E.png    1,649.57 kB
+../dist/public/assets/property-apartment-CCVpnStm.png    1,708.27 kB
+../dist/public/assets/hero-lucknow-C5m0nadS.png          1,785.48 kB
+../dist/public/assets/property-homestay-Dwqw8HTL.png     1,864.21 kB
+../dist/public/assets/property-villa-COoQEfyt.png        1,977.17 kB
+../dist/public/assets/index-ozwtbHfb.css                    77.55 kB │ gzip:  12.66 kB
+../dist/public/assets/index-BJe8-_97.js                    531.07 kB │ gzip: 161.23 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 7.68s
+building server...
+
+  dist/index.cjs  1.0mb ⚠️
+
+⚡ Done in 346ms
+root@srv578562:/var/www/pratapliving.com/html# pm2 restart pratap-living --update-env
+
+>>>> In-memory PM2 is out-of-date, do:
+>>>> $ pm2 update
+In memory PM2 version: 6.0.8
+Local PM2 version: 6.0.14
+
+[PM2] Applying action restartProcessId on app [pratap-living](ids: [ 16 ])
+[PM2] [pratap-living](16) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 11 │ litcrm-prod        │ fork     │ 16   │ online    │ 0%       │ 160.3mb  │
+│ 4  │ livincompany       │ fork     │ 7    │ online    │ 7.7%     │ 74.4mb   │
+│ 16 │ pratap-living      │ fork     │ 7    │ online    │ 0%       │ 20.5mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+root@srv578562:/var/www/pratapliving.com/html# nano /var/www/pratapliving.com/html/.env
+
+  GNU nano 7.2           /var/www/pratapliving.com/html/.env                    
+PORT=5001
+PGHOST="ep-old-art-afaw8wfy.c-2.us-west-2.aws.neon.tech"
+PGDATABASE="neondb"
+PGUSER="neondb_owner"
+PGPASSWORD="npg_SkwgAMK32dLb"
+PGPORT="5432"
+DATABASE_URL="postgresql://neondb_owner:npg_SkwgAMK32dLb@ep-old-art-afaw8wfy.c->
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                [ Read 7 lines ]
+^G Help      ^O Write Out ^W Where Is  ^K Cut       ^T Execute   ^C Location
+^X Exit      ^R Read File ^\ Replace   ^U Paste     ^J Justify   ^/ Go To Line
