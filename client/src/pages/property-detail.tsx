@@ -354,7 +354,7 @@ export default function PropertyDetail() {
   return (
     <div className="min-h-screen">
       <Navigation />
-      <main className="pt-20 pb-16">
+      <main className="pt-20 pb-28 lg:pb-16">
         {isLoading ? (
           <div className="container mx-auto px-4">
             <Skeleton className="h-8 w-32 mb-6 mt-4" />
@@ -590,6 +590,21 @@ export default function PropertyDetail() {
         )}
       </main>
       <Footer />
+
+      {property && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-background border-t p-3 flex items-center justify-between gap-3" data-testid="mobile-booking-bar">
+          <div className="flex items-baseline gap-1 shrink-0">
+            <span className="text-lg font-bold text-primary">&#8377;{property.price.toLocaleString()}</span>
+            <span className="text-muted-foreground text-xs">/ night</span>
+          </div>
+          <a href="tel:+917460985009">
+            <Button data-testid="button-mobile-call-to-book">
+              <Phone className="h-4 w-4 mr-2" />
+              Call to Book
+            </Button>
+          </a>
+        </div>
+      )}
     </div>
   );
 }
