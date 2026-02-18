@@ -406,10 +406,18 @@ export default function PropertyDetail() {
                     {isGolfCityVilla ? "Pratap Living | The Villa and Homestay - Golf City" : property.name}
                   </h1>
 
-                  <div className="flex items-center gap-1.5 text-muted-foreground mb-6">
-                    <MapPin className="h-4 w-4 text-primary" />
-                    <span className="text-sm" data-testid="text-property-location">{property.location}</span>
-                  </div>
+                  <a
+                    href={property.location.startsWith("http") ? property.location : `https://www.google.com/maps/search/${encodeURIComponent(property.location)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-muted-foreground mb-6 hover:text-primary transition-colors"
+                    data-testid="link-property-location"
+                  >
+                    <MapPin className="h-4 w-4 text-primary shrink-0" />
+                    <span className="text-sm underline underline-offset-2" data-testid="text-property-location">
+                      View on Google Maps
+                    </span>
+                  </a>
 
                   <div className="flex flex-wrap gap-4 mb-6">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">

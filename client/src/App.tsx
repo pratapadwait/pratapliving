@@ -10,6 +10,7 @@ import Partner from "@/pages/partner";
 import Contact from "@/pages/contact";
 import AdminProperties from "@/pages/admin-properties";
 import PropertyDetail from "@/pages/property-detail";
+import About from "@/pages/about";
 
 function Router() {
   return (
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/properties" component={Properties} />
       <Route path="/properties/:id" component={PropertyDetail} />
+      <Route path="/about" component={About} />
       <Route path="/partner" component={Partner} />
       <Route path="/contact" component={Contact} />
       <Route path="/admin/properties" component={AdminProperties} />

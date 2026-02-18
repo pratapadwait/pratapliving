@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Bed, Bath, Users, MapPin, ArrowRight } from "lucide-react";
+import { Bed, Bath, Users, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 import { OptimizedImage } from "@/components/optimized-image";
 import type { Property } from "@shared/schema";
@@ -64,10 +64,6 @@ export function PropertyCard({ property }: PropertyCardProps) {
             <h3 className="font-serif text-xl font-semibold text-foreground line-clamp-1">
               {property.name}
             </h3>
-          </div>
-          <div className="flex items-center gap-1.5 text-muted-foreground text-sm mb-3">
-            <MapPin className="h-4 w-4 text-primary" />
-            <span className="line-clamp-1">{property.location}</span>
           </div>
           <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
             {property.description}
