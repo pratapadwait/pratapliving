@@ -65,9 +65,6 @@ export function PropertyCard({ property }: PropertyCardProps) {
               {property.name}
             </h3>
           </div>
-          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-            {property.description}
-          </p>
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
             <div className="flex items-center gap-1.5">
               <Bed className="h-4 w-4" />
