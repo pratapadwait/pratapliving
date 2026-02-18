@@ -1,16 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowRight, Star, MapPin, Shield } from "lucide-react";
-import heroImage from "@/assets/images/hero-lucknow.png";
+import { OptimizedImage } from "@/components/optimized-image";
+import { HERO_IMAGE } from "@/lib/imagekit-assets";
 
 export function HeroSection() {
   return (
     <section className="relative min-h-[90vh] flex items-center">
       <div className="absolute inset-0 z-0">
-        <img
-          src={heroImage}
+        <OptimizedImage
+          src={HERO_IMAGE}
           alt="Lucknow cityscape"
-          className="w-full h-full object-cover"
+          className="w-full h-full"
+          loading="eager"
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
       </div>

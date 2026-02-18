@@ -1,39 +1,36 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { ArrowRight, Home, Building, Building2, Trees } from "lucide-react";
-
-import propertyHomestay from "@/assets/images/property-homestay.png";
-import propertySuite from "@/assets/images/property-suite.png";
-import propertyApartment from "@/assets/images/property-apartment.png";
-import propertyVilla from "@/assets/images/property-villa.png";
+import { OptimizedImage } from "@/components/optimized-image";
+import { PROPERTY_HOMESTAY, PROPERTY_SUITE, PROPERTY_APARTMENT, PROPERTY_VILLA } from "@/lib/imagekit-assets";
 
 const propertyTypes = [
   {
     type: "homestay",
     name: "Homestays",
     description: "Cozy heritage homes with authentic Lucknowi hospitality and home-cooked meals.",
-    image: propertyHomestay,
+    image: PROPERTY_HOMESTAY,
     icon: Home,
   },
   {
     type: "suite",
     name: "Suites",
     description: "Elegant suites offering luxury amenities and exceptional comfort.",
-    image: propertySuite,
+    image: PROPERTY_SUITE,
     icon: Building,
   },
   {
     type: "apartment",
     name: "Apartments",
     description: "Modern, fully-equipped apartments ideal for extended stays.",
-    image: propertyApartment,
+    image: PROPERTY_APARTMENT,
     icon: Building2,
   },
   {
     type: "villa",
     name: "Villas",
     description: "Private villas with pools, gardens, and premium exclusivity.",
-    image: propertyVilla,
+    image: PROPERTY_VILLA,
     icon: Trees,
   },
 ];
@@ -61,10 +58,11 @@ export function PropertyTypesSection() {
                   data-testid={`card-type-${propertyType.type}`}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
-                    <img
+                    <OptimizedImage
                       src={propertyType.image}
                       alt={propertyType.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                     <div className="absolute bottom-4 left-4 right-4">

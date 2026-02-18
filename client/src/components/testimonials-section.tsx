@@ -1,30 +1,33 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Star, Quote } from "lucide-react";
+import { TESTIMONIAL_FAMILY, TESTIMONIAL_BUSINESS, TESTIMONIAL_COUPLE } from "@/lib/imagekit-assets";
 
-import testimonialFamily from "@/assets/images/testimonial-family.png";
-import testimonialBusiness from "@/assets/images/testimonial-business.png";
-import testimonialCouple from "@/assets/images/testimonial-couple.png";
+function getOptimizedAvatar(url: string): string {
+  if (url.includes("ik.imagekit.io")) {
+    return `${url}?tr=w-96,h-96,q-80,f-auto,fo-face`;
+  }
+  return url;
+}
 
 const testimonials = [
   {
     name: "Rajesh & Family",
     role: "Family Vacation",
-    image: testimonialFamily,
+    image: TESTIMONIAL_FAMILY,
     rating: 5,
     content: "Our stay at Pratap Living was absolutely wonderful. The villa was spacious, clean, and the staff went above and beyond to make our family feel at home. The kids loved the pool and we loved the peaceful environment.",
   },
   {
     name: "Priya Sharma",
     role: "Business Traveler",
-    image: testimonialBusiness,
+    image: TESTIMONIAL_BUSINESS,
     rating: 5,
     content: "As a frequent business traveler, I appreciate properties that offer both comfort and convenience. Pratap Living's suites provide exactly that - excellent WiFi, quiet workspace, and impeccable service.",
   },
   {
     name: "Arjun & Meera",
     role: "Honeymoon Trip",
-    image: testimonialCouple,
+    image: TESTIMONIAL_COUPLE,
     rating: 5,
     content: "We chose Pratap Living for our honeymoon and it exceeded all expectations. The heritage homestay had such romantic charm, and the hosts arranged special surprises for us. Truly memorable!",
   },
@@ -64,12 +67,15 @@ export function TestimonialsSection() {
                   "{testimonial.content}"
                 </p>
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src={testimonial.image} alt={testimonial.name} />
-                    <AvatarFallback className="bg-primary text-primary-foreground">
-                      {testimonial.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
+                  <div className="h-12 w-12 rounded-full overflow-hidden shrink-0">
+                    <img
+                      src={getOptimizedAvatar(testimonial.image)}
+                      alt={testimonial.name}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
                   <div>
                     <p className="font-semibold text-foreground">
                       {testimonial.name}
