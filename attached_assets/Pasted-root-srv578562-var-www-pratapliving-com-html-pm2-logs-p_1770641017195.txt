@@ -1,0 +1,53 @@
+root@srv578562:/var/www/pratapliving.com/html# pm2 logs pratap-living --lines 20
+ 
+>>>> In-memory PM2 is out-of-date, do:
+>>>> $ pm2 update
+In memory PM2 version: 6.0.8
+Local PM2 version: 6.0.14
+
+[TAILING] Tailing last 20 lines for [pratap-living] process (change the value with --lines option)
+/root/.pm2/logs/pratap-living-out.log last 20 lines:
+16|pratap- | 11:49:41 AM [express] GET /api/properties 500 in 8ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 11:49:42 AM [express] GET /api/properties 500 in 2ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 11:49:43 AM [express] GET /api/properties 500 in 3ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 11:49:43 AM [express] GET /api/properties 500 in 2ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 11:49:44 AM [express] GET /api/properties 500 in 4ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 11:53:53 AM [express] POST /api 404 in 1ms
+16|pratap- | 11:57:54 AM [express] serving on port 5001
+16|pratap- | 11:57:58 AM [express] GET /api/properties 500 in 7ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 11:58:08 AM [express] GET /api/properties 500 in 4ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 11:58:12 AM [express] GET /api/properties 500 in 2ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 12:17:02 PM [express] serving on port 5001
+16|pratap- | 12:17:20 PM [express] GET /api/properties 500 in 7ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 12:17:24 PM [express] GET /api/properties 500 in 5ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 12:17:27 PM [express] GET /api/properties 500 in 3ms :: {"message":"Failed to fetch properties"}
+16|pratap- | Database connection configured: postgresql:***@helium/heliumdb?sslmode=disable
+16|pratap- | 12:24:23 PM [express] serving on port 5001
+16|pratap- | 12:24:27 PM [express] GET /api/properties 500 in 8ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 12:31:55 PM [express] GET /api/properties 500 in 4ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 12:32:01 PM [express] GET /api/properties 500 in 9ms :: {"message":"Failed to fetch properties"}
+16|pratap- | 12:41:54 PM [express] GET /api/properties 500 in 17ms :: {"message":"Failed to fetch properties"}
+
+/root/.pm2/logs/pratap-living-error.log last 20 lines:
+16|pratap- | Error fetching properties: Error: getaddrinfo EAI_AGAIN helium
+16|pratap- |     at /var/www/pratapliving.com/html/dist/index.cjs:70:13326
+16|pratap- |     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+16|pratap- |     at async /var/www/pratapliving.com/html/dist/index.cjs:76:31364
+16|pratap- |     at async /var/www/pratapliving.com/html/dist/index.cjs:76:109901 {
+16|pratap- |   errno: -3001,
+16|pratap- |   code: 'EAI_AGAIN',
+16|pratap- |   syscall: 'getaddrinfo',
+16|pratap- |   hostname: 'helium'
+16|pratap- | }
+16|pratap- | Error fetching properties: Error: getaddrinfo EAI_AGAIN helium
+16|pratap- |     at /var/www/pratapliving.com/html/dist/index.cjs:70:13326
+16|pratap- |     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+16|pratap- |     at async /var/www/pratapliving.com/html/dist/index.cjs:76:31364
+16|pratap- |     at async /var/www/pratapliving.com/html/dist/index.cjs:76:109901 {
+16|pratap- |   errno: -3001,
+16|pratap- |   code: 'EAI_AGAIN',
+16|pratap- |   syscall: 'getaddrinfo',
+16|pratap- |   hostname: 'helium'
+16|pratap- | }
+
+
