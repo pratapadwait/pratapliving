@@ -37,7 +37,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
   const imageUrl = getPropertyImage(property);
 
   return (
-    <Link href={`/properties/${property.id}`}>
+    <Link href={`/properties/${property.slug || property.id}`}>
       <Card className="overflow-hidden hover-elevate transition-all duration-300 group cursor-pointer" data-testid={`card-property-${property.id}`}>
         <div className="relative overflow-hidden aspect-[4/3]">
           <OptimizedImage

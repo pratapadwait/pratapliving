@@ -28,6 +28,11 @@ import {
   X,
   Phone,
   Expand,
+  MapPinned,
+  Heart,
+  Landmark,
+  Home,
+  ChevronDown,
 } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
 
@@ -287,18 +292,49 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
   );
 }
 
+function FaqItem({ question, answer, index }: { question: string; answer: string; index: number }) {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="border rounded-md" data-testid={`faq-item-${index}`}>
+      <button
+        className="w-full flex items-center justify-between gap-3 p-4 text-left"
+        onClick={() => setIsOpen(!isOpen)}
+        data-testid={`button-faq-toggle-${index}`}
+      >
+        <span className="font-medium text-sm text-foreground">{question}</span>
+        <ChevronDown className={`h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+      </button>
+      {isOpen && (
+        <div className="px-4 pb-4">
+          <p className="text-sm text-muted-foreground leading-relaxed">{answer}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const SEO_OVERRIDES: Record<string, { title: string; metaDescription: string }> = {
+  "villa-homestay-golf-city": {
+    title: "6BHK+ Luxury Villa in Sushant Golf City Lucknow | Pratap Living",
+    metaDescription: "Book the premier 6BHK+ villa in Sushant Golf City, Lucknow. Perfect for wedding guests at The Centrum & Viviana Greens. Managed by Pratap Adwait Singh. Call +917460985009.",
+  },
+};
+
 export default function PropertyDetail() {
   const [, params] = useRoute("/properties/:id");
   const propertyId = params?.id;
 
   const { data: property, isLoading, error } = useQuery<Property>({
-    queryKey: [`/api/properties/${propertyId}`],
+    queryKey: ["/api/properties", propertyId],
     enabled: !!propertyId,
   });
 
+  const isGolfCityVilla = propertyId === "villa-homestay-golf-city";
+  const seoOverride = propertyId ? SEO_OVERRIDES[propertyId] : undefined;
+
   useDocumentTitle(
-    property ? `${property.name} | Pratap Living` : "Property Details | Pratap Living",
-    property ? property.description.slice(0, 160) : "View property details and photos."
+    seoOverride?.title || (property ? `${property.name} | Pratap Living` : "Property Details | Pratap Living"),
+    seoOverride?.metaDescription || (property ? property.description.slice(0, 160) : "View property details and photos.")
   );
 
   const isValidImage = (url: string | null | undefined) =>
@@ -367,7 +403,7 @@ export default function PropertyDetail() {
                   </div>
 
                   <h1 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-2" data-testid="text-property-name">
-                    {property.name}
+                    {isGolfCityVilla ? "Pratap Living | The Villa and Homestay - Golf City" : property.name}
                   </h1>
 
                   <div className="flex items-center gap-1.5 text-muted-foreground mb-6">
@@ -392,10 +428,72 @@ export default function PropertyDetail() {
 
                   <div className="mb-8">
                     <h2 className="font-serif text-lg font-semibold text-foreground mb-3">About this property</h2>
-                    <p className="text-muted-foreground leading-relaxed" data-testid="text-description">
-                      {property.description}
-                    </p>
+                    {isGolfCityVilla ? (
+                      <div data-testid="text-description">
+                        <h3 className="font-serif text-base font-semibold text-foreground mb-2">Experience the Grandeur of Lucknow's Premier 6BHK+ Villa</h3>
+                        <p className="text-muted-foreground leading-relaxed">
+                          Welcome to a space where luxury meets the comfort of home. Located in the serene and elite neighborhood of Sushant Golf City, our signature 6BHK+ Luxury Villa is the ultimate destination for those who refuse to settle for cramped hotel rooms. Whether you are in the city for a grand wedding, a family reunion, or a premium corporate offsite, we provide the space and sophistication you need.
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-muted-foreground leading-relaxed" data-testid="text-description">
+                        {property.description}
+                      </p>
+                    )}
                   </div>
+
+                  {isGolfCityVilla && (
+                    <div className="mb-8" data-testid="section-property-highlights">
+                      <h2 className="font-serif text-lg font-semibold text-foreground mb-4">Property Highlights</h2>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <Card>
+                          <CardContent className="p-4 flex gap-3">
+                            <MapPinned className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Location</p>
+                              <p className="text-sm text-muted-foreground">Sushant Golf City, Lucknow (Near Shaheed Path)</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent className="p-4 flex gap-3">
+                            <Heart className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Best For</p>
+                              <p className="text-sm text-muted-foreground">Wedding guest accommodation, large family get-togethers, and corporate retreats.</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent className="p-4 flex gap-3">
+                            <Landmark className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Key Landmarks</p>
+                              <p className="text-sm text-muted-foreground">5 mins to The Centrum | 7 mins to Lulu Mall | 10 mins to Medanta Hospital.</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent className="p-4 flex gap-3">
+                            <Home className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Massive 6BHK+ Capacity</p>
+                              <p className="text-sm text-muted-foreground">Designed specifically for large groups, our villa allows up to 15+ guests to stay together under one roof, making it the perfect "Baraat" base or family headquarters.</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        <Card className="sm:col-span-2">
+                          <CardContent className="p-4 flex gap-3">
+                            <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Prime Wedding Proximity</p>
+                              <p className="text-sm text-muted-foreground">Located just a 5-minute drive from The Centrum and Viviana Greens, and minutes away from Imperial Grand Lawn and The Palms.</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                  )}
 
                   <div>
                     <h2 className="font-serif text-lg font-semibold text-foreground mb-4">Amenities</h2>
@@ -415,6 +513,29 @@ export default function PropertyDetail() {
                       })}
                     </div>
                   </div>
+
+                  {isGolfCityVilla && (
+                    <div className="mt-8" data-testid="section-faqs">
+                      <h2 className="font-serif text-lg font-semibold text-foreground mb-4">Frequently Asked Questions</h2>
+                      <div className="space-y-3">
+                        <FaqItem
+                          index={0}
+                          question="Is there a villa for 15+ guests near The Centrum Lucknow?"
+                          answer="Yes, the Pratap Living 6BHK+ Villa in Sushant Golf City is specifically designed for large groups and is located within 5 minutes of The Centrum and Viviana Greens."
+                        />
+                        <FaqItem
+                          index={1}
+                          question="Can we book the entire villa or individual rooms?"
+                          answer="We offer flexible occupancy. You can book the entire 6BHK+ Villa for total privacy or opt for individual luxury rooms depending on your group size."
+                        />
+                        <FaqItem
+                          index={2}
+                          question="How do I get the best rates for the Golf City Villa?"
+                          answer="For direct booking discounts and group packages, contact Pratap Adwait Singh at +917460985009 or book via pratapliving.com."
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

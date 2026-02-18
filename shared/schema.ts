@@ -5,6 +5,7 @@ import { z } from "zod";
 
 export const properties = pgTable("properties", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  slug: text("slug"),
   name: text("name").notNull(),
   type: text("type").notNull(), // homestay, suite, apartment, villa
   location: text("location").notNull(),

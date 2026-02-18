@@ -6,12 +6,12 @@ import type {
   ContactInquiry, InsertContactInquiry,
   User, InsertUser 
 } from "@shared/schema";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 
 export interface IStorage {
   // Properties
   getProperties(): Promise<Property[]>;
-  getProperty(id: string): Promise<Property | undefined>;
+  getProperty(idOrSlug: string): Promise<Property | undefined>;
   getFeaturedProperties(): Promise<Property[]>;
   createProperty(property: InsertProperty): Promise<Property>;
   updateProperty(id: string, property: Partial<InsertProperty>): Promise<Property | undefined>;
@@ -37,8 +37,10 @@ export class DatabaseStorage implements IStorage {
     return db.select().from(properties);
   }
 
-  async getProperty(id: string): Promise<Property | undefined> {
-    const result = await db.select().from(properties).where(eq(properties.id, id));
+  async getProperty(idOrSlug: string): Promise<Property | undefined> {
+    const result = await db.select().from(properties).where(
+      or(eq(properties.id, idOrSlug), eq(properties.slug, idOrSlug))
+    );
     return result[0];
   }
 
