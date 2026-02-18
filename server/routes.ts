@@ -26,8 +26,8 @@ export async function registerRoutes(
         return res.status(400).json({ message: "Only image files are allowed (JPEG, PNG, WebP, GIF, AVIF)" });
       }
 
-      const rawFolder = (req.body.folder as string) || "/properties";
-      const folder = rawFolder.startsWith("/properties") ? rawFolder : "/properties";
+      const rawFolder = (req.body.folder as string) || "/pratapliving-com";
+      const folder = rawFolder.startsWith("/pratapliving-com") ? rawFolder : "/pratapliving-com";
       const base64File = req.file.buffer.toString("base64");
 
       const result = await uploadToImageKit(base64File, req.file.originalname, folder);

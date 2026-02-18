@@ -33,17 +33,9 @@ import {
 } from "lucide-react";
 import { useState, useRef, useCallback } from "react";
 
-import propertyHomestay from "@/assets/images/property-homestay.png";
-import propertySuite from "@/assets/images/property-suite.png";
-import propertyApartment from "@/assets/images/property-apartment.png";
-import propertyVilla from "@/assets/images/property-villa.png";
+import { PROPERTY_TYPE_IMAGES, PROPERTY_HOMESTAY } from "@/lib/imagekit-assets";
 
-const fallbackImages: Record<string, string> = {
-  homestay: propertyHomestay,
-  suite: propertySuite,
-  apartment: propertyApartment,
-  villa: propertyVilla,
-};
+const fallbackImages = PROPERTY_TYPE_IMAGES;
 
 const amenityIcons: Record<string, typeof Wifi> = {
   wifi: Wifi,
@@ -243,7 +235,7 @@ export default function PropertyDetail() {
 
   if (allImages.length === 0 && property) {
     const firstType = property.type.split(",")[0]?.trim() || "homestay";
-    allImages.push(fallbackImages[firstType] || fallbackImages.homestay);
+    allImages.push(fallbackImages[firstType] || PROPERTY_HOMESTAY);
   }
 
   return (

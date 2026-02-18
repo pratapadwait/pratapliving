@@ -400,7 +400,7 @@ function PropertyFormDialog({
                 images={uploadedImages}
                 onChange={setUploadedImages}
                 maxImages={20}
-                folder={`/properties/${(form.watch("name") || "unnamed").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`}
+                folder={`/pratapliving-com/${(form.watch("name") || "unnamed").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`}
               />
               <div className="mt-3">
                 <label className="text-xs font-medium text-muted-foreground">Add image via external link</label>

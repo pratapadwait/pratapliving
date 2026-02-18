@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { MapPin, Phone, Mail, Instagram, Youtube } from "lucide-react";
-import logo from "@/assets/images/logo.png";
+import { LOGO_IMAGE } from "@/lib/imagekit-assets";
+const logo = `${LOGO_IMAGE}?tr=w-96,h-96,q-80,f-auto`;
 
 export function Footer() {
   return (

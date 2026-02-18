@@ -10,7 +10,7 @@ interface ImageUploadManagerProps {
   folder?: string;
 }
 
-export function ImageUploadManager({ images, onChange, maxImages = 20, folder = "/properties" }: ImageUploadManagerProps) {
+export function ImageUploadManager({ images, onChange, maxImages = 20, folder = "/pratapliving-com" }: ImageUploadManagerProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
