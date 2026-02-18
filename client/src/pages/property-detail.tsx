@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { OptimizedImage } from "@/components/optimized-image";
 import { useQuery } from "@tanstack/react-query";
 import { useRoute, Link } from "wouter";
@@ -25,16 +24,14 @@ import {
   Shield,
   ChevronLeft,
   ChevronRight,
-  X,
   Phone,
-  Expand,
   MapPinned,
   Heart,
   Landmark,
   Home,
   ChevronDown,
 } from "lucide-react";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 
 import propertyHomestay from "@/assets/images/property-homestay.png";
 import propertySuite from "@/assets/images/property-suite.png";
@@ -94,8 +91,6 @@ function useSwipe(onSwipeLeft: () => void, onSwipeRight: () => void) {
 
 function PhotoGallery({ images, propertyName }: { images: string[]; propertyName: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
@@ -136,41 +131,13 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
     }
   };
 
-  const openLightbox = (index: number) => {
-    setLightboxIndex(index);
-    setLightboxOpen(true);
-  };
-
-  const lightboxPrev = () => {
-    const newIdx = lightboxIndex === 0 ? images.length - 1 : lightboxIndex - 1;
-    animateTransition(newIdx, setLightboxIndex);
-  };
-
-  const lightboxNext = () => {
-    const newIdx = lightboxIndex === images.length - 1 ? 0 : lightboxIndex + 1;
-    animateTransition(newIdx, setLightboxIndex);
-  };
-
   const mainSwipe = useSwipe(goToNext, goToPrev);
-  const lightboxSwipe = useSwipe(lightboxNext, lightboxPrev);
-
-  useEffect(() => {
-    if (!lightboxOpen) return;
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") lightboxPrev();
-      else if (e.key === "ArrowRight") lightboxNext();
-      else if (e.key === "Escape") setLightboxOpen(false);
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [lightboxOpen, lightboxIndex]);
 
   return (
     <>
       <div className="relative">
         <div
-          className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-md cursor-pointer relative"
-          onClick={() => openLightbox(currentIndex)}
+          className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-md relative"
           {...mainSwipe}
           data-testid="gallery-main-image"
         >
@@ -180,37 +147,12 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
             className={`w-full h-full transition-opacity duration-200 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
             loading="eager"
           />
-          <div className="absolute bottom-3 right-3">
-            <Button size="icon" variant="secondary" className="rounded-full opacity-80" data-testid="button-expand-gallery">
-              <Expand className="h-4 w-4" />
-            </Button>
-          </div>
         </div>
 
         {images.length > 1 && (
-          <>
-            <Button
-              size="icon"
-              variant="secondary"
-              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full opacity-80"
-              onClick={(e) => { e.stopPropagation(); goToPrev(); }}
-              data-testid="button-gallery-prev"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            <Button
-              size="icon"
-              variant="secondary"
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full opacity-80"
-              onClick={(e) => { e.stopPropagation(); goToNext(); }}
-              data-testid="button-gallery-next"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/50 text-white text-xs px-3 py-1 rounded-full">
-              {currentIndex + 1} / {images.length}
-            </div>
-          </>
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/50 text-white text-xs px-3 py-1 rounded-full">
+            {currentIndex + 1} / {images.length}
+          </div>
         )}
       </div>
 
@@ -238,56 +180,6 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
         </div>
       )}
 
-      <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-0 bg-black/95">
-          <div
-            className="relative flex items-center justify-center h-[90vh]"
-            {...lightboxSwipe}
-          >
-            <Button
-              size="icon"
-              variant="ghost"
-              className="absolute top-2 right-2 z-10 text-white"
-              onClick={() => setLightboxOpen(false)}
-              data-testid="button-lightbox-close"
-            >
-              <X className="h-5 w-5" />
-            </Button>
-
-            <img
-              src={images[lightboxIndex]}
-              alt={`${propertyName} - Photo ${lightboxIndex + 1}`}
-              className={`max-w-full max-h-full object-contain transition-opacity duration-200 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
-            />
-
-            {images.length > 1 && (
-              <>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="absolute left-2 top-1/2 -translate-y-1/2 text-white rounded-full"
-                  onClick={lightboxPrev}
-                  data-testid="button-lightbox-prev"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </Button>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-white rounded-full"
-                  onClick={lightboxNext}
-                  data-testid="button-lightbox-next"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </Button>
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">
-                  {lightboxIndex + 1} / {images.length}
-                </div>
-              </>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
