@@ -9,6 +9,26 @@ interface OptimizedImageProps {
   "data-testid"?: string;
 }
 
+function isImageKitUrl(url: string): boolean {
+  return url.includes("ik.imagekit.io");
+}
+
+function getImageKitTransformed(url: string, width: number, quality: number = 80): string {
+  if (!isImageKitUrl(url)) return url;
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}tr=w-${width},q-${quality},f-auto`;
+}
+
+function generateSrcSet(url: string): string | undefined {
+  if (!isImageKitUrl(url)) return undefined;
+  const widths = [400, 640, 768, 1024, 1280, 1920];
+  return widths
+    .map((w) => `${getImageKitTransformed(url, w)} ${w}w`)
+    .join(", ");
+}
+
+const DEFAULT_SIZES = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
+
 export function OptimizedImage({
   src,
   alt,
@@ -44,6 +64,9 @@ export function OptimizedImage({
     return () => observer.disconnect();
   }, [loading]);
 
+  const srcSet = generateSrcSet(src);
+  const optimizedSrc = isImageKitUrl(src) ? getImageKitTransformed(src, 800) : src;
+
   return (
     <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
       <div
@@ -57,9 +80,10 @@ export function OptimizedImage({
 
       {isInView && (
         <img
-          src={src}
+          src={optimizedSrc}
+          srcSet={srcSet}
+          sizes={sizes || DEFAULT_SIZES}
           alt={alt}
-          sizes={sizes}
           decoding="async"
           onLoad={() => setIsLoaded(true)}
           className={`w-full h-full object-cover transition-opacity duration-500 ${

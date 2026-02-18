@@ -146,6 +146,7 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
             alt={`${propertyName} - Photo ${currentIndex + 1}`}
             className={`w-full h-full transition-opacity duration-200 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
             loading="eager"
+            sizes="(max-width: 1024px) 100vw, 66vw"
           />
         </div>
 
@@ -174,6 +175,7 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
                 src={img}
                 alt={`${propertyName} - Thumbnail ${i + 1}`}
                 className="w-full h-full"
+                sizes="80px"
               />
             </button>
           ))}

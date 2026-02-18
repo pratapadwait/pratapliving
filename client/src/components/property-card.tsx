@@ -45,6 +45,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
             src={imageUrl}
             alt={property.name}
             className="w-full h-full"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             data-testid={`img-property-${property.id}`}
           />
           <div className="absolute inset-0 pointer-events-none" />
