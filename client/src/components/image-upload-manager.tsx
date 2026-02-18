@@ -7,9 +7,10 @@ interface ImageUploadManagerProps {
   images: string[];
   onChange: (images: string[]) => void;
   maxImages?: number;
+  folder?: string;
 }
 
-export function ImageUploadManager({ images, onChange, maxImages = 20 }: ImageUploadManagerProps) {
+export function ImageUploadManager({ images, onChange, maxImages = 20, folder = "/properties" }: ImageUploadManagerProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
@@ -20,32 +21,27 @@ export function ImageUploadManager({ images, onChange, maxImages = 20 }: ImageUp
 
   const uploadFile = useCallback(async (file: File): Promise<string | null> => {
     try {
-      const res = await fetch("/api/uploads/request-url", {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", folder);
+
+      const res = await fetch("/api/imagekit/upload", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: file.name,
-          size: file.size,
-          contentType: file.type,
-        }),
+        body: formData,
       });
 
-      if (!res.ok) throw new Error("Failed to get upload URL");
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || "Upload failed");
+      }
 
-      const { uploadURL, objectPath } = await res.json();
-
-      await fetch(uploadURL, {
-        method: "PUT",
-        body: file,
-        headers: { "Content-Type": file.type },
-      });
-
-      return objectPath;
+      const { url } = await res.json();
+      return url;
     } catch (err) {
       console.error("Upload error:", err);
       return null;
     }
-  }, []);
+  }, [folder]);
 
   const handleFiles = useCallback(async (files: FileList | File[]) => {
     const fileArray = Array.from(files).filter(f => f.type.startsWith("image/"));
@@ -65,22 +61,22 @@ export function ImageUploadManager({ images, onChange, maxImages = 20 }: ImageUp
     setIsUploading(true);
     setUploadProgress(0);
 
-    const newPaths: string[] = [];
+    const newUrls: string[] = [];
     for (let i = 0; i < filesToUpload.length; i++) {
       setUploadProgress(Math.round(((i) / filesToUpload.length) * 100));
-      const path = await uploadFile(filesToUpload[i]);
-      if (path) newPaths.push(path);
+      const url = await uploadFile(filesToUpload[i]);
+      if (url) newUrls.push(url);
     }
 
     setUploadProgress(100);
     setIsUploading(false);
 
-    if (newPaths.length > 0) {
-      onChange([...images, ...newPaths]);
-      toast({ title: `${newPaths.length} image${newPaths.length > 1 ? "s" : ""} uploaded` });
+    if (newUrls.length > 0) {
+      onChange([...images, ...newUrls]);
+      toast({ title: `${newUrls.length} image${newUrls.length > 1 ? "s" : ""} uploaded` });
     }
 
-    if (newPaths.length < filesToUpload.length) {
+    if (newUrls.length < filesToUpload.length) {
       toast({ title: "Some images failed to upload", variant: "destructive" });
     }
   }, [images, onChange, maxImages, uploadFile, toast]);
@@ -167,7 +163,7 @@ export function ImageUploadManager({ images, onChange, maxImages = 20 }: ImageUp
         {isUploading ? (
           <div className="flex flex-col items-center gap-2">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">Uploading... {uploadProgress}%</p>
+            <p className="text-sm text-muted-foreground">Uploading to ImageKit... {uploadProgress}%</p>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2">

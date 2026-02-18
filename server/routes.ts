@@ -4,6 +4,10 @@ import { storage } from "./storage";
 import { insertPropertySchema, insertPartnerInquirySchema, insertContactInquirySchema } from "@shared/schema";
 import { fromError } from "zod-validation-error";
 import { registerObjectStorageRoutes } from "./replit_integrations/object_storage";
+import multer from "multer";
+import { uploadToImageKit, getAuthParams } from "./imagekit";
+
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
 export async function registerRoutes(
   httpServer: Server,
@@ -11,7 +15,44 @@ export async function registerRoutes(
 ): Promise<Server> {
   registerObjectStorageRoutes(app);
 
-  // Get all properties
+  app.post("/api/imagekit/upload", upload.single("file"), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file provided" });
+      }
+
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
+      if (!allowedTypes.includes(req.file.mimetype)) {
+        return res.status(400).json({ message: "Only image files are allowed (JPEG, PNG, WebP, GIF, AVIF)" });
+      }
+
+      const rawFolder = (req.body.folder as string) || "/properties";
+      const folder = rawFolder.startsWith("/properties") ? rawFolder : "/properties";
+      const base64File = req.file.buffer.toString("base64");
+
+      const result = await uploadToImageKit(base64File, req.file.originalname, folder);
+
+      res.json({
+        url: result.url,
+        fileId: result.fileId,
+        filePath: result.filePath,
+      });
+    } catch (error: any) {
+      console.error("ImageKit upload error:", error);
+      res.status(500).json({ message: error.message || "Failed to upload image" });
+    }
+  });
+
+  app.get("/api/imagekit/auth", (_req, res) => {
+    try {
+      const authParams = getAuthParams();
+      res.json(authParams);
+    } catch (error: any) {
+      console.error("ImageKit auth error:", error);
+      res.status(500).json({ message: "Failed to generate auth params" });
+    }
+  });
+
   app.get("/api/properties", async (req, res) => {
     try {
       const properties = await storage.getProperties();
@@ -22,7 +63,6 @@ export async function registerRoutes(
     }
   });
 
-  // Get single property
   app.get("/api/properties/:id", async (req, res) => {
     try {
       const property = await storage.getProperty(req.params.id);
@@ -36,7 +76,6 @@ export async function registerRoutes(
     }
   });
 
-  // Create property
   app.post("/api/properties", async (req, res) => {
     try {
       const parsed = insertPropertySchema.safeParse(req.body);
@@ -52,7 +91,6 @@ export async function registerRoutes(
     }
   });
 
-  // Update property
   app.put("/api/properties/:id", async (req, res) => {
     try {
       const parsed = insertPropertySchema.partial().safeParse(req.body);
@@ -71,7 +109,6 @@ export async function registerRoutes(
     }
   });
 
-  // Delete property
   app.delete("/api/properties/:id", async (req, res) => {
     try {
       const deleted = await storage.deleteProperty(req.params.id);
@@ -85,7 +122,6 @@ export async function registerRoutes(
     }
   });
 
-  // Submit partner inquiry
   app.post("/api/partner-inquiries", async (req, res) => {
     try {
       const parsed = insertPartnerInquirySchema.safeParse(req.body);
@@ -102,7 +138,6 @@ export async function registerRoutes(
     }
   });
 
-  // Submit contact inquiry
   app.post("/api/contact-inquiries", async (req, res) => {
     try {
       const parsed = insertContactInquirySchema.safeParse(req.body);
