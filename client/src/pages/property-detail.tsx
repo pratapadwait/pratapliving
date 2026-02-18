@@ -31,7 +31,7 @@ import {
   Home,
   ChevronDown,
 } from "lucide-react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 import { PROPERTY_TYPE_IMAGES, PROPERTY_HOMESTAY } from "@/lib/imagekit-assets";
 
@@ -81,38 +81,45 @@ function useSwipe(onSwipeLeft: () => void, onSwipeRight: () => void) {
   return { onTouchStart, onTouchEnd };
 }
 
+function getImageKitSrc(url: string, width: number, quality: number = 80): string {
+  if (!url.includes("ik.imagekit.io")) return url;
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}tr=w-${width},q-${quality},f-auto`;
+}
+
 function PhotoGallery({ images, propertyName }: { images: string[]; propertyName: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [displayIndex, setDisplayIndex] = useState(0);
+  const [nextLoaded, setNextLoaded] = useState(false);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
   if (images.length === 0) return null;
 
-  const animateTransition = (newIndex: number, setter: (i: number) => void) => {
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setter(newIndex);
-      setIsTransitioning(false);
-    }, 150);
-  };
+  useEffect(() => {
+    images.forEach((img) => {
+      const preload = new Image();
+      preload.src = getImageKitSrc(img, 1280);
+    });
+  }, [images]);
 
-  const goTo = (index: number) => {
-    if (index === currentIndex) return;
-    animateTransition(index, setCurrentIndex);
-    scrollThumbnailIntoView(index);
-  };
+  useEffect(() => {
+    if (currentIndex === displayIndex) return;
+    const preload = new Image();
+    preload.src = getImageKitSrc(images[currentIndex], 1280);
+    preload.onload = () => {
+      setNextLoaded(true);
+    };
+    if (preload.complete) {
+      setNextLoaded(true);
+    }
+  }, [currentIndex, displayIndex, images]);
 
-  const goToPrev = () => {
-    const newIdx = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
-    animateTransition(newIdx, setCurrentIndex);
-    scrollThumbnailIntoView(newIdx);
-  };
-
-  const goToNext = () => {
-    const newIdx = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
-    animateTransition(newIdx, setCurrentIndex);
-    scrollThumbnailIntoView(newIdx);
-  };
+  useEffect(() => {
+    if (nextLoaded && currentIndex !== displayIndex) {
+      setDisplayIndex(currentIndex);
+      setNextLoaded(false);
+    }
+  }, [nextLoaded, currentIndex, displayIndex]);
 
   const scrollThumbnailIntoView = (index: number) => {
     if (thumbnailContainerRef.current) {
@@ -123,22 +130,41 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
     }
   };
 
+  const goTo = (index: number) => {
+    if (index === currentIndex) return;
+    setCurrentIndex(index);
+    scrollThumbnailIntoView(index);
+  };
+
+  const goToPrev = () => {
+    const newIdx = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIdx);
+    scrollThumbnailIntoView(newIdx);
+  };
+
+  const goToNext = () => {
+    const newIdx = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+    setCurrentIndex(newIdx);
+    scrollThumbnailIntoView(newIdx);
+  };
+
   const mainSwipe = useSwipe(goToNext, goToPrev);
+
+  const displaySrc = getImageKitSrc(images[displayIndex], 1280);
 
   return (
     <>
       <div className="relative">
         <div
-          className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-md relative"
+          className="aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-md relative bg-muted"
           {...mainSwipe}
           data-testid="gallery-main-image"
         >
-          <OptimizedImage
-            src={images[currentIndex]}
-            alt={`${propertyName} - Photo ${currentIndex + 1}`}
-            className={`w-full h-full transition-opacity duration-200 ${isTransitioning ? "opacity-0" : "opacity-100"}`}
-            loading="eager"
-            sizes="(max-width: 1024px) 100vw, 66vw"
+          <img
+            src={displaySrc}
+            alt={`${propertyName} - Photo ${displayIndex + 1}`}
+            className="w-full h-full object-cover"
+            decoding="async"
           />
         </div>
 
@@ -163,17 +189,17 @@ function PhotoGallery({ images, propertyName }: { images: string[]; propertyName
               }`}
               data-testid={`button-thumbnail-${i}`}
             >
-              <OptimizedImage
-                src={img}
+              <img
+                src={getImageKitSrc(img, 160)}
                 alt={`${propertyName} - Thumbnail ${i + 1}`}
-                className="w-full h-full"
-                sizes="80px"
+                className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </button>
           ))}
         </div>
       )}
-
     </>
   );
 }
