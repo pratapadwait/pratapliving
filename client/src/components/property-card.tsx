@@ -26,7 +26,8 @@ function getPropertyImage(property: Property): string {
     const first = property.images.find(img => isValid(img));
     if (first) return first;
   }
-  return fallbackImages[property.type] || propertyHomestay;
+  const firstType = property.type.split(",")[0]?.trim() || "homestay";
+  return fallbackImages[firstType] || propertyHomestay;
 }
 
 interface PropertyCardProps {
@@ -52,12 +53,13 @@ export function PropertyCard({ property }: PropertyCardProps) {
               Featured
             </Badge>
           )}
-          <Badge
-            variant="secondary"
-            className="absolute top-3 right-3 capitalize z-10"
-          >
-            {property.type}
-          </Badge>
+          <div className="absolute top-3 right-3 flex flex-wrap gap-1 z-10">
+            {property.type.split(",").map(t => t.trim()).filter(Boolean).map((t) => (
+              <Badge key={t} variant="secondary" className="capitalize">
+                {t}
+              </Badge>
+            ))}
+          </div>
         </div>
         <CardContent className="p-5">
           <div className="flex items-start justify-between gap-2 mb-2">

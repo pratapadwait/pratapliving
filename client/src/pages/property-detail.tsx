@@ -348,7 +348,8 @@ export default function PropertyDetail() {
     : [];
 
   if (allImages.length === 0 && property) {
-    allImages.push(fallbackImages[property.type] || fallbackImages.homestay);
+    const firstType = property.type.split(",")[0]?.trim() || "homestay";
+    allImages.push(fallbackImages[firstType] || fallbackImages.homestay);
   }
 
   return (
@@ -394,9 +395,11 @@ export default function PropertyDetail() {
 
                 <div className="mt-6">
                   <div className="flex flex-wrap items-center gap-2 mb-3">
-                    <Badge variant="secondary" className="capitalize" data-testid="badge-property-type">
-                      {property.type}
-                    </Badge>
+                    {property.type.split(",").map(t => t.trim()).filter(Boolean).map((t) => (
+                      <Badge key={t} variant="secondary" className="capitalize" data-testid={`badge-property-type-${t}`}>
+                        {t}
+                      </Badge>
+                    ))}
                     {property.featured && (
                       <Badge data-testid="badge-featured">Featured</Badge>
                     )}
@@ -563,7 +566,7 @@ export default function PropertyDetail() {
                       <div className="space-y-3 mb-5 text-sm">
                         <div className="flex justify-between py-2 border-b">
                           <span className="text-muted-foreground">Property type</span>
-                          <span className="capitalize font-medium">{property.type}</span>
+                          <span className="capitalize font-medium">{property.type.split(",").map(t => t.trim()).filter(Boolean).join(", ")}</span>
                         </div>
                         <div className="flex justify-between py-2 border-b">
                           <span className="text-muted-foreground">Bedrooms</span>

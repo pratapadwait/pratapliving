@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -17,7 +16,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { insertPropertySchema, type InsertProperty, type Property } from "@shared/schema";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Plus, Pencil, Trash2, Bed, Bath, Users, ImagePlus } from "lucide-react";
+import { Plus, Pencil, Trash2, Bed, Bath, Users, ImagePlus, Link2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { z } from "zod";
@@ -40,9 +39,14 @@ const AMENITY_OPTIONS = [
   "Body soap",
 ] as const;
 
+const PROPERTY_TYPES = ["homestay", "suite", "apartment", "villa"] as const;
+
 const propertyFormSchema = insertPropertySchema.extend({
+  type: z.array(z.string()).min(1, "Select at least one property type"),
   amenities: z.array(z.string()).min(1, "Select at least one amenity"),
-}).omit({ imageUrl: true, images: true });
+}).omit({ imageUrl: true, images: true, type: true }).extend({
+  type: z.array(z.string()).min(1, "Select at least one property type"),
+});
 
 type PropertyFormValues = z.infer<typeof propertyFormSchema>;
 
@@ -81,9 +85,17 @@ function PropertyFormDialog({
     setUploadedImages(getInitialImages());
   }, [property, open]);
 
+  const [externalImageUrl, setExternalImageUrl] = useState("");
+
+  const parseTypes = (type: string | string[] | undefined): string[] => {
+    if (!type) return [];
+    if (Array.isArray(type)) return type;
+    return type.split(",").map(t => t.trim()).filter(Boolean);
+  };
+
   const getDefaultValues = (): PropertyFormValues => ({
     name: property?.name ?? "",
-    type: property?.type ?? "homestay",
+    type: parseTypes(property?.type),
     location: property?.location ?? "",
     description: property?.description ?? "",
     price: property?.price ?? 0,
@@ -143,6 +155,7 @@ function PropertyFormDialog({
 
     const payload: InsertProperty = {
       ...data,
+      type: (data.type as string[]).join(","),
       amenities: data.amenities,
       imageUrl: uploadedImages[0],
       images: uploadedImages.slice(1),
@@ -181,45 +194,60 @@ function PropertyFormDialog({
               )}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Property Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-property-type">
-                          <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="homestay">Homestay</SelectItem>
-                        <SelectItem value="suite">Suite</SelectItem>
-                        <SelectItem value="apartment">Apartment</SelectItem>
-                        <SelectItem value="villa">Villa</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name="type"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Property Type</FormLabel>
+                  <div className="flex flex-wrap gap-4 mt-1">
+                    {PROPERTY_TYPES.map((pType) => (
+                      <FormField
+                        key={pType}
+                        control={form.control}
+                        name="type"
+                        render={({ field }) => (
+                          <FormItem className="flex items-center gap-2 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={(field.value as string[])?.includes(pType)}
+                                onCheckedChange={(checked) => {
+                                  const current = (field.value as string[]) || [];
+                                  if (checked) {
+                                    field.onChange([...current, pType]);
+                                  } else {
+                                    field.onChange(current.filter((v: string) => v !== pType));
+                                  }
+                                }}
+                                data-testid={`checkbox-type-${pType}`}
+                              />
+                            </FormControl>
+                            <FormLabel className="text-sm font-normal !mt-0 cursor-pointer capitalize">
+                              {pType}
+                            </FormLabel>
+                          </FormItem>
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Location</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. Hazratganj, Lucknow" {...field} data-testid="input-property-location" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Location</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. Hazratganj, Lucknow" {...field} data-testid="input-property-location" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
@@ -366,13 +394,46 @@ function PropertyFormDialog({
             <div>
               <label className="text-sm font-medium leading-none">Property Photos</label>
               <p className="text-xs text-muted-foreground mt-1 mb-2">
-                Upload images for this property. The first image will be the main photo shown on listing cards.
+                Upload images or add external image links. The first image will be the main photo shown on listing cards.
               </p>
               <ImageUploadManager
                 images={uploadedImages}
                 onChange={setUploadedImages}
                 maxImages={20}
               />
+              <div className="mt-3">
+                <label className="text-xs font-medium text-muted-foreground">Add image via external link</label>
+                <div className="flex gap-2 mt-1">
+                  <Input
+                    placeholder="https://ik.imagekit.io/..."
+                    value={externalImageUrl}
+                    onChange={(e) => setExternalImageUrl(e.target.value)}
+                    data-testid="input-external-image-url"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      const url = externalImageUrl.trim();
+                      if (!url) return;
+                      if (!url.startsWith("http")) {
+                        toast({ title: "Please enter a valid URL starting with http", variant: "destructive" });
+                        return;
+                      }
+                      if (uploadedImages.includes(url)) {
+                        toast({ title: "This image is already added", variant: "destructive" });
+                        return;
+                      }
+                      setUploadedImages([...uploadedImages, url]);
+                      setExternalImageUrl("");
+                    }}
+                    data-testid="button-add-external-image"
+                  >
+                    <Link2 className="h-4 w-4 mr-1" />
+                    Add
+                  </Button>
+                </div>
+              </div>
             </div>
 
             <FormField
@@ -543,9 +604,13 @@ export default function AdminProperties() {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Badge variant="secondary">
-                              {typeLabels[property.type] || property.type}
-                            </Badge>
+                            <div className="flex flex-wrap gap-1">
+                              {property.type.split(",").map(t => t.trim()).filter(Boolean).map((t) => (
+                                <Badge key={t} variant="secondary">
+                                  {typeLabels[t] || t}
+                                </Badge>
+                              ))}
+                            </div>
                           </TableCell>
                           <TableCell className="text-sm text-muted-foreground">{property.location}</TableCell>
                           <TableCell>
@@ -597,9 +662,13 @@ export default function AdminProperties() {
                       <div className="p-4">
                         <div className="flex items-start justify-between gap-2 mb-2">
                           <h3 className="font-semibold text-sm">{property.name}</h3>
-                          <Badge variant="secondary" className="text-xs shrink-0">
-                            {typeLabels[property.type] || property.type}
-                          </Badge>
+                          <div className="flex flex-wrap gap-1 shrink-0">
+                            {property.type.split(",").map(t => t.trim()).filter(Boolean).map((t) => (
+                              <Badge key={t} variant="secondary" className="text-xs">
+                                {typeLabels[t] || t}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                         <p className="text-muted-foreground text-xs mb-2">{property.location}</p>
                         <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">

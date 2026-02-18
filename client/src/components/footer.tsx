@@ -50,6 +50,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/about">
+                  <span className="text-muted-foreground hover:text-primary transition-colors text-sm cursor-pointer" data-testid="link-footer-about">
+                    About Us
+                  </span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/partner">
                   <span className="text-muted-foreground hover:text-primary transition-colors text-sm cursor-pointer" data-testid="link-footer-partner">
                     Partner With Us

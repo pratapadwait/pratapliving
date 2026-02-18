@@ -36,7 +36,8 @@ export default function Properties() {
       const matchesSearch = property.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         property.location.toLowerCase().includes(searchQuery.toLowerCase());
       
-      const matchesType = selectedType === "all" || property.type === selectedType;
+      const types = property.type.split(",").map(t => t.trim()).filter(Boolean);
+      const matchesType = selectedType === "all" || types.includes(selectedType);
       
       let matchesPrice = true;
       if (priceRange === "budget") {
