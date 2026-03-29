@@ -21,6 +21,7 @@ export function Navigation() {
   const navLinks = [
     { href: "/properties", label: "Properties" },
     { href: "/about", label: "About Us" },
+    { href: "/blog", label: "Blog" },
     { href: "/partner", label: "Partner With Us" },
     { href: "/contact", label: "Contact" },
   ];

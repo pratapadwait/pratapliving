@@ -12,6 +12,8 @@ import Contact from "@/pages/contact";
 import AdminProperties from "@/pages/admin-properties";
 import PropertyDetail from "@/pages/property-detail";
 import About from "@/pages/about";
+import Blog from "@/pages/blog";
+import BlogBestHotelsGomtiNagar from "@/pages/blog-best-hotels-gomti-nagar";
 
 function RedirectTo({ to }: { to: string }) {
   const [, navigate] = useLocation();
@@ -37,6 +39,8 @@ function Router() {
       </Route>
       <Route path="/properties/:id" component={PropertyDetail} />
       <Route path="/about" component={About} />
+      <Route path="/blog" component={Blog} />
+      <Route path="/blog/best-hotels-gomti-nagar-lucknow" component={BlogBestHotelsGomtiNagar} />
       <Route path="/partner" component={Partner} />
       <Route path="/contact" component={Contact} />
       <Route path="/admin/properties" component={AdminProperties} />
