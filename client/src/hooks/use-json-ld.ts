@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useJsonLd(schema: Record<string, unknown>) {
+export function useJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
   useEffect(() => {
     const script = document.createElement("script");
     script.type = "application/ld+json";

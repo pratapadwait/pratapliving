@@ -9,118 +9,69 @@ import { CTASection } from "@/components/cta-section";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useJsonLd } from "@/hooks/use-json-ld";
 
-const homepageSchema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "LodgingBusiness",
-      "@id": "https://pratapliving.com/#business",
+const homepageSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Hotel",
+    "@id": "https://www.pratapliving.com/#location-omaxe",
+    "name": "Pratap Living | Luxe Studio Stays - Omaxe Hazratganj",
+    "url": "https://www.pratapliving.com",
+    "description": "Experience the best hotel in Lucknow for privacy and style at Pratap Living. Our boutique designer rooms in Omaxe Hazratganj offer the premier choice for hotels in Gomti Nagar Lucknow, featuring couple friendly hotels Lucknow standards with luxury studio stays. Ideally located in Arjunganj, Gomti Nagar Extension, we provide flexible stay options including luxury stays on an hourly basis near Ekana Stadium.",
+    "telephone": "+917460985009",
+    "priceRange": "₹2200 - ₹4500",
+    "parentOrganization": {
+      "@type": "Organization",
       "name": "Pratap Living",
-      "alternateName": "Pratap Living Premium Stays",
-      "description": "Premium homestays, suites, apartments, and villas in Lucknow, India. Experience exceptional hospitality with Pratap Living — curated stays for discerning travellers.",
-      "url": "https://pratapliving.com",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://ik.imagekit.io/livincompany/pratapliving-com/site/logo.png",
-        "width": 200,
-        "height": 60
-      },
-      "image": "https://ik.imagekit.io/livincompany/pratapliving-com/site/hero-bg.jpg",
-      "telephone": "+91-XXXXXXXXXX",
-      "email": "stay@pratapliving.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Lucknow",
-        "addressRegion": "Uttar Pradesh",
-        "addressCountry": "IN"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "26.8467",
-        "longitude": "80.9462"
-      },
-      "areaServed": {
-        "@type": "City",
-        "name": "Lucknow"
-      },
-      "priceRange": "₹₹₹",
-      "starRating": {
-        "@type": "Rating",
-        "ratingValue": "5"
-      },
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Pratap Living Stays",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "LodgingBusiness",
-              "name": "Premium Homestays"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "LodgingBusiness",
-              "name": "Luxury Suites"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "LodgingBusiness",
-              "name": "Service Apartments"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "LodgingBusiness",
-              "name": "Private Villas"
-            }
-          }
-        ]
-      },
+      "url": "https://www.pratapliving.com",
       "sameAs": [
-        "https://www.instagram.com/pratapliving",
+        "https://www.instagram.com/pratapliving/",
+        "https://www.youtube.com/@pratapliving",
         "https://www.facebook.com/pratapliving"
       ]
     },
-    {
-      "@type": "WebSite",
-      "@id": "https://pratapliving.com/#website",
-      "url": "https://pratapliving.com",
-      "name": "Pratap Living",
-      "description": "Premium homestays, suites, apartments, and villas in Lucknow, India.",
-      "publisher": {
-        "@id": "https://pratapliving.com/#business"
-      },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://pratapliving.com/properties?search={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Omaxe Hazratganj, Arjunganj (Gomti Nagar Extension)",
+      "addressLocality": "Lucknow",
+      "addressRegion": "UP",
+      "postalCode": "226002",
+      "addressCountry": "IN"
     },
-    {
-      "@type": "WebPage",
-      "@id": "https://pratapliving.com/#webpage",
-      "url": "https://pratapliving.com",
-      "name": "Pratap Living | Premium Homestays, Suites & Villas in Lucknow",
-      "description": "Experience exceptional hospitality with Pratap Living. Discover premium homestays, suites, apartments, and villas in Lucknow. Book your perfect stay or partner with us.",
-      "isPartOf": {
-        "@id": "https://pratapliving.com/#website"
-      },
-      "about": {
-        "@id": "https://pratapliving.com/#business"
-      },
-      "inLanguage": "en-IN"
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "26.8118525",
+      "longitude": "80.9953619"
     }
-  ]
-};
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Hotel",
+    "@id": "https://www.pratapliving.com/#location-golfcity",
+    "name": "Pratap Living - The Villa and Homestay Golf City",
+    "url": "https://www.pratapliving.com",
+    "description": "Premium 6BHK private luxury villa and homestay in Sushant Golf City. Ideal for weddings, birthdays, get-togethers, families, parties, and group stays in Lucknow.",
+    "telephone": "+917460985009",
+    "priceRange": "₹15000 - ₹45000",
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "Pratap Living",
+      "url": "https://www.pratapliving.com",
+      "sameAs": [
+        "https://www.instagram.com/pratapliving/",
+        "https://www.youtube.com/@pratapliving",
+        "https://www.facebook.com/pratapliving"
+      ]
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Sushant Golf City",
+      "addressLocality": "Lucknow",
+      "addressRegion": "UP",
+      "postalCode": "226030",
+      "addressCountry": "IN"
+    }
+  }
+];
 
 export default function Home() {
   useDocumentTitle(
