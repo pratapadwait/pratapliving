@@ -8,6 +8,14 @@ import { CalendarDays, ArrowRight } from "lucide-react";
 
 const posts = [
   {
+    slug: "/blog/hourly-hotels-lucknow-unmarried-couples",
+    title: "Safe Hourly Hotels in Lucknow for Unmarried Couples",
+    excerpt:
+      "Finding safe, comfortable, and secure hourly hotels in Lucknow for unmarried couples should never feel stressful. Day use hotels in Lucknow now provide flexible, judgment-free stays that prioritize comfort and safety — without the cost of an overnight stay.",
+    date: "July 5, 2025",
+    category: "Stays Guide",
+  },
+  {
     slug: "/blog/best-hotels-gomti-nagar-lucknow",
     title: "The Ultimate Guide to the Best Hotels in Gomti Nagar Lucknow",
     excerpt:
