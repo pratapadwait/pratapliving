@@ -26,7 +26,7 @@ export default function BlogBestHotelsGomtiNagar() {
                 <span className="hover:text-primary cursor-pointer transition-colors" data-testid="link-breadcrumb-blog">Blog</span>
               </Link>
               <ChevronRight className="h-3 w-3 shrink-0" />
-              <span className="text-foreground/70 truncate" data-testid="text-breadcrumb-current">Hotels in Gomti Nagar</span>
+              <span className="text-foreground/70 truncate" data-testid="text-breadcrumb-current">Best Hotels in Gomti Nagar Lucknow</span>
             </nav>
 
             <Link href="/blog">
