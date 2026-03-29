@@ -1,4 +1,5 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
+import { useEffect } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -12,11 +13,28 @@ import AdminProperties from "@/pages/admin-properties";
 import PropertyDetail from "@/pages/property-detail";
 import About from "@/pages/about";
 
+function RedirectTo({ to }: { to: string }) {
+  const [, navigate] = useLocation();
+  useEffect(() => { navigate(to, { replace: true }); }, []);
+  return null;
+}
+
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/properties" component={Properties} />
+      <Route path="/villa-homestay-golf-city" component={PropertyDetail} />
+      <Route path="/luxe-studio-omaxe-hazratganj" component={PropertyDetail} />
+      <Route path="/properties/villa-homestay-golf-city">
+        <RedirectTo to="/villa-homestay-golf-city" />
+      </Route>
+      <Route path="/properties/luxe-studio-omaxe-hazratganj">
+        <RedirectTo to="/luxe-studio-omaxe-hazratganj" />
+      </Route>
+      <Route path="/properties/1a271a78-285d-4f70-9c34-647847097b32">
+        <RedirectTo to="/luxe-studio-omaxe-hazratganj" />
+      </Route>
       <Route path="/properties/:id" component={PropertyDetail} />
       <Route path="/about" component={About} />
       <Route path="/partner" component={Partner} />

@@ -263,7 +263,7 @@ const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
       "addressCountry": "IN"
     }
   },
-  "1a271a78-285d-4f70-9c34-647847097b32": {
+  "luxe-studio-omaxe-hazratganj": {
     "@context": "https://schema.org",
     "@type": "Hotel",
     "@id": "https://www.pratapliving.com/#location-omaxe",
@@ -300,8 +300,15 @@ const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
 };
 
 export default function PropertyDetail() {
-  const [, params] = useRoute("/properties/:id");
-  const propertyId = params?.id;
+  const [, propertiesParams] = useRoute("/properties/:id");
+  const [matchesVilla] = useRoute("/villa-homestay-golf-city");
+  const [matchesStudio] = useRoute("/luxe-studio-omaxe-hazratganj");
+
+  const propertyId = matchesVilla
+    ? "villa-homestay-golf-city"
+    : matchesStudio
+    ? "luxe-studio-omaxe-hazratganj"
+    : propertiesParams?.id;
 
   const { data: property, isLoading, error } = useQuery<Property>({
     queryKey: ["/api/properties", propertyId],

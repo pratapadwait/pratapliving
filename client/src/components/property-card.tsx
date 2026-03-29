@@ -10,6 +10,16 @@ import { PROPERTY_TYPE_IMAGES, PROPERTY_HOMESTAY } from "@/lib/imagekit-assets";
 
 const fallbackImages = PROPERTY_TYPE_IMAGES;
 
+const TOP_LEVEL_SLUGS: Record<string, string> = {
+  "villa-homestay-golf-city": "/villa-homestay-golf-city",
+  "luxe-studio-omaxe-hazratganj": "/luxe-studio-omaxe-hazratganj",
+};
+
+function getPropertyUrl(property: Property): string {
+  const slug = property.slug || property.id;
+  return TOP_LEVEL_SLUGS[slug] ?? `/properties/${slug}`;
+}
+
 function getPropertyImage(property: Property): string {
   const isValid = (url: string | null | undefined) =>
     url && (url.startsWith("/objects/") || url.startsWith("http"));
@@ -30,7 +40,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
   const imageUrl = getPropertyImage(property);
 
   return (
-    <Link href={`/properties/${property.slug || property.id}`}>
+    <Link href={getPropertyUrl(property)}>
       <Card className="overflow-hidden hover-elevate transition-all duration-300 group cursor-pointer" data-testid={`card-property-${property.id}`}>
         <div className="relative overflow-hidden aspect-[4/3]">
           <OptimizedImage
