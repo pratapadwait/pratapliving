@@ -12,7 +12,7 @@ const posts = [
     title: "Safe and Private Couple-Friendly Hotels in Lucknow",
     excerpt:
       "Finding safe hotels for unmarried couples in Lucknow that are judgment-free and high-quality shouldn't be stressful. At Pratap Living, we've built our brand on a \"Privacy-First\" philosophy — boutique luxury with privacy, discretion, and safety for every couple.",
-    date: "August 2, 2025",
+    date: "March 30, 2026",
     category: "Stays Guide",
   },
   {
@@ -20,7 +20,7 @@ const posts = [
     title: "Safe Hourly Hotels in Lucknow for Unmarried Couples",
     excerpt:
       "Finding safe, comfortable, and secure hourly hotels in Lucknow for unmarried couples should never feel stressful. Day use hotels in Lucknow now provide flexible, judgment-free stays that prioritize comfort and safety — without the cost of an overnight stay.",
-    date: "July 5, 2025",
+    date: "March 30, 2026",
     category: "Stays Guide",
   },
   {
@@ -28,7 +28,7 @@ const posts = [
     title: "The Ultimate Guide to the Best Hotels in Gomti Nagar Lucknow",
     excerpt:
       "Lucknow is famous for its stunning historical monuments, but it's also growing into a lively, modern city. In the heart of this growth is Lucknow Gomti Nagar. This vibrant district brings together major businesses, upscale shopping, and lively nightlife. For the modern luxury traveler, it offers an unmatched mix of convenience, culture, and high-end living.",
-    date: "June 10, 2025",
+    date: "March 30, 2026",
     category: "Travel Guide",
   },
 ];

@@ -38,7 +38,7 @@ export default function BlogHourlyHotelsLucknowUnmarriedCouples() {
 
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
               <span className="bg-primary/10 text-primary font-medium px-2 py-0.5 rounded-full" data-testid="text-article-category">Stays Guide</span>
-              <span data-testid="text-article-date">July 5, 2025</span>
+              <span data-testid="text-article-date">March 30, 2026</span>
             </div>
           </div>
 
