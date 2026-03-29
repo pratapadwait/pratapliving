@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 
-export function useJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
+type JsonLdSchema = Record<string, unknown> | Record<string, unknown>[];
+
+export function useJsonLd(schema: JsonLdSchema | null | undefined) {
   useEffect(() => {
+    if (!schema) return;
+
     const script = document.createElement("script");
     script.type = "application/ld+json";
     script.id = "json-ld-schema";

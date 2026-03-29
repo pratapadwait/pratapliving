@@ -18,7 +18,7 @@ const homepageSchema = [
     "url": "https://www.pratapliving.com",
     "description": "Experience the best hotel in Lucknow for privacy and style at Pratap Living. Our boutique designer rooms in Omaxe Hazratganj offer the premier choice for hotels in Gomti Nagar Lucknow, featuring couple friendly hotels Lucknow standards with luxury studio stays. Ideally located in Arjunganj, Gomti Nagar Extension, we provide flexible stay options including luxury stays on an hourly basis near Ekana Stadium.",
     "telephone": "+917460985009",
-    "priceRange": "₹2200 - ₹4500",
+    "priceRange": "₹2200 - ₹5000",
     "parentOrganization": {
       "@type": "Organization",
       "name": "Pratap Living",
