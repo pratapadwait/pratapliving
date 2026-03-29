@@ -15,6 +15,7 @@ import About from "@/pages/about";
 import Blog from "@/pages/blog";
 import BlogBestHotelsGomtiNagar from "@/pages/blog-best-hotels-gomti-nagar";
 import BlogHourlyHotelsLucknowUnmarriedCouples from "@/pages/blog-hourly-hotels-lucknow-unmarried-couples";
+import BlogCoupleFriendlyHotelsLucknow from "@/pages/blog-couple-friendly-hotels-lucknow";
 
 function RedirectTo({ to }: { to: string }) {
   const [, navigate] = useLocation();
@@ -43,6 +44,7 @@ function Router() {
       <Route path="/blog" component={Blog} />
       <Route path="/blog/best-hotels-gomti-nagar-lucknow" component={BlogBestHotelsGomtiNagar} />
       <Route path="/blog/hourly-hotels-lucknow-unmarried-couples" component={BlogHourlyHotelsLucknowUnmarriedCouples} />
+      <Route path="/blog/couple-friendly-hotels-lucknow-safe-private" component={BlogCoupleFriendlyHotelsLucknow} />
       <Route path="/partner" component={Partner} />
       <Route path="/contact" component={Contact} />
       <Route path="/admin/properties" component={AdminProperties} />

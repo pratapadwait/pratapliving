@@ -8,6 +8,14 @@ import { CalendarDays, ArrowRight } from "lucide-react";
 
 const posts = [
   {
+    slug: "/blog/couple-friendly-hotels-lucknow-safe-private",
+    title: "Safe and Private Couple-Friendly Hotels in Lucknow",
+    excerpt:
+      "Finding safe hotels for unmarried couples in Lucknow that are judgment-free and high-quality shouldn't be stressful. At Pratap Living, we've built our brand on a \"Privacy-First\" philosophy — boutique luxury with privacy, discretion, and safety for every couple.",
+    date: "August 2, 2025",
+    category: "Stays Guide",
+  },
+  {
     slug: "/blog/hourly-hotels-lucknow-unmarried-couples",
     title: "Safe Hourly Hotels in Lucknow for Unmarried Couples",
     excerpt:
