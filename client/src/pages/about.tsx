@@ -179,9 +179,9 @@ export default function About() {
               ))}
             </div>
 
-            <p className="font-medium text-sm text-foreground mb-3" data-testid="text-comparison-heading">
+            <h2 className="font-serif text-xl font-semibold text-foreground mb-3" data-testid="text-comparison-heading">
               At a Glance: Pratap Living vs. 5-Star Hotels
-            </p>
+            </h2>
             <div className="overflow-x-auto rounded-lg border" data-testid="table-comparison">
               <table className="w-full text-sm">
                 <thead>
