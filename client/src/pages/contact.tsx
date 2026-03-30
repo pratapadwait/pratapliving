@@ -1,7 +1,7 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Phone, Mail } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 
 export default function Contact() {
@@ -17,31 +17,15 @@ export default function Contact() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4" data-testid="text-contact-title">
-              Contact Us
+              Contact Pratap Living: Hotels in Lucknow &amp; Gomti Nagar
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Have questions about our properties or services? We're here to help. Reach out to us and we'll respond as soon as we can.
+              Whether you are comparing the best hotels in Lucknow for a business trip, looking for top-rated hotels in Gomti Nagar Lucknow, or seeking the exclusive comfort of a private villa at Golf City Lucknow, our team will guide you to the right accommodation.
             </p>
           </div>
 
           <div className="max-w-3xl mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-              <Card>
-                <CardContent className="flex gap-4 p-6">
-                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <MapPin className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1">Our Office</h3>
-                    <p className="text-muted-foreground text-sm" data-testid="text-contact-address">
-                      Omaxe Hazratganj, Sec-7, Amar Shaheed Path,
-                      Gomati Nagar Extension, Lucknow,
-                      Uttar Pradesh 226002
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
               <Card>
                 <CardContent className="flex gap-4 p-6">
                   <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
@@ -65,21 +49,6 @@ export default function Contact() {
                     <h3 className="font-semibold text-foreground mb-1">Email</h3>
                     <p className="text-muted-foreground text-sm" data-testid="text-contact-email">
                       hello@pratapliving.com
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="flex gap-4 p-6">
-                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <Clock className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1">Business Hours</h3>
-                    <p className="text-muted-foreground text-sm" data-testid="text-contact-hours">
-                      Monday - Saturday: 9:00 AM - 7:00 PM<br />
-                      Sunday: 10:00 AM - 5:00 PM
                     </p>
                   </div>
                 </CardContent>
