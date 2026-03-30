@@ -1,0 +1,74 @@
+<title>Pratap Living: Premium Hotels & Boutique Stays in Lucknow</title>
+<meta name="description" content="Discover Pratap Living's premium hotels in Lucknow. Enjoy privacy-first, couple-friendly boutique stays and luxury villas. Book your getaway today!">
+
+<article>
+  <h1>The Pratap Living Story: Premium Hotels in Lucknow</h1>
+  
+  <p>Skip the compromise between a private residence and a five-star hotel in Lucknow. Experience private boutique stays, from executive penthouses to spacious villas. We design each stay for comfort and peace of mind.</p>
+  
+  <a href="/book" class="cta-button">Book your luxury stay today</a>
+
+  <hr />
+
+  <h2>The Vision of Pratap Adwait Singh & Samiksha Singh: Redefining Premium Hotels in Lucknow</h2>
+  
+  <p>When looking for the best hotel in Lucknow, modern travelers often must choose between the comfort of a private home and the amenities of a luxury resort. At Pratap Living, our vision is to eliminate that compromise entirely.</p>
+
+  <h3>Privacy-First Legal Advantage</h3>
+  <p>At Pratap Living, we make your privacy a top priority. Clear, guest-friendly rules protect every stay. You can relax knowing your booking follows local laws. Your information stays safe.</p>
+
+  <p>Co-founder <strong>Pratap Adwait Singh</strong> uses his <em>Livin Company</em> experience to oversee build quality and interior design. Co-founder <strong>Samiksha Singh</strong> leads guest relations and privacy-first operations. Together, we have created spaces that feel both truly luxurious and wonderfully familiar.</p>
+
+  <h2>Experience the Comfort of Home with Hotel Luxury</h2>
+  
+  <h3>Couple Friendly Hotels Lucknow</h3>
+  <p>Experience true privacy and comfort at Pratap Living—your trusted choice for <strong>couple friendly hotels Lucknow</strong>. Our boutique stays offer a safe, cozy setting for couples to relax near Ekana Stadium and Phoenix Palassio.</p>
+
+  <h3>Exclusive Boutique Properties & Prime Locations</h3>
+  <p>Choose from our sprawling luxury villa in <strong>Sushant Golf City</strong> or our Executive Penthouse in <strong>Omaxe Hazratganj</strong>. Strategically located within 5 minutes of <strong>Lulu Mall</strong> and <strong>Medanta Hospital</strong>, we serve the Gomti Nagar Extension micro-market with ease.</p>
+
+  <h2>A Proven 5-Star Reputation</h2>
+  <p>Pratap Living is proud to maintain a <strong>4.9-star rating across over 100 verified reviews</strong> in just 90 days. View our high-velocity growth on our <a href="https://www.airbnb.co.in/users/profile/1470674723986469804">Verified Airbnb Profile</a>.</p>
+
+  <h2>At a Glance: Pratap Living vs. 5-Star Hotels</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Pratap Living</th>
+        <th>Typical 5-Star Hotel</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Privacy-First</strong></td>
+        <td>Legally compliant, private stays</td>
+        <td>Often shared amenities</td>
+      </tr>
+      <tr>
+        <td><strong>Couple Friendly</strong></td>
+        <td>Secure, discreet, and welcoming</td>
+        <td>Varies by property</td>
+      </tr>
+      <tr>
+        <td><strong>Location Proximity</strong></td>
+        <td>5 mins from Ekana & Lulu Mall</td>
+        <td>Standard city center</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Frequently Asked Questions</h2>
+  <dl>
+    <dt><strong>What makes Pratap Living different from traditional hotels?</strong></dt>
+    <dd>We bridge the gap between a private home and a luxury hotel, offering equipped kitchens and spaciousness alongside premium resort-style linens.</dd>
+    
+    <dt><strong>Are your properties suitable for weddings?</strong></dt>
+    <dd>Yes, our 6BHK+ luxury villa in Sushant Golf City fits large groups for wedding parties and corporate retreats.</dd>
+  </dl>
+
+  <footer>
+    <h2>Elevate your next stay with Pratap Living</h2>
+    <a href="/book" class="cta-button">Book your luxury stay today</a>
+  </footer>
+</article>
