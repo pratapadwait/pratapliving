@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useDocumentTitle } from "@/hooks/use-document-title";
-import { Phone, MapPin, Star, Heart, Building2, ChevronDown } from "lucide-react";
+import { Phone, MapPin, Star, Heart, Building2, Globe, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
 
@@ -149,17 +149,12 @@ export default function About() {
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
 
-          {/* H1 + subtitle + CTA */}
+          {/* H1 + subtitle */}
           <div className="mt-6 mb-10">
-            <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-3" data-testid="text-about-heading">
-              The Pratap Living Story: Premium Hotels in Lucknow
+            <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-2" data-testid="text-about-heading">
+              The Pratap Living Story: A Vision by Samiksha &amp; Pratap
             </h1>
-            <p className="text-muted-foreground leading-relaxed mb-5" data-testid="text-about-subtitle">
-              Skip the compromise between a private residence and a five star hotel in Lucknow. Experience private boutique stays, from executive penthouses to spacious villas. We design each stay for comfort and peace of mind.
-            </p>
-            <Link href="/properties">
-              <Button data-testid="button-about-book-cta">Book your luxury stay today</Button>
-            </Link>
+            <p className="text-muted-foreground" data-testid="text-about-subtitle">Boutique luxury stays in the heart of Lucknow</p>
           </div>
 
           {/* Vision section */}
@@ -170,12 +165,6 @@ export default function About() {
             <p className="text-muted-foreground leading-relaxed mb-4">
               When looking for the best hotel in Lucknow, modern travelers often must choose. They choose between the comfort of a private home and the amenities of a luxury resort. At Pratap Living, our vision is to eliminate that compromise entirely.
             </p>
-            <div className="border-l-4 border-primary pl-4 py-1 mb-4 bg-muted/30 rounded-r-md" data-testid="section-privacy-first">
-              <p className="font-medium text-sm text-foreground mb-1">Privacy-First Legal Advantage</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                At Pratap Living, we make your privacy a top priority. Clear, guest-friendly rules protect every stay. You can relax knowing your booking follows local laws. Your information stays safe.
-              </p>
-            </div>
             <p className="text-muted-foreground leading-relaxed">
               We created our brand from a shared passion to raise the standard of luxury places to stay. Co-founder Pratap Adwait Singh uses his Livin Company experience to oversee build quality and interior design. Co-founder Samiksha Singh leads guest relations and privacy-first operations. Together, we have created spaces that feel both truly luxurious and wonderfully familiar, redefining what it means to travel.
             </p>
@@ -259,14 +248,16 @@ export default function About() {
             </div>
           </section>
 
-          {/* Footer CTA */}
-          <section className="mb-10 text-center py-8 border rounded-lg bg-muted/20" data-testid="section-footer-cta">
-            <h2 className="font-serif text-xl font-semibold text-foreground mb-3">
-              Elevate your next stay with Pratap Living
-            </h2>
-            <Link href="/properties">
-              <Button data-testid="button-about-footer-cta">Book your luxury stay today</Button>
-            </Link>
+          {/* Privacy-First Legal Advantage */}
+          <section className="mb-10" data-testid="section-privacy-first">
+            <h2 className="font-serif text-xl font-semibold text-foreground mb-3">Privacy-First Legal Advantage</h2>
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  At Pratap Living, we make your privacy a top priority. Clear, guest-friendly rules protect every stay. You can relax knowing your booking follows local laws. Your information stays safe.
+                </p>
+              </CardContent>
+            </Card>
           </section>
 
           {/* Contact Us */}
@@ -283,6 +274,12 @@ export default function About() {
                     +91 7460985009
                   </a>
                   <span className="text-xs">(Call / WhatsApp)</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Globe className="h-4 w-4 text-primary shrink-0" />
+                  <a href="https://www.pratapliving.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" data-testid="link-about-website">
+                    www.pratapliving.com
+                  </a>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4 text-primary shrink-0" />
