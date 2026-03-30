@@ -149,7 +149,6 @@ export default function About() {
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
 
-          {/* H1 + subtitle */}
           <div className="mt-6 mb-10">
             <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-2" data-testid="text-about-heading">
               The Pratap Living Story: A Vision by Samiksha &amp; Pratap
@@ -157,7 +156,6 @@ export default function About() {
             <p className="text-muted-foreground" data-testid="text-about-subtitle">Boutique luxury stays in the heart of Lucknow</p>
           </div>
 
-          {/* Vision section */}
           <section className="mb-10" data-testid="section-vision">
             <h2 className="font-serif text-xl font-semibold text-foreground mb-3">
               The Vision of Pratap Adwait Singh &amp; Samiksha Singh: Redefining Premium Hotels in Lucknow
@@ -170,7 +168,6 @@ export default function About() {
             </p>
           </section>
 
-          {/* Experience the Comfort of Home with Hotel Luxury */}
           <section className="mb-10" data-testid="section-comfort-luxury">
             <h2 className="font-serif text-xl font-semibold text-foreground mb-4">
               Experience the Comfort of Home with Hotel Luxury
@@ -189,7 +186,6 @@ export default function About() {
               ))}
             </div>
 
-            {/* Comparison table */}
             <p className="font-medium text-sm text-foreground mb-3" data-testid="text-comparison-heading">
               At a Glance: Pratap Living vs. 5-Star Hotels
             </p>
@@ -215,7 +211,6 @@ export default function About() {
             </div>
           </section>
 
-          {/* Testimonials */}
           <section className="mb-10" data-testid="section-testimonials">
             <h2 className="font-serif text-xl font-semibold text-foreground mb-4">Loved by Our Guests</h2>
             <div className="space-y-4">
@@ -238,7 +233,6 @@ export default function About() {
             </div>
           </section>
 
-          {/* FAQ */}
           <section className="mb-10" data-testid="section-about-faqs">
             <h2 className="font-serif text-xl font-semibold text-foreground mb-4">Frequently Asked Questions</h2>
             <div className="space-y-3">
@@ -248,7 +242,6 @@ export default function About() {
             </div>
           </section>
 
-          {/* Privacy-First Legal Advantage */}
           <section className="mb-10" data-testid="section-privacy-first">
             <h2 className="font-serif text-xl font-semibold text-foreground mb-3">Privacy-First Legal Advantage</h2>
             <Card>
@@ -260,7 +253,6 @@ export default function About() {
             </Card>
           </section>
 
-          {/* Contact Us */}
           <section data-testid="section-about-contact">
             <h2 className="font-serif text-xl font-semibold text-foreground mb-4">Contact Us</h2>
             <Card>
