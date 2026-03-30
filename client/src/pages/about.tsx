@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useDocumentTitle } from "@/hooks/use-document-title";
-import { Phone, MapPin, Star, Heart, Building2, Globe, ChevronDown } from "lucide-react";
+import { Phone, MapPin, Star, Heart, Building2, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
 
@@ -82,21 +82,6 @@ export default function About() {
       pratap: "Boutique stays in Lucknow's top areas. Just 5 minutes from Ekana Stadium, Phoenix Palassio, Lulu Mall, and Gomti Nagar Extension.",
       hotel: "Central city locations, less flexible",
     },
-    {
-      feature: "Personalized Guest Relations",
-      pratap: "Direct contact with owner-curators",
-      hotel: "Standardized hotel staff",
-    },
-    {
-      feature: "Verified Ratings & Reviews",
-      pratap: "4.9-star rating, 100+ verified reviews",
-      hotel: "Varies across platforms",
-    },
-    {
-      feature: "Legal Clarity for Guests",
-      pratap: "Clear guest documentation & compliance",
-      hotel: "Standardized hotel policies",
-    },
   ];
 
   const testimonials = [
@@ -151,18 +136,26 @@ export default function About() {
 
           <div className="mt-6 mb-10">
             <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-2" data-testid="text-about-heading">
-              The Pratap Living Story: A Vision by Samiksha &amp; Pratap
+              The Pratap Living Story: Redefining Premium Hotels in Lucknow
             </h1>
             <p className="text-muted-foreground" data-testid="text-about-subtitle">Boutique luxury stays in the heart of Lucknow</p>
           </div>
 
           <section className="mb-10" data-testid="section-vision">
             <h2 className="font-serif text-xl font-semibold text-foreground mb-3">
-              The Vision of Pratap Adwait Singh &amp; Samiksha Singh: Redefining Premium Hotels in Lucknow
+              The Vision of Samiksha Singh &amp; Pratap Adwait Singh
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
               When looking for the best hotel in Lucknow, modern travelers often must choose. They choose between the comfort of a private home and the amenities of a luxury resort. At Pratap Living, our vision is to eliminate that compromise entirely.
             </p>
+            <Card className="mb-4">
+              <CardContent className="p-6">
+                <p className="font-medium text-sm text-foreground mb-1">Privacy-First Legal Advantage</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  At Pratap Living, we make your privacy a top priority. Clear, guest-friendly rules protect every stay. You can relax knowing your booking follows local laws. Your information stays safe.
+                </p>
+              </CardContent>
+            </Card>
             <p className="text-muted-foreground leading-relaxed">
               We created our brand from a shared passion to raise the standard of luxury places to stay. Co-founder Pratap Adwait Singh uses his Livin Company experience to oversee build quality and interior design. Co-founder Samiksha Singh leads guest relations and privacy-first operations. Together, we have created spaces that feel both truly luxurious and wonderfully familiar, redefining what it means to travel.
             </p>
@@ -242,17 +235,6 @@ export default function About() {
             </div>
           </section>
 
-          <section className="mb-10" data-testid="section-privacy-first">
-            <h2 className="font-serif text-xl font-semibold text-foreground mb-3">Privacy-First Legal Advantage</h2>
-            <Card>
-              <CardContent className="p-6">
-                <p className="text-muted-foreground leading-relaxed">
-                  At Pratap Living, we make your privacy a top priority. Clear, guest-friendly rules protect every stay. You can relax knowing your booking follows local laws. Your information stays safe.
-                </p>
-              </CardContent>
-            </Card>
-          </section>
-
           <section data-testid="section-about-contact">
             <h2 className="font-serif text-xl font-semibold text-foreground mb-4">Contact Us</h2>
             <Card>
@@ -266,12 +248,6 @@ export default function About() {
                     +91 7460985009
                   </a>
                   <span className="text-xs">(Call / WhatsApp)</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Globe className="h-4 w-4 text-primary shrink-0" />
-                  <a href="https://www.pratapliving.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" data-testid="link-about-website">
-                    www.pratapliving.com
-                  </a>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4 text-primary shrink-0" />
