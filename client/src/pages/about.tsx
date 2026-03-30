@@ -83,7 +83,7 @@ export default function About() {
         <div className="container mx-auto px-4 max-w-3xl">
           <div className="mt-6 mb-10">
             <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-2" data-testid="text-about-heading">
-              About Us: The Pratap Living Story
+              The Pratap Living Story: A Vision by Samiksha & Pratap
             </h1>
             <p className="text-muted-foreground" data-testid="text-about-subtitle">Boutique luxury stays in the heart of Lucknow</p>
           </div>

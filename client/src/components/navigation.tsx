@@ -20,7 +20,7 @@ export function Navigation() {
 
   const navLinks = [
     { href: "/properties", label: "Properties" },
-    { href: "/about", label: "About Us" },
+    { href: "/about", label: "The Story" },
     { href: "/blog", label: "Blog" },
     { href: "/partner", label: "Partner With Us" },
     { href: "/contact", label: "Contact" },
