@@ -399,7 +399,7 @@ export default function PropertyDetail() {
 
                   <h1 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-2" data-testid="text-property-name">
                     {isGolfCityVilla
-                      ? "Pratap Living | The Villa and Homestay - Golf City"
+                      ? "The Villa and Homestay - Golf City"
                       : propertyId === "luxe-studio-omaxe-hazratganj"
                       ? "Luxe Studio Apartments at Omaxe Hazratganj"
                       : property.name}
