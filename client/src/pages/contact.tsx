@@ -16,9 +16,7 @@ export default function Contact() {
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4" data-testid="text-contact-title">
-              Contact Pratap Living: Hotels in Lucknow &amp; Gomti Nagar
-            </h1>
+            <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4" data-testid="text-contact-title">Hotels in Lucknow & Gomti Nagar</h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Whether you are comparing the best hotels in Lucknow for a business trip, looking for top-rated hotels in Gomti Nagar Lucknow, or seeking the exclusive comfort of a private villa at Golf City Lucknow, our team will guide you to the right accommodation.
             </p>
