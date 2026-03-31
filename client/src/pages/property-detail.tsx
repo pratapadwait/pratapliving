@@ -321,6 +321,7 @@ export default function PropertyDetail() {
   });
 
   const isGolfCityVilla = propertyId === "villa-homestay-golf-city";
+  const isLuxeStudio = propertyId === "luxe-studio-omaxe-hazratganj";
   const seoOverride = propertyId ? SEO_OVERRIDES[propertyId] : undefined;
 
   useDocumentTitle(
@@ -442,6 +443,13 @@ export default function PropertyDetail() {
                           Welcome to a space where luxury meets the comfort of home. Located in the serene and elite neighborhood of Sushant Golf City, our signature 6BHK+ Luxury Villa is the ultimate destination for those who refuse to settle for cramped hotel rooms. Whether you are in the city for a grand wedding, a family reunion, or a premium corporate offsite, we provide the space and sophistication you need.
                         </p>
                       </div>
+                    ) : isLuxeStudio ? (
+                      <div data-testid="text-description">
+                        <h3 className="font-serif text-base font-semibold text-foreground mb-2">Luxury Studio Stay in Lucknow</h3>
+                        <p className="text-muted-foreground leading-relaxed">
+                          Discover the ultimate Luxe Studio Apartment at Omaxe Hazratganj. Perfect for up to two guests, this premium 1-bedroom suite offers unparalleled privacy, modern amenities, and comfort in the heart of the city.
+                        </p>
+                      </div>
                     ) : (
                       <p className="text-muted-foreground leading-relaxed" data-testid="text-description">
                         {property.description}
@@ -502,6 +510,50 @@ export default function PropertyDetail() {
                     </div>
                   )}
 
+                  {isLuxeStudio && (
+                    <div className="mb-8" data-testid="section-studio-highlights">
+                      <h2 className="font-serif text-lg font-semibold text-foreground mb-4">Property Highlights</h2>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <Card>
+                          <CardContent className="p-4 flex gap-3">
+                            <Heart className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Couple-Friendly & Private</p>
+                              <p className="text-sm text-muted-foreground">Designed with your privacy in mind — one of the premier private places for couples in Lucknow, offering a safe and welcoming environment.</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent className="p-4 flex gap-3">
+                            <Home className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Premium Modern Amenities</p>
+                              <p className="text-sm text-muted-foreground">1-bedroom suite with high-speed WiFi, AC, private balcony, dedicated workspace, and full kitchen access with microwave.</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent className="p-4 flex gap-3">
+                            <Landmark className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Key Landmarks</p>
+                              <p className="text-sm text-muted-foreground">Close to Ekana Stadium, Pallasio Mall, and Tender Palm Hospital in Gomti Nagar Extension.</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent className="p-4 flex gap-3">
+                            <MapPinned className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Unbeatable Value</p>
+                              <p className="text-sm text-muted-foreground">At just ₹3,000 per night, a premium alternative to crowded hotels in Gomti Nagar — complete comfort, no rush.</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                  )}
+
                   <div>
                     <h2 className="font-serif text-lg font-semibold text-foreground mb-4">Amenities</h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -540,6 +592,62 @@ export default function PropertyDetail() {
                           question="How do I get the best rates for the Golf City Villa?"
                           answer="For direct booking discounts and group packages, contact Pratap Adwait Singh at +917460985009 or book via pratapliving.com."
                         />
+                      </div>
+                    </div>
+                  )}
+
+                  {isLuxeStudio && (
+                    <div className="mt-8" data-testid="section-studio-faqs">
+                      <h2 className="font-serif text-lg font-semibold text-foreground mb-4">Frequently Asked Questions</h2>
+                      <div className="space-y-3">
+                        <FaqItem
+                          index={0}
+                          question="Is the property suitable for couples looking for privacy?"
+                          answer="Yes, it's a private, couple-friendly suite designed for comfort and safety."
+                        />
+                        <FaqItem
+                          index={1}
+                          question="Do you offer hourly room rates?"
+                          answer="We offer only nightly rates at ₹3,000, not hourly bookings."
+                        />
+                        <FaqItem
+                          index={2}
+                          question="Where is the Luxe Studio located and what landmarks are nearby?"
+                          answer="It's at Omaxe Hazratganj, Gomti Nagar Extension, close to Ekana Stadium, Pallasio Mall, and Tender Palm Hospital."
+                        />
+                        <FaqItem
+                          index={3}
+                          question="What amenities are included in the stay?"
+                          answer="You get a 1-bedroom suite with WiFi, AC, balcony, workspace, kitchen, and microwave."
+                        />
+                        <FaqItem
+                          index={4}
+                          question="How do I check availability and book my stay?"
+                          answer="Call or message us at +91 7460985009 to check availability and book."
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {isLuxeStudio && (
+                    <div className="mt-8" data-testid="section-studio-how-to-book">
+                      <h2 className="font-serif text-lg font-semibold text-foreground mb-4">How to Book Your Suite</h2>
+                      <div className="space-y-4">
+                        {[
+                          { step: "1", title: "Reach Out to Our Team", desc: "Simply call or message us directly at +91 7460985009 to check availability for your desired dates." },
+                          { step: "2", title: "Secure Your Reservation", desc: "Lock in your stay at our Luxe Studio Apartment for just ₹3,000 per night." },
+                          { step: "3", title: "Enjoy Your Luxurious Getaway", desc: "Arrive at Omaxe Hazratganj and step into your pristine, fully furnished luxury studio stay." },
+                        ].map(({ step, title, desc }) => (
+                          <div key={step} className="flex gap-4 items-start">
+                            <div className="shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
+                              {step}
+                            </div>
+                            <div>
+                              <p className="font-medium text-sm text-foreground">{title}</p>
+                              <p className="text-sm text-muted-foreground mt-0.5">{desc}</p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   )}
