@@ -15,6 +15,11 @@ const TOP_LEVEL_SLUGS: Record<string, string> = {
   "luxe-studio-omaxe-hazratganj": "/luxe-studio-omaxe-hazratganj",
 };
 
+const DISPLAY_NAMES: Record<string, string> = {
+  "villa-homestay-golf-city": "Private Villas at Golf City",
+  "luxe-studio-omaxe-hazratganj": "Luxe Studio Stays at Omaxe Hazratganj",
+};
+
 function getPropertyUrl(property: Property): string {
   const slug = property.slug || property.id;
   return TOP_LEVEL_SLUGS[slug] ?? `/properties/${slug}`;
@@ -67,7 +72,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
         <CardContent className="p-5">
           <div className="flex items-start justify-between gap-2 mb-2">
             <h3 className="font-serif text-xl font-semibold text-foreground line-clamp-1">
-              {property.name}
+              {DISPLAY_NAMES[property.slug || property.id] ?? property.name}
             </h3>
           </div>
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
