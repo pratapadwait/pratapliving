@@ -113,9 +113,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary mt-0.5 shrink-0" />
-                <span className="text-muted-foreground text-sm">
-                  Omaxe Hazratganj, Sec-7, Amar Shaheed Path, Gomati Nagar Extension, Lucknow, Uttar Pradesh 226002
-                </span>
+                <span className="text-muted-foreground text-sm">Poket -7, Villa No 23, 23, Golf City, Sector C, Lucknow, Uttar Pradesh 226030</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-primary shrink-0" />
