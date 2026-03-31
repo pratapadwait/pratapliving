@@ -34,10 +34,10 @@ export function PropertyTypesSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
-            The Pratap Living Collection: Luxury Stays in Lucknow
+            The Pratap Living Collection
           </h2>
           <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-            From sprawling 6BHK luxury villas in Sushant Golf City to executive penthouses in the heart of Gomti Nagar Extension, Pratap Living offers the highest-rated boutique hotels and private stays in Lucknow. Strategically located near Ekana Stadium, Medanta, and Lulu Mall, our collection is designed for travelers who refuse to compromise on privacy or luxury.
+            Experience Lucknow's premier collection of luxury penthouses and 6BHK villas. Privacy-first stays near Ekana Stadium and Lulu Mall, verified by over 500+ happy guests.
           </p>
         </div>
 

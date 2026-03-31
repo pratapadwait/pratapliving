@@ -21,8 +21,8 @@ export function HeroSection() {
       <div className="container mx-auto px-4 relative z-10 pt-[16px] pb-[16px]">
         <div className="max-w-3xl pt-16">
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Experience Luxury Stays &amp; Boutique{" "}
-            <span className="text-primary">Hotels in Lucknow</span>
+            Lucknow's Premier Boutique Stays &amp;{" "}
+            <span className="text-primary">Luxury Hotels</span>
           </h1>
 
           <p className="text-white/90 text-lg md:text-xl mb-8 leading-relaxed max-w-2xl">
@@ -73,7 +73,7 @@ export function HeroSection() {
               </div>
               <div>
                 <p className="text-white font-semibold">100%</p>
-                <p className="text-white/70 text-sm">Private &amp; Secure Boutique Stays</p>
+                <p className="text-white/70 text-sm">Private &amp; Secure Stays</p>
               </div>
             </div>
           </div>
