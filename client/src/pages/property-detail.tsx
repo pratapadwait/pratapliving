@@ -438,9 +438,9 @@ export default function PropertyDetail() {
                     <h2 className="font-serif text-lg font-semibold text-foreground mb-3">About this property</h2>
                     {isGolfCityVilla ? (
                       <div data-testid="text-description">
-                        <h3 className="font-serif text-base font-semibold text-foreground mb-2">Experience the Grandeur of Lucknow's Premier 6BHK+ Villa</h3>
+                        <h3 className="font-serif text-base font-semibold text-foreground mb-2">The Perfect Space for Your Entire Group</h3>
                         <p className="text-muted-foreground leading-relaxed">
-                          Welcome to a space where luxury meets the comfort of home. Located in the serene and elite neighborhood of Sushant Golf City, our signature 6BHK+ Luxury Villa is the ultimate destination for those who refuse to settle for cramped hotel rooms. Whether you are in the city for a grand wedding, a family reunion, or a premium corporate offsite, we provide the space and sophistication you need.
+                          Finding accommodation that keeps your entire group together without sacrificing comfort can be a challenge. Our private villa in Lucknow solves this by offering massive capacity with six spacious bedrooms and six bathrooms. For just ₹25,000 a night, your group can enjoy exclusive access to a premium property that feels like home. Whether you are looking for one of the best party places in Lucknow for a celebration, or searching for a quiet private retreat after a busy event, our villa offers the flexibility and space you need.
                         </p>
                       </div>
                     ) : isLuxeStudio ? (
@@ -466,25 +466,7 @@ export default function PropertyDetail() {
                             <MapPinned className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                             <div>
                               <p className="font-medium text-sm text-foreground">Location</p>
-                              <p className="text-sm text-muted-foreground">Sushant Golf City, Lucknow (Near Shaheed Path)</p>
-                            </div>
-                          </CardContent>
-                        </Card>
-                        <Card>
-                          <CardContent className="p-4 flex gap-3">
-                            <Heart className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-medium text-sm text-foreground">Best For</p>
-                              <p className="text-sm text-muted-foreground">Wedding guest accommodation, large family get-togethers, and corporate retreats.</p>
-                            </div>
-                          </CardContent>
-                        </Card>
-                        <Card>
-                          <CardContent className="p-4 flex gap-3">
-                            <Landmark className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                            <div>
-                              <p className="font-medium text-sm text-foreground">Key Landmarks</p>
-                              <p className="text-sm text-muted-foreground">5 mins to The Centrum | 7 mins to Lulu Mall | 10 mins to Medanta Hospital.</p>
+                              <p className="text-sm text-muted-foreground">Sushant Golf City, Lucknow — close to The Centrum, Lulu Mall, and Medanta Hospital.</p>
                             </div>
                           </CardContent>
                         </Card>
@@ -493,7 +475,25 @@ export default function PropertyDetail() {
                             <Home className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                             <div>
                               <p className="font-medium text-sm text-foreground">Massive 6BHK+ Capacity</p>
-                              <p className="text-sm text-muted-foreground">Designed specifically for large groups, our villa allows up to 15+ guests to stay together under one roof, making it the perfect "Baraat" base or family headquarters.</p>
+                              <p className="text-sm text-muted-foreground">Comfortably hosts up to 16 guests with 6 spacious bedrooms and 6 bathrooms — the perfect shared base for any large group.</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent className="p-4 flex gap-3">
+                            <Heart className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Close to Major Wedding Venues</p>
+                              <p className="text-sm text-muted-foreground">Just minutes from The Centrum and Viviana Greens — skip cramped hotel rooms and give your family a shared luxurious space.</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                        <Card>
+                          <CardContent className="p-4 flex gap-3">
+                            <Landmark className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                            <div>
+                              <p className="font-medium text-sm text-foreground">Near Shopping & Entertainment</p>
+                              <p className="text-sm text-muted-foreground">Minutes from Lulu Mall, Pallasio Mall, and Ekana Stadium — a spacious alternative to standard hotel stays.</p>
                             </div>
                           </CardContent>
                         </Card>
@@ -501,8 +501,8 @@ export default function PropertyDetail() {
                           <CardContent className="p-4 flex gap-3">
                             <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                             <div>
-                              <p className="font-medium text-sm text-foreground">Prime Wedding Proximity</p>
-                              <p className="text-sm text-muted-foreground">Located just a 5-minute drive from The Centrum and Viviana Greens, and minutes away from Imperial Grand Lawn and The Palms.</p>
+                              <p className="font-medium text-sm text-foreground">Convenient Healthcare Access</p>
+                              <p className="text-sm text-muted-foreground">A peaceful, private environment just a short drive from Medanta Hospital — ideal for those visiting loved ones or traveling for medical care.</p>
                             </div>
                           </CardContent>
                         </Card>
@@ -579,19 +579,52 @@ export default function PropertyDetail() {
                       <div className="space-y-3">
                         <FaqItem
                           index={0}
-                          question="Is there a villa for 15+ guests near The Centrum Lucknow?"
-                          answer="Yes, the Pratap Living 6BHK+ Villa in Sushant Golf City is specifically designed for large groups and is located within 5 minutes of The Centrum and Viviana Greens."
+                          question="Where is the villa located?"
+                          answer="The villa is in Sushant Golf City, Lucknow — close to The Centrum, Lulu Mall, and Medanta Hospital, offering easy access to key city attractions."
                         />
                         <FaqItem
                           index={1}
-                          question="Can we book the entire villa or individual rooms?"
-                          answer="We offer flexible occupancy. You can book the entire 6BHK+ Villa for total privacy or opt for individual luxury rooms depending on your group size."
+                          question="How many guests can the villa accommodate?"
+                          answer="Our 6BHK+ luxury villa comfortably accommodates up to 16 guests, featuring 6 bedrooms and 6 bathrooms to ensure everyone has plenty of space and privacy."
                         />
                         <FaqItem
                           index={2}
-                          question="How do I get the best rates for the Golf City Villa?"
-                          answer="For direct booking discounts and group packages, contact Pratap Adwait Singh at +917460985009 or book via pratapliving.com."
+                          question="What is the cost per night?"
+                          answer="The entire villa is available for ₹25,000 per night, offering exceptional value for large groups compared to booking multiple separate hotel rooms."
                         />
+                        <FaqItem
+                          index={3}
+                          question="Is the villa suitable for hosting events like Haldi, Mehndi, Sangeet, birthday, or anniversary parties?"
+                          answer="Yes, the villa is ideal for Haldi, Mehndi, Sangeet, birthdays, and anniversary celebrations, with plenty of space for private parties and special events."
+                        />
+                        <FaqItem
+                          index={4}
+                          question="How do I check in and access the amenities?"
+                          answer="Upon arrival, our on-site Pratap Living staff will welcome you, provide a tour of the property, and ensure you are connected to the WiFi and familiar with the kitchen and 24/7 cleaning services."
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {isGolfCityVilla && (
+                    <div className="mt-8" data-testid="section-villa-how-to-book">
+                      <h2 className="font-serif text-lg font-semibold text-foreground mb-4">Secure Your Luxury Group Getaway</h2>
+                      <div className="space-y-4">
+                        {[
+                          { step: "1", title: "Reach Out to Our Team", desc: "Call or message us directly at +91 7460985009 to check availability for your desired dates." },
+                          { step: "2", title: "Secure Your Reservation", desc: "Lock in the entire villa for just ₹25,000 per night — exceptional value for groups of up to 16 guests." },
+                          { step: "3", title: "Arrive & Enjoy", desc: "Our on-site staff will welcome you, walk you through the property, and ensure a completely stress-free stay." },
+                        ].map(({ step, title, desc }) => (
+                          <div key={step} className="flex gap-4 items-start">
+                            <div className="shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
+                              {step}
+                            </div>
+                            <div>
+                              <p className="font-medium text-sm text-foreground">{title}</p>
+                              <p className="text-sm text-muted-foreground mt-0.5">{desc}</p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   )}
