@@ -20,7 +20,7 @@ export function HeroSection() {
       </div>
       <div className="container mx-auto px-4 relative z-10 pt-[16px] pb-[16px]">
         <div className="max-w-3xl pt-16">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight mt-[24px]">
             Lucknow's Premier Boutique Stays &amp;{" "}
             <span className="text-primary">Luxury Hotels</span>
           </h1>
