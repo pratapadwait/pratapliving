@@ -602,6 +602,11 @@ export default function PropertyDetail() {
                           question="How do I check in and access the amenities?"
                           answer="Upon arrival, our on-site Pratap Living staff will welcome you, provide a tour of the property, and ensure you are connected to the WiFi and familiar with the kitchen and 24/7 cleaning services."
                         />
+                        <FaqItem
+                          index={5}
+                          question="Can I book individual rooms instead of the entire Pratap Living villa?"
+                          answer="Yes, you can book the villa per room as well, based on your group size and needs."
+                        />
                       </div>
                     </div>
                   )}
