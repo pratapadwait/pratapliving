@@ -55,18 +55,39 @@ export default function Contact() {
               </Card>
             </div>
 
-            <div className="bg-card rounded-md overflow-hidden border h-80">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.5234536387604!2d80.94559031504363!3d26.8569547831394!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfd991f32b16b%3A0x93ccba8909978be7!2sHazratganj%2C%20Lucknow%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1635000000000!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Pratap Living Location"
-                data-testid="iframe-map"
-              ></iframe>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <p className="font-medium text-sm text-foreground mb-2">The Villa &amp; Homestay — Golf City</p>
+                <div className="bg-card rounded-md overflow-hidden border h-64">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d56955.49880375895!2d80.9503807!3d26.8488988!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399be598449e523f%3A0xbc372f2db9199fbe!2sPratap%20Living%20-%20The%20Villa%20and%20Homestay%20Golf%20City!5e0!3m2!1sen!2sin!4v1774929081742!5m2!1sen!2sin"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Pratap Living Villa Golf City"
+                    data-testid="iframe-map-villa"
+                  ></iframe>
+                </div>
+              </div>
+              <div>
+                <p className="font-medium text-sm text-foreground mb-2">Luxe Studio Stays — Omaxe Hazratganj</p>
+                <div className="bg-card rounded-md overflow-hidden border h-64">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3560.883042114598!2d80.99536187494394!3d26.81185246441857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399be301f2925f53%3A0xaea797774f5019cb!2sPratap%20Living%20%7C%20Luxe%20Studio%20Stays%20-%20Omaxe%20Hazratganj!5e0!3m2!1sen!2sin!4v1774929285273!5m2!1sen!2sin"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Pratap Living Luxe Studio Omaxe Hazratganj"
+                    data-testid="iframe-map-studio"
+                  ></iframe>
+                </div>
+              </div>
             </div>
           </div>
         </div>

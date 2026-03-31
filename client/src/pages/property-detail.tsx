@@ -233,6 +233,11 @@ const SEO_OVERRIDES: Record<string, { title: string; metaDescription: string }> 
   },
 };
 
+const PROPERTY_MAPS: Record<string, string> = {
+  "villa-homestay-golf-city": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d56955.49880375895!2d80.9503807!3d26.8488988!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399be598449e523f%3A0xbc372f2db9199fbe!2sPratap%20Living%20-%20The%20Villa%20and%20Homestay%20Golf%20City!5e0!3m2!1sen!2sin!4v1774929081742!5m2!1sen!2sin",
+  "luxe-studio-omaxe-hazratganj": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3560.883042114598!2d80.99536187494394!3d26.81185246441857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399be301f2925f53%3A0xaea797774f5019cb!2sPratap%20Living%20%7C%20Luxe%20Studio%20Stays%20-%20Omaxe%20Hazratganj!5e0!3m2!1sen!2sin!4v1774929285273!5m2!1sen!2sin",
+};
+
 const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
   "villa-homestay-golf-city": {
     "@context": "https://schema.org",
@@ -531,6 +536,25 @@ export default function PropertyDetail() {
                           question="How do I get the best rates for the Golf City Villa?"
                           answer="For direct booking discounts and group packages, contact Pratap Adwait Singh at +917460985009 or book via pratapliving.com."
                         />
+                      </div>
+                    </div>
+                  )}
+
+                  {propertyId && PROPERTY_MAPS[propertyId] && (
+                    <div className="mt-8" data-testid="section-property-map">
+                      <h2 className="font-serif text-lg font-semibold text-foreground mb-3">Location</h2>
+                      <div className="rounded-md overflow-hidden border h-72">
+                        <iframe
+                          src={PROPERTY_MAPS[propertyId]}
+                          width="100%"
+                          height="100%"
+                          style={{ border: 0 }}
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          title={`${property.name} Location`}
+                          data-testid="iframe-property-map"
+                        ></iframe>
                       </div>
                     </div>
                   )}
