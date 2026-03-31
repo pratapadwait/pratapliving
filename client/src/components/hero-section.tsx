@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowRight, Star, MapPin, Shield } from "lucide-react";
+import { SiGoogle } from "react-icons/si";
 import { OptimizedImage } from "@/components/optimized-image";
 import { HERO_IMAGE } from "@/lib/imagekit-assets";
 
@@ -20,12 +21,12 @@ export function HeroSection() {
       <div className="container mx-auto px-4 relative z-10 pt-[16px] pb-[16px]">
         <div className="max-w-3xl pt-16">
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Experience Exceptional{" "}
-            <span className="text-primary">Hospitality</span> in Lucknow
+            Experience Luxury Stays &amp; Boutique{" "}
+            <span className="text-primary">Hotels in Lucknow</span>
           </h1>
 
           <p className="text-white/90 text-lg md:text-xl mb-8 leading-relaxed max-w-2xl">
-            Discover our curated collection of premium homestays, suites, apartments, and villas. Where luxury meets tradition in the heart of Lucknow.
+            Discover our curated collection of premium suites, apartments, and villas in Gomti Nagar. Where privacy-first luxury meets the tradition of Lucknow.
           </p>
 
           <div className="flex flex-wrap gap-4 mb-12">
@@ -54,16 +55,16 @@ export function HeroSection() {
               </div>
               <div>
                 <p className="text-white font-semibold">15+</p>
-                <p className="text-white/70 text-sm">Properties</p>
+                <p className="text-white/70 text-sm">Luxury Stays in Lucknow</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center">
-                <Star className="h-6 w-6 text-primary" />
+                <SiGoogle className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <p className="text-white font-semibold">500+</p>
-                <p className="text-white/70 text-sm">Happy Guests</p>
+                <p className="text-white/70 text-sm">Google Verified 5-Star Hotel Stays</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -72,7 +73,7 @@ export function HeroSection() {
               </div>
               <div>
                 <p className="text-white font-semibold">100%</p>
-                <p className="text-white/70 text-sm">Company-Managed Stays</p>
+                <p className="text-white/70 text-sm">Private &amp; Secure Boutique Stays</p>
               </div>
             </div>
           </div>

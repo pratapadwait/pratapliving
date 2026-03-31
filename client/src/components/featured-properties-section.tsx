@@ -19,10 +19,10 @@ export function FeaturedPropertiesSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
           <div>
             <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Featured Properties
+              Featured Hotels and Boutique Stays in Lucknow
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl">
-              Handpicked properties offering exceptional experiences and premium amenities.
+              Discover our most-requested boutique suites and private villas. Strategically located within 5 minutes of <strong>Ekana Stadium</strong>, <strong>Lulu Mall</strong>, and <strong>Phoenix Palassio</strong>, our properties offer a premium alternative to traditional hotels in Lucknow.
             </p>
           </div>
           <Link href="/properties">
