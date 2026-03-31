@@ -15,9 +15,7 @@ export function Footer() {
                 Pratap Living
               </h3>
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-              Experience exceptional hospitality with our curated collection of premium homestays, suites, apartments, and villas in Lucknow.
-            </p>
+            <p className="text-muted-foreground text-sm leading-relaxed mb-4">Experience exceptional service with our curated collection of premium hotels, executive suites, studio apartments, and villas in Lucknow.</p>
             <div className="flex gap-4">
               <a
                 href="https://www.instagram.com/pratapliving"
