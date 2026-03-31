@@ -16,7 +16,7 @@ const TOP_LEVEL_SLUGS: Record<string, string> = {
 };
 
 const DISPLAY_NAMES: Record<string, string> = {
-  "villa-homestay-golf-city": "Private Villas at Golf City",
+  "villa-homestay-golf-city": "Private Villa at Golf City",
   "luxe-studio-omaxe-hazratganj": "Luxe Studio Stays at Omaxe Hazratganj",
 };
 
