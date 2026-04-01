@@ -199,6 +199,14 @@ async function buildAll() {
     "utf-8",
   );
 
+  // Persist the pristine Vite-processed template (before any SSR injection)
+  // so that targeted revalidation always has an empty <div id="root"></div> to inject into.
+  await writeFile(
+    path.resolve(import.meta.dirname, "..", "dist/public/_template.html"),
+    templateHtml,
+    "utf-8",
+  );
+
   const entryServerPath = path.resolve(
     import.meta.dirname,
     "..",

@@ -286,8 +286,16 @@ async function runBatch(urlPaths: string[]): Promise<void> {
       return;
     }
 
+    const templatePath = path.resolve(distPath, "_template.html");
+    if (!existsSync(templatePath)) {
+      console.warn(
+        "[revalidate] _template.html not found; run a full build first",
+      );
+      return;
+    }
+
     const [templateHtml, allProperties] = await Promise.all([
-      readFile(path.resolve(distPath, "index.html"), "utf-8"),
+      readFile(templatePath, "utf-8"),
       fetchAllProperties(),
     ]);
 
