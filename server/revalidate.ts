@@ -180,7 +180,14 @@ async function runTargetedRevalidation(slugs: string[]): Promise<void> {
       }
     }
 
+    const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
     for (const slug of slugs) {
+      if (!SLUG_RE.test(slug)) {
+        console.warn(`[revalidate] rejected invalid slug: "${slug}"`);
+        continue;
+      }
+
       const property = allProperties.find((p) => p.slug === slug);
       if (!property) {
         console.warn(`[revalidate] slug "${slug}" not found in DB; skipping`);

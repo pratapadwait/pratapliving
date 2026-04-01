@@ -51,6 +51,7 @@ interface Property {
   imageUrl: string;
   images: string[] | null;
   featured: boolean | null;
+  updatedAt: Date | null;
 }
 
 interface StaticRoute {
@@ -117,7 +118,7 @@ async function fetchAllProperties(): Promise<Property[]> {
     const { rows } = await pool.query<Property>(`
       SELECT id, slug, name, type, location, description, price,
              bedrooms, bathrooms, guests, amenities, image_url AS "imageUrl",
-             images, featured
+             images, featured, updated_at AS "updatedAt"
       FROM properties
       ORDER BY featured DESC, name ASC
     `);
@@ -271,34 +272,43 @@ async function buildAll() {
   });
 }
 
+function toDateStr(d: Date | null | undefined, fallback: string): string {
+  if (d instanceof Date && !isNaN(d.getTime())) {
+    return d.toISOString().split("T")[0];
+  }
+  return fallback;
+}
+
 async function generateSitemap(allProperties: Property[]): Promise<void> {
   interface SitemapEntry {
     url: string;
+    lastmod: string;
     priority: string;
     changefreq: string;
   }
 
-  const today = new Date().toISOString().split("T")[0];
-
   const staticEntries: SitemapEntry[] = [
-    { url: "/", priority: "1.0", changefreq: "weekly" },
-    { url: "/properties", priority: "0.9", changefreq: "weekly" },
-    { url: "/about", priority: "0.7", changefreq: "monthly" },
-    { url: "/partner", priority: "0.7", changefreq: "monthly" },
-    { url: "/contact", priority: "0.6", changefreq: "monthly" },
-    { url: "/blog", priority: "0.8", changefreq: "weekly" },
+    { url: "/", lastmod: "2025-01-01", priority: "1.0", changefreq: "weekly" },
+    { url: "/properties", lastmod: "2025-01-01", priority: "0.9", changefreq: "weekly" },
+    { url: "/about", lastmod: "2025-01-01", priority: "0.7", changefreq: "monthly" },
+    { url: "/partner", lastmod: "2025-01-01", priority: "0.7", changefreq: "monthly" },
+    { url: "/contact", lastmod: "2025-01-01", priority: "0.6", changefreq: "monthly" },
+    { url: "/blog", lastmod: "2025-01-01", priority: "0.8", changefreq: "weekly" },
     {
       url: "/blog/best-hotels-gomti-nagar-lucknow",
+      lastmod: "2025-03-10",
       priority: "0.8",
       changefreq: "monthly",
     },
     {
       url: "/blog/hourly-hotels-lucknow-unmarried-couples",
+      lastmod: "2025-04-05",
       priority: "0.8",
       changefreq: "monthly",
     },
     {
       url: "/blog/couple-friendly-hotels-lucknow-safe-private",
+      lastmod: "2025-05-12",
       priority: "0.8",
       changefreq: "monthly",
     },
@@ -306,7 +316,12 @@ async function generateSitemap(allProperties: Property[]): Promise<void> {
 
   const propertyEntries: SitemapEntry[] = allProperties
     .filter((p) => p.slug)
-    .map((p) => ({ url: `/${p.slug}`, priority: "0.9", changefreq: "daily" }));
+    .map((p) => ({
+      url: `/${p.slug}`,
+      lastmod: toDateStr(p.updatedAt, new Date().toISOString().split("T")[0]),
+      priority: "0.9",
+      changefreq: "daily",
+    }));
 
   const allEntries = [...staticEntries, ...propertyEntries];
 
@@ -316,7 +331,7 @@ ${allEntries
   .map(
     (e) => `  <url>
     <loc>${SITE_URL}${e.url}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${e.lastmod}</lastmod>
     <changefreq>${e.changefreq}</changefreq>
     <priority>${e.priority}</priority>
   </url>`,

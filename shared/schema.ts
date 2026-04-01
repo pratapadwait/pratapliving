@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, boolean, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -18,6 +18,7 @@ export const properties = pgTable("properties", {
   imageUrl: text("image_url").notNull(),
   images: text("images").array().default(sql`'{}'::text[]`),
   featured: boolean("featured").default(false),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
 
 export const insertPropertySchema = createInsertSchema(properties).omit({

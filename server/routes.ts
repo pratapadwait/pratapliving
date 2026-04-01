@@ -129,20 +129,38 @@ export async function registerRoutes(
 
   app.post("/api/revalidate", async (req, res) => {
     const secret = process.env.REVALIDATE_SECRET;
-    if (secret) {
-      const authHeader = req.headers["authorization"] ?? "";
-      const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
-      if (token !== secret) {
-        return res.status(401).json({ message: "Unauthorized" });
+    if (!secret) {
+      return res.status(503).json({ message: "Revalidation endpoint not configured" });
+    }
+    const authHeader = req.headers["authorization"] ?? "";
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+    if (token !== secret) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const { urls } = req.body as { urls?: unknown };
+    if (!Array.isArray(urls) || urls.some((u) => typeof u !== "string")) {
+      return res.status(400).json({ message: "urls must be an array of strings" });
+    }
+
+    const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+    const slugs: string[] = [];
+    for (const url of urls as string[]) {
+      const pathname = url.startsWith("http")
+        ? (() => { try { return new URL(url).pathname; } catch { return null; } })()
+        : url;
+      if (!pathname) continue;
+      const segment = pathname.replace(/^\/+/, "").split("/")[0];
+      if (segment && SLUG_RE.test(segment)) {
+        slugs.push(segment);
       }
     }
 
-    const { slugs } = req.body as { slugs?: unknown };
-    if (!Array.isArray(slugs) || slugs.some((s) => typeof s !== "string")) {
-      return res.status(400).json({ message: "slugs must be an array of strings" });
+    if (slugs.length === 0) {
+      return res.status(400).json({ message: "No valid slugs could be extracted from the provided urls" });
     }
 
-    scheduleRevalidation(slugs as string[]);
+    scheduleRevalidation(slugs);
     res.json({ message: "Revalidation queued", slugs });
   });
 
