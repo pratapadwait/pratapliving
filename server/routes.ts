@@ -6,7 +6,7 @@ import { fromError } from "zod-validation-error";
 import { registerObjectStorageRoutes } from "./replit_integrations/object_storage";
 import multer from "multer";
 import { uploadToImageKit, getAuthParams } from "./imagekit";
-import { scheduleRevalidation } from "./revalidate";
+import { scheduleRevalidation, removePropertyFiles } from "./revalidate";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
@@ -119,7 +119,12 @@ export async function registerRoutes(
       if (!deleted) {
         return res.status(404).json({ message: "Property not found" });
       }
-      scheduleRevalidation(['/', '/properties', ...(existing?.slug ? [`/${existing.slug}`] : [])]);
+      if (existing?.slug) {
+        removePropertyFiles(existing.slug).catch((e) =>
+          console.error("[routes] Failed to remove property files:", e),
+        );
+      }
+      scheduleRevalidation(['/', '/properties']);
       res.json({ message: "Property deleted" });
     } catch (error) {
       console.error("Error deleting property:", error);

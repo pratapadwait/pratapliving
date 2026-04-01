@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from "fs/promises";
+import { readFile, writeFile, mkdir, unlink } from "fs/promises";
 import { existsSync } from "fs";
 import { pathToFileURL } from "url";
 import path from "path";
@@ -58,6 +58,22 @@ export function scheduleRevalidation(urlPaths: string[]): void {
       console.error("[revalidate] unhandled error:", e),
     );
   }, 5000);
+}
+
+const DIST_PUBLIC = path.resolve("dist/public");
+const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+export async function removePropertyFiles(slug: string): Promise<void> {
+  if (!SLUG_RE.test(slug)) return;
+  const htmlFile = path.join(DIST_PUBLIC, `${slug}.html`);
+  try {
+    await unlink(htmlFile);
+    console.log(`[revalidate] removed stale file: ${slug}.html`);
+  } catch (e: any) {
+    if (e.code !== "ENOENT") {
+      console.error(`[revalidate] failed to remove ${slug}.html:`, e);
+    }
+  }
 }
 
 async function fetchAllProperties(): Promise<Property[]> {

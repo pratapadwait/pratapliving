@@ -123,7 +123,7 @@ function PropertyFormDialog({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/properties"] });
-      toast({ title: "Property added successfully!" });
+      toast({ title: "Property added", description: "Site pages will update in the background." });
       onOpenChange(false);
       form.reset();
       setUploadedImages([]);
@@ -139,7 +139,7 @@ function PropertyFormDialog({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/properties"] });
-      toast({ title: "Property updated successfully!" });
+      toast({ title: "Property updated", description: "Site pages will update in the background." });
       onOpenChange(false);
     },
     onError: () => {
@@ -486,7 +486,7 @@ export default function AdminProperties() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/properties"] });
-      toast({ title: "Property deleted successfully" });
+      toast({ title: "Property deleted", description: "Site pages will update in the background." });
       setDeleteConfirmId(null);
     },
     onError: () => {
