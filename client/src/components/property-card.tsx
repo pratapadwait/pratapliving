@@ -10,19 +10,14 @@ import { PROPERTY_TYPE_IMAGES, PROPERTY_HOMESTAY } from "@/lib/imagekit-assets";
 
 const fallbackImages = PROPERTY_TYPE_IMAGES;
 
-const TOP_LEVEL_SLUGS: Record<string, string> = {
-  "villa-homestay-golf-city": "/villa-homestay-golf-city",
-  "luxe-studio-omaxe-hazratganj": "/luxe-studio-omaxe-hazratganj",
-};
-
 const DISPLAY_NAMES: Record<string, string> = {
   "villa-homestay-golf-city": "Private Villa at Golf City",
   "luxe-studio-omaxe-hazratganj": "Luxe Studio Stays at Omaxe Hazratganj",
 };
 
 function getPropertyUrl(property: Property): string {
-  const slug = property.slug || property.id;
-  return TOP_LEVEL_SLUGS[slug] ?? `/properties/${slug}`;
+  if (property.slug) return `/${property.slug}`;
+  return `/properties/${property.id}`;
 }
 
 function getPropertyImage(property: Property): string {
