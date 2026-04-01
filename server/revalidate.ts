@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "fs/promises";
+import { readFile, writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import { pathToFileURL } from "url";
 import path from "path";
@@ -20,19 +20,26 @@ interface Property {
   imageUrl: string;
   images: string[] | null;
   featured: boolean | null;
+  updatedAt: Date | null;
 }
 
 type Helmet = Record<string, { toString(): string }>;
 
+interface RevalidateRoute {
+  url: string;
+  file: string;
+  queryData?: Array<{ key: unknown[]; value: unknown }>;
+}
+
 let debounceTimer: NodeJS.Timeout | null = null;
-const pendingSlugs = new Set<string>();
+const pendingPaths = new Set<string>();
 let isBuilding = false;
 
-export function scheduleRevalidation(slugs: string[]): void {
+export function scheduleRevalidation(urlPaths: string[]): void {
   if (process.env.NODE_ENV !== "production") return;
 
-  for (const slug of slugs) {
-    pendingSlugs.add(slug);
+  for (const p of urlPaths) {
+    pendingPaths.add(p);
   }
 
   if (debounceTimer) clearTimeout(debounceTimer);
@@ -43,11 +50,11 @@ export function scheduleRevalidation(slugs: string[]): void {
       return;
     }
 
-    const batch = Array.from(pendingSlugs);
-    pendingSlugs.clear();
+    const batch = Array.from(pendingPaths);
+    pendingPaths.clear();
     debounceTimer = null;
 
-    runTargetedRevalidation(batch).catch((e) =>
+    runBatch(batch).catch((e) =>
       console.error("[revalidate] unhandled error:", e),
     );
   }, 5000);
@@ -63,7 +70,7 @@ async function fetchAllProperties(): Promise<Property[]> {
     const { rows } = await pool.query<Property>(`
       SELECT id, slug, name, type, location, description, price,
              bedrooms, bathrooms, guests, amenities, image_url AS "imageUrl",
-             images, featured
+             images, featured, updated_at AS "updatedAt"
       FROM properties
       ORDER BY featured DESC, name ASC
     `);
@@ -71,6 +78,46 @@ async function fetchAllProperties(): Promise<Property[]> {
   } finally {
     await pool.end();
   }
+}
+
+function resolveRoutes(
+  urlPaths: string[],
+  allProperties: Property[],
+): RevalidateRoute[] {
+  const routes: RevalidateRoute[] = [];
+  const seen = new Set<string>();
+
+  for (const url of urlPaths) {
+    if (seen.has(url)) continue;
+    seen.add(url);
+
+    const file =
+      url === "/" ? "index.html" : `${url.replace(/^\/+/, "")}.html`;
+
+    const slug = url.replace(/^\/+/, "");
+    const property = allProperties.find((p) => p.slug === slug);
+
+    if (property) {
+      routes.push({
+        url,
+        file,
+        queryData: [
+          { key: ["/api/properties", slug], value: property },
+          { key: ["/api/properties"], value: allProperties },
+        ],
+      });
+    } else if (url === "/" || url === "/properties") {
+      routes.push({
+        url,
+        file,
+        queryData: [{ key: ["/api/properties"], value: allProperties }],
+      });
+    } else {
+      routes.push({ url, file });
+    }
+  }
+
+  return routes;
 }
 
 function safeJson(obj: unknown): string {
@@ -119,7 +166,111 @@ function injectSSR(
   return result;
 }
 
-async function runTargetedRevalidation(slugs: string[]): Promise<void> {
+function toDateStr(d: Date | null | undefined, fallback: string): string {
+  if (d instanceof Date && !isNaN(d.getTime())) {
+    return d.toISOString().split("T")[0];
+  }
+  return fallback;
+}
+
+async function regenerateSitemap(
+  allProperties: Property[],
+  distPath: string,
+): Promise<void> {
+  const SITE_URL = (
+    process.env.SITE_URL ?? "https://pratapliving.com"
+  ).replace(/\/$/, "");
+
+  interface SitemapEntry {
+    url: string;
+    lastmod: string;
+    priority: string;
+    changefreq: string;
+  }
+
+  const staticEntries: SitemapEntry[] = [
+    { url: "/", lastmod: "2025-01-01", priority: "1.0", changefreq: "weekly" },
+    {
+      url: "/properties",
+      lastmod: "2025-01-01",
+      priority: "0.9",
+      changefreq: "weekly",
+    },
+    {
+      url: "/about",
+      lastmod: "2025-01-01",
+      priority: "0.7",
+      changefreq: "monthly",
+    },
+    {
+      url: "/partner",
+      lastmod: "2025-01-01",
+      priority: "0.7",
+      changefreq: "monthly",
+    },
+    {
+      url: "/contact",
+      lastmod: "2025-01-01",
+      priority: "0.6",
+      changefreq: "monthly",
+    },
+    {
+      url: "/blog",
+      lastmod: "2025-01-01",
+      priority: "0.8",
+      changefreq: "weekly",
+    },
+    {
+      url: "/blog/best-hotels-gomti-nagar-lucknow",
+      lastmod: "2025-03-10",
+      priority: "0.8",
+      changefreq: "monthly",
+    },
+    {
+      url: "/blog/hourly-hotels-lucknow-unmarried-couples",
+      lastmod: "2025-04-05",
+      priority: "0.8",
+      changefreq: "monthly",
+    },
+    {
+      url: "/blog/couple-friendly-hotels-lucknow-safe-private",
+      lastmod: "2025-05-12",
+      priority: "0.8",
+      changefreq: "monthly",
+    },
+  ];
+
+  const today = new Date().toISOString().split("T")[0];
+  const propertyEntries: SitemapEntry[] = allProperties
+    .filter((p) => p.slug)
+    .map((p) => ({
+      url: `/${p.slug}`,
+      lastmod: toDateStr(p.updatedAt, today),
+      priority: "0.9",
+      changefreq: "daily",
+    }));
+
+  const allEntries = [...staticEntries, ...propertyEntries];
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allEntries
+  .map(
+    (e) => `  <url>
+    <loc>${SITE_URL}${e.url}</loc>
+    <lastmod>${e.lastmod}</lastmod>
+    <changefreq>${e.changefreq}</changefreq>
+    <priority>${e.priority}</priority>
+  </url>`,
+  )
+  .join("\n")}
+</urlset>`;
+
+  await writeFile(path.resolve(distPath, "sitemap.xml"), xml, "utf-8");
+  console.log(`[revalidate] ✓ sitemap.xml (${allEntries.length} URLs)`);
+}
+
+async function runBatch(urlPaths: string[]): Promise<void> {
   isBuilding = true;
   try {
     const distPath = path.resolve(process.cwd(), "dist/public");
@@ -154,22 +305,24 @@ async function runTargetedRevalidation(slugs: string[]): Promise<void> {
       };
     };
 
+    const routes = resolveRoutes(urlPaths, allProperties);
     const rebuiltUrls: string[] = [];
-    const baseUrl =
-      process.env.SITE_URL?.replace(/\/$/, "") ?? "https://pratapliving.com";
+    const baseUrl = (
+      process.env.SITE_URL ?? "https://pratapliving.com"
+    ).replace(/\/$/, "");
 
-    const listRoutes = [
-      { url: "/", file: "index.html" },
-      { url: "/properties", file: "properties.html" },
-    ];
-
-    for (const route of listRoutes) {
+    for (const route of routes) {
       try {
-        const { html, helmet, dehydratedState } = render(route.url, [
-          { key: ["/api/properties"], value: allProperties },
-        ]);
+        const { html, helmet, dehydratedState } = render(
+          route.url,
+          route.queryData,
+        );
+        const outPath = path.resolve(distPath, route.file);
+        const outDir = path.dirname(outPath);
+        if (!existsSync(outDir)) await mkdir(outDir, { recursive: true });
+
         await writeFile(
-          path.resolve(distPath, route.file),
+          outPath,
           injectSSR(templateHtml, html, helmet, dehydratedState),
           "utf-8",
         );
@@ -180,35 +333,16 @@ async function runTargetedRevalidation(slugs: string[]): Promise<void> {
       }
     }
 
-    const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-    for (const slug of slugs) {
-      if (!SLUG_RE.test(slug)) {
-        console.warn(`[revalidate] rejected invalid slug: "${slug}"`);
-        continue;
-      }
-
-      const property = allProperties.find((p) => p.slug === slug);
-      if (!property) {
-        console.warn(`[revalidate] slug "${slug}" not found in DB; skipping`);
-        continue;
-      }
-
-      try {
-        const { html, helmet, dehydratedState } = render(`/${slug}`, [
-          { key: ["/api/properties", slug], value: property },
-          { key: ["/api/properties"], value: allProperties },
-        ]);
-        await writeFile(
-          path.resolve(distPath, `${slug}.html`),
-          injectSSR(templateHtml, html, helmet, dehydratedState),
-          "utf-8",
-        );
-        rebuiltUrls.push(`${baseUrl}/${slug}`);
-        console.log(`[revalidate] ✓ /${slug}`);
-      } catch (e) {
-        console.warn(`[revalidate] ✗ /${slug}:`, e);
-      }
+    const hasPropertyChange = urlPaths.some(
+      (u) =>
+        u === "/" ||
+        u === "/properties" ||
+        allProperties.some((p) => p.slug && u === `/${p.slug}`),
+    );
+    if (hasPropertyChange) {
+      await regenerateSitemap(allProperties, distPath).catch((e) =>
+        console.warn("[revalidate] sitemap update failed:", e),
+      );
     }
 
     await pingGoogleIndexing(rebuiltUrls);
@@ -252,9 +386,14 @@ async function getGoogleAccessToken(key: {
     }),
   });
 
-  const data = (await tokenResp.json()) as { access_token?: string; error?: string };
+  const data = (await tokenResp.json()) as {
+    access_token?: string;
+    error?: string;
+  };
   if (!data.access_token) {
-    throw new Error(`Failed to get Google access token: ${data.error ?? JSON.stringify(data)}`);
+    throw new Error(
+      `Failed to get Google access token: ${data.error ?? JSON.stringify(data)}`,
+    );
   }
   return data.access_token;
 }
@@ -274,9 +413,7 @@ async function pingGoogleIndexing(urls: string[]): Promise<void> {
   try {
     key = JSON.parse(keyJson);
   } catch {
-    console.warn(
-      "[revalidate] GOOGLE_INDEXING_SA_KEY is not valid JSON; skipping",
-    );
+    console.warn("[revalidate] GOOGLE_INDEXING_SA_KEY is not valid JSON; skipping");
     return;
   }
 

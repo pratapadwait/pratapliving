@@ -85,7 +85,7 @@ export async function registerRoutes(
         return res.status(400).json({ message: validationError.toString() });
       }
       const property = await storage.createProperty(parsed.data);
-      if (property.slug) scheduleRevalidation([property.slug]);
+      scheduleRevalidation(['/', '/properties', ...(property.slug ? [`/${property.slug}`] : [])]);
       res.status(201).json(property);
     } catch (error) {
       console.error("Error creating property:", error);
@@ -104,7 +104,7 @@ export async function registerRoutes(
       if (!property) {
         return res.status(404).json({ message: "Property not found" });
       }
-      if (property.slug) scheduleRevalidation([property.slug]);
+      scheduleRevalidation(['/', '/properties', ...(property.slug ? [`/${property.slug}`] : [])]);
       res.json(property);
     } catch (error) {
       console.error("Error updating property:", error);
@@ -119,7 +119,7 @@ export async function registerRoutes(
       if (!deleted) {
         return res.status(404).json({ message: "Property not found" });
       }
-      if (existing?.slug) scheduleRevalidation([existing.slug]);
+      scheduleRevalidation(['/', '/properties', ...(existing?.slug ? [`/${existing.slug}`] : [])]);
       res.json({ message: "Property deleted" });
     } catch (error) {
       console.error("Error deleting property:", error);
@@ -143,25 +143,36 @@ export async function registerRoutes(
       return res.status(400).json({ message: "urls must be an array of strings" });
     }
 
-    const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-    const slugs: string[] = [];
+    const SEGMENT_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+    const validPaths: string[] = [];
+
     for (const url of urls as string[]) {
-      const pathname = url.startsWith("http")
-        ? (() => { try { return new URL(url).pathname; } catch { return null; } })()
-        : url;
-      if (!pathname) continue;
-      const segment = pathname.replace(/^\/+/, "").split("/")[0];
-      if (segment && SLUG_RE.test(segment)) {
-        slugs.push(segment);
+      let pathname: string | null = null;
+      try {
+        pathname = url.startsWith("http")
+          ? new URL(url).pathname
+          : url.startsWith("/") ? url : `/${url}`;
+      } catch {
+        continue;
       }
+
+      const normalized = pathname.replace(/\/+$/, "") || "/";
+      const segments = normalized.replace(/^\//, "").split("/").filter(Boolean);
+
+      const isValid =
+        normalized === "/" ||
+        (segments.length === 1 && SEGMENT_RE.test(segments[0])) ||
+        (segments.length === 2 && segments[0] === "blog" && SEGMENT_RE.test(segments[1]));
+
+      if (isValid) validPaths.push(normalized);
     }
 
-    if (slugs.length === 0) {
-      return res.status(400).json({ message: "No valid slugs could be extracted from the provided urls" });
+    if (validPaths.length === 0) {
+      return res.status(400).json({ message: "No valid URLs provided" });
     }
 
-    scheduleRevalidation(slugs);
-    res.json({ message: "Revalidation queued", slugs });
+    scheduleRevalidation(validPaths);
+    res.json({ message: "Revalidation queued", routes: validPaths });
   });
 
   app.post("/api/partner-inquiries", async (req, res) => {
