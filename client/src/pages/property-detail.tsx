@@ -332,12 +332,13 @@ export default function PropertyDetail() {
   const [, propertiesParams] = useRoute("/properties/:id");
   const [matchesVilla] = useRoute("/villa-homestay-golf-city");
   const [matchesStudio] = useRoute("/luxe-studio-omaxe-hazratganj");
+  const [, slugParams] = useRoute("/:slug");
 
   const propertyId = matchesVilla
     ? "villa-homestay-golf-city"
     : matchesStudio
     ? "luxe-studio-omaxe-hazratganj"
-    : propertiesParams?.id;
+    : propertiesParams?.id ?? slugParams?.slug;
 
   const { data: property, isLoading, error } = useQuery<Property>({
     queryKey: ["/api/properties", propertyId],

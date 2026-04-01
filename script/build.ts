@@ -92,7 +92,11 @@ function injectSSR(
   }
 
   if (dehydratedState) {
-    const stateScript = `<script id="__TANSTACK_QUERY_DEHYDRATED_STATE__" type="application/json">${JSON.stringify(dehydratedState)}</script>`;
+    const safeJson = JSON.stringify(dehydratedState)
+      .replace(/&/g, "\\u0026")
+      .replace(/</g, "\\u003c")
+      .replace(/>/g, "\\u003e");
+    const stateScript = `<script id="__TANSTACK_QUERY_DEHYDRATED_STATE__" type="application/json">${safeJson}</script>`;
     result = result.replace("</body>", `  ${stateScript}\n</body>`);
   }
 

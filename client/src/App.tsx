@@ -61,6 +61,7 @@ function Router() {
       <Route path="/partner" component={Partner} />
       <Route path="/contact" component={Contact} />
       <Route path="/admin/properties" component={AdminProperties} />
+      <Route path="/:slug" component={PropertyDetail} />
       <Route component={NotFound} />
     </Switch>
   );
