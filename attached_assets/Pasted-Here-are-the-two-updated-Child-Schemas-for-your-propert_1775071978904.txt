@@ -1,0 +1,71 @@
+Here are the two updated Child Schemas for your property pages.
+
+1. For "Luxe Studio Omaxe Hazratganj"
+Placement: Inside the <Helmet> tag of client/src/pages/PropertyDetail.tsx (or your specific Omaxe route).
+
+JSON
+{
+  "@context": "https://schema.org",
+  "@type": "Hotel",
+  "name": "Pratap Living | Luxe Studio Stays - Omaxe Hazratganj",
+  "description": "Luxury boutique designer rooms in Omaxe Hazratganj. Couple-friendly environment and Local ID accepted. Managed by Pratap Living.",
+  "parentOrganization": {
+    "@id": "https://www.pratapliving.com/#organization"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Omaxe Hazratganj, Arjunganj",
+    "addressLocality": "Lucknow",
+    "addressRegion": "UP",
+    "postalCode": "226002",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "26.8118521",
+    "longitude": "80.9978897"
+  },
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Couple Friendly", "value": "true" },
+    { "@type": "LocationFeatureSpecification", "name": "Local ID Accepted", "value": "true" },
+    { "@type": "LocationFeatureSpecification", "name": "High-speed WiFi", "value": "true" },
+    { "@type": "LocationFeatureSpecification", "name": "Kitchen Access", "value": "true" }
+  ],
+  "checkinTime": "14:00:00",
+  "checkoutTime": "11:00:00"
+}
+2. For "Private Villa Golf City"
+Placement: Inside the <Helmet> tag of your Golf City route. Note the specific 11:00 AM Check-in and 10:00 AM Check-out you requested.
+
+JSON
+{
+  "@context": "https://schema.org",
+  "@type": "Hotel",
+  "name": "Pratap Living - The Villa and Homestay Golf City",
+  "description": "Premium 6BHK private luxury villa in Sushant Golf City. Couple-friendly and Local ID accepted. Ideal for weddings and group stays. Managed by Pratap Living.",
+  "parentOrganization": {
+    "@id": "https://www.pratapliving.com/#organization"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Pocket 7, Villa 23, Sushant Golf City",
+    "addressLocality": "Lucknow",
+    "addressRegion": "UP",
+    "postalCode": "226030",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "26.7842783",
+    "longitude": "81.0061884"
+  },
+  "numberOfRooms": "6",
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Couple Friendly", "value": "true" },
+    { "@type": "LocationFeatureSpecification", "name": "Local ID Accepted", "value": "true" },
+    { "@type": "LocationFeatureSpecification", "name": "Event Friendly", "value": "true" },
+    { "@type": "LocationFeatureSpecification", "name": "Private Parking", "value": "true" }
+  ],
+  "checkinTime": "11:00:00",
+  "checkoutTime": "10:00:00"
+}
