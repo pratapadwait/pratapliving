@@ -4,7 +4,9 @@ import { rm, readFile, writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import { pathToFileURL } from "url";
 import path from "path";
-import { Pool } from "pg";
+import { desc, asc } from "drizzle-orm";
+import { db, pool } from "../server/db";
+import { properties, type Property } from "@shared/schema";
 
 const SITE_URL = (process.env.SITE_URL ?? "https://pratapliving.com").replace(/\/$/, "");
 
@@ -35,24 +37,6 @@ const allowlist = [
   "zod",
   "zod-validation-error",
 ];
-
-interface Property {
-  id: string;
-  slug: string | null;
-  name: string;
-  type: string;
-  location: string;
-  description: string;
-  price: number;
-  bedrooms: number;
-  bathrooms: number;
-  guests: number;
-  amenities: string[];
-  imageUrl: string;
-  images: string[] | null;
-  featured: boolean | null;
-  updatedAt: Date | null;
-}
 
 interface StaticRoute {
   url: string;
@@ -104,28 +88,6 @@ function injectSSR(
   }
 
   return result;
-}
-
-async function fetchAllProperties(): Promise<Property[]> {
-  const connStr = process.env.EXTERNAL_DATABASE_URL || process.env.DATABASE_URL;
-  if (!connStr) {
-    console.warn("  No database URL found; property pages will render as skeletons.");
-    return [];
-  }
-
-  const pool = new Pool({ connectionString: connStr });
-  try {
-    const { rows } = await pool.query<Property>(`
-      SELECT id, slug, name, type, location, description, price,
-             bedrooms, bathrooms, guests, amenities, image_url AS "imageUrl",
-             images, featured, updated_at AS "updatedAt"
-      FROM properties
-      ORDER BY featured DESC, name ASC
-    `);
-    return rows;
-  } finally {
-    await pool.end();
-  }
 }
 
 function buildRoutes(allProperties: Property[]): StaticRoute[] {
@@ -188,7 +150,11 @@ async function buildAll() {
   });
 
   console.log("fetching property data for prerender...");
-  const allProperties = await fetchAllProperties();
+  const allProperties = await db
+    .select()
+    .from(properties)
+    .orderBy(desc(properties.featured), asc(properties.name));
+  await pool.end();
   console.log(`  found ${allProperties.length} properties`);
 
   const routes = buildRoutes(allProperties);
