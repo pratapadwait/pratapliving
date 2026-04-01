@@ -5,6 +5,7 @@ interface OptimizedImageProps {
   alt: string;
   className?: string;
   loading?: "lazy" | "eager";
+  fetchPriority?: "high" | "low" | "auto";
   sizes?: string;
   "data-testid"?: string;
 }
@@ -34,15 +35,17 @@ export function OptimizedImage({
   alt,
   className = "",
   loading = "lazy",
+  fetchPriority,
   sizes,
   "data-testid": testId,
 }: OptimizedImageProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isInView, setIsInView] = useState(loading === "eager");
+  const isHighPriority = fetchPriority === "high";
+  const [isLoaded, setIsLoaded] = useState(isHighPriority);
+  const [isInView, setIsInView] = useState(loading === "eager" || isHighPriority);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (loading === "eager") {
+    if (loading === "eager" || isHighPriority) {
       setIsInView(true);
       return;
     }
@@ -84,12 +87,14 @@ export function OptimizedImage({
           srcSet={srcSet}
           sizes={sizes || DEFAULT_SIZES}
           alt={alt}
-          decoding="async"
+          loading={loading}
+          decoding={isHighPriority ? "sync" : "async"}
           onLoad={() => setIsLoaded(true)}
           className={`w-full h-full object-cover transition-opacity duration-500 ${
             isLoaded ? "opacity-100" : "opacity-0"
           }`}
           data-testid={testId}
+          {...(fetchPriority ? ({ fetchpriority: fetchPriority } as object) : {})}
         />
       )}
     </div>

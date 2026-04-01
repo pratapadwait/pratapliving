@@ -11,9 +11,10 @@ export function HeroSection() {
       <div className="absolute inset-0 z-0">
         <OptimizedImage
           src={HERO_IMAGE}
-          alt="Lucknow cityscape"
+          alt="Lucknow's Premier Boutique Stays"
           className="w-full h-full"
           loading="eager"
+          fetchPriority="high"
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
