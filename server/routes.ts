@@ -6,6 +6,7 @@ import { fromError } from "zod-validation-error";
 import { registerObjectStorageRoutes } from "./replit_integrations/object_storage";
 import multer from "multer";
 import { uploadToImageKit, getAuthParams } from "./imagekit";
+import { scheduleRevalidation } from "./revalidate";
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
@@ -84,6 +85,7 @@ export async function registerRoutes(
         return res.status(400).json({ message: validationError.toString() });
       }
       const property = await storage.createProperty(parsed.data);
+      if (property.slug) scheduleRevalidation([property.slug]);
       res.status(201).json(property);
     } catch (error) {
       console.error("Error creating property:", error);
@@ -102,6 +104,7 @@ export async function registerRoutes(
       if (!property) {
         return res.status(404).json({ message: "Property not found" });
       }
+      if (property.slug) scheduleRevalidation([property.slug]);
       res.json(property);
     } catch (error) {
       console.error("Error updating property:", error);
@@ -111,15 +114,36 @@ export async function registerRoutes(
 
   app.delete("/api/properties/:id", async (req, res) => {
     try {
+      const existing = await storage.getProperty(req.params.id);
       const deleted = await storage.deleteProperty(req.params.id);
       if (!deleted) {
         return res.status(404).json({ message: "Property not found" });
       }
+      if (existing?.slug) scheduleRevalidation([existing.slug]);
       res.json({ message: "Property deleted" });
     } catch (error) {
       console.error("Error deleting property:", error);
       res.status(500).json({ message: "Failed to delete property" });
     }
+  });
+
+  app.post("/api/revalidate", async (req, res) => {
+    const secret = process.env.REVALIDATE_SECRET;
+    if (secret) {
+      const authHeader = req.headers["authorization"] ?? "";
+      const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+      if (token !== secret) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+    }
+
+    const { slugs } = req.body as { slugs?: unknown };
+    if (!Array.isArray(slugs) || slugs.some((s) => typeof s !== "string")) {
+      return res.status(400).json({ message: "slugs must be an array of strings" });
+    }
+
+    scheduleRevalidation(slugs as string[]);
+    res.json({ message: "Revalidation queued", slugs });
   });
 
   app.post("/api/partner-inquiries", async (req, res) => {

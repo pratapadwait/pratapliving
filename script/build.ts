@@ -6,6 +6,8 @@ import { pathToFileURL } from "url";
 import path from "path";
 import { Pool } from "pg";
 
+const SITE_URL = (process.env.SITE_URL ?? "https://pratapliving.com").replace(/\/$/, "");
+
 const allowlist = [
   "@google/generative-ai",
   "axios",
@@ -238,6 +240,9 @@ async function buildAll() {
     }
   }
 
+  console.log("generating sitemap...");
+  await generateSitemap(allProperties);
+
   console.log("building server...");
   const pkg = JSON.parse(
     await readFile(
@@ -264,6 +269,67 @@ async function buildAll() {
     external: [...externals, "dotenv"],
     logLevel: "info",
   });
+}
+
+async function generateSitemap(allProperties: Property[]): Promise<void> {
+  interface SitemapEntry {
+    url: string;
+    priority: string;
+    changefreq: string;
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const staticEntries: SitemapEntry[] = [
+    { url: "/", priority: "1.0", changefreq: "weekly" },
+    { url: "/properties", priority: "0.9", changefreq: "weekly" },
+    { url: "/about", priority: "0.7", changefreq: "monthly" },
+    { url: "/partner", priority: "0.7", changefreq: "monthly" },
+    { url: "/contact", priority: "0.6", changefreq: "monthly" },
+    { url: "/blog", priority: "0.8", changefreq: "weekly" },
+    {
+      url: "/blog/best-hotels-gomti-nagar-lucknow",
+      priority: "0.8",
+      changefreq: "monthly",
+    },
+    {
+      url: "/blog/hourly-hotels-lucknow-unmarried-couples",
+      priority: "0.8",
+      changefreq: "monthly",
+    },
+    {
+      url: "/blog/couple-friendly-hotels-lucknow-safe-private",
+      priority: "0.8",
+      changefreq: "monthly",
+    },
+  ];
+
+  const propertyEntries: SitemapEntry[] = allProperties
+    .filter((p) => p.slug)
+    .map((p) => ({ url: `/${p.slug}`, priority: "0.9", changefreq: "daily" }));
+
+  const allEntries = [...staticEntries, ...propertyEntries];
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allEntries
+  .map(
+    (e) => `  <url>
+    <loc>${SITE_URL}${e.url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${e.changefreq}</changefreq>
+    <priority>${e.priority}</priority>
+  </url>`,
+  )
+  .join("\n")}
+</urlset>`;
+
+  await writeFile(
+    path.resolve(import.meta.dirname, "..", "dist/public/sitemap.xml"),
+    xml,
+    "utf-8",
+  );
+  console.log(`  ✓ sitemap.xml (${allEntries.length} URLs)`);
 }
 
 buildAll().catch((err) => {
