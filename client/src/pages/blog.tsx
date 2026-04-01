@@ -3,7 +3,6 @@ import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PageHead } from "@/components/page-head";
-import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { CalendarDays, ArrowRight } from "lucide-react";
 
@@ -37,39 +36,6 @@ const posts = [
   },
 ];
 
-const blogJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  "name": "Pratap Living Blog",
-  "description": "Travel guides, local insights, and stories from Pratap Living — Lucknow's premier boutique stays platform.",
-  "publisher": {
-    "@id": "https://www.pratapliving.com/#organization"
-  },
-  "blogPost": [
-    {
-      "@type": "BlogPosting",
-      "headline": "Safe and Private Couple-Friendly Hotels in Lucknow",
-      "author": { "@id": "https://www.pratapliving.com/#author-samiksha" },
-      "datePublished": "2026-03-30T09:17:00+05:30",
-      "url": "https://www.pratapliving.com/blog/couple-friendly-hotels-lucknow-safe-private"
-    },
-    {
-      "@type": "BlogPosting",
-      "headline": "Safe Hourly Hotels in Lucknow for Unmarried Couples",
-      "author": { "@id": "https://www.pratapliving.com/#author-samiksha" },
-      "datePublished": "2026-03-30T10:43:00+05:30",
-      "url": "https://www.pratapliving.com/blog/hourly-hotels-lucknow-unmarried-couples"
-    },
-    {
-      "@type": "BlogPosting",
-      "headline": "The Ultimate Guide to the Best Hotels in Gomti Nagar Lucknow",
-      "author": { "@id": "https://www.pratapliving.com/#author-samiksha" },
-      "datePublished": "2026-03-30T11:58:00+05:30",
-      "url": "https://www.pratapliving.com/blog/best-hotels-gomti-nagar-lucknow"
-    }
-  ]
-};
-
 export default function Blog() {
   return (
     <div className="min-h-screen">
@@ -78,9 +44,6 @@ export default function Blog() {
         description="Insights, guides, and stories from Pratap Living — Lucknow's premier boutique stays platform."
         canonicalUrl="https://www.pratapliving.com/blog"
       />
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify(blogJsonLd)}</script>
-      </Helmet>
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
