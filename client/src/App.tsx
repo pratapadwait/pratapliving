@@ -1,7 +1,7 @@
 import { Switch, Route, useLocation } from "wouter";
 import { useEffect } from "react";
 import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider, HydrationBoundary } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
@@ -16,6 +16,9 @@ import Blog from "@/pages/blog";
 import BlogBestHotelsGomtiNagar from "@/pages/blog-best-hotels-gomti-nagar";
 import BlogHourlyHotelsLucknowUnmarriedCouples from "@/pages/blog-hourly-hotels-lucknow-unmarried-couples";
 import BlogCoupleFriendlyHotelsLucknow from "@/pages/blog-couple-friendly-hotels-lucknow";
+
+const ssrQueryState =
+  typeof window !== "undefined" ? (window as any).__REACT_QUERY_STATE__ : undefined;
 
 function RedirectTo({ to }: { to: string }) {
   const [, navigate] = useLocation();
@@ -56,10 +59,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <HydrationBoundary state={ssrQueryState}>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </HydrationBoundary>
     </QueryClientProvider>
   );
 }

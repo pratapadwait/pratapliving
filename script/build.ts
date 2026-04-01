@@ -4,6 +4,7 @@ import { rm, readFile, writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import { pathToFileURL } from "url";
 import path from "path";
+import { Pool } from "pg";
 
 const allowlist = [
   "@google/generative-ai",
@@ -33,11 +34,28 @@ const allowlist = [
   "zod-validation-error",
 ];
 
+interface Property {
+  id: string;
+  slug: string | null;
+  name: string;
+  type: string;
+  location: string;
+  description: string;
+  price: number;
+  bedrooms: number;
+  bathrooms: number;
+  guests: number;
+  amenities: string[];
+  imageUrl: string;
+  images: string[] | null;
+  featured: boolean | null;
+}
+
 const SSG_ROUTES = [
   { url: "/", file: "index.html" },
   { url: "/properties", file: "properties.html" },
-  { url: "/villa-homestay-golf-city", file: "villa-homestay-golf-city.html" },
-  { url: "/luxe-studio-omaxe-hazratganj", file: "luxe-studio-omaxe-hazratganj.html" },
+  { url: "/villa-homestay-golf-city", file: "villa-homestay-golf-city.html", propertySlug: "villa-homestay-golf-city" },
+  { url: "/luxe-studio-omaxe-hazratganj", file: "luxe-studio-omaxe-hazratganj.html", propertySlug: "luxe-studio-omaxe-hazratganj" },
   { url: "/about", file: "about.html" },
   { url: "/blog", file: "blog.html" },
   { url: "/blog/best-hotels-gomti-nagar-lucknow", file: "blog/best-hotels-gomti-nagar-lucknow.html" },
@@ -47,10 +65,13 @@ const SSG_ROUTES = [
   { url: "/contact", file: "contact.html" },
 ];
 
+type Helmet = Record<string, { toString(): string }>;
+
 function injectSSR(
   template: string,
   html: string,
-  helmet: Record<string, { toString(): string }>,
+  helmet: Helmet,
+  dehydratedState?: unknown,
 ): string {
   let result = template;
 
@@ -78,7 +99,38 @@ function injectSSR(
     result = result.replace("</head>", `    ${helmetHead}\n  </head>`);
   }
 
+  if (dehydratedState) {
+    const stateScript = `<script>window.__REACT_QUERY_STATE__ = ${JSON.stringify(dehydratedState)}</script>`;
+    result = result.replace("</body>", `  ${stateScript}\n</body>`);
+  }
+
   return result;
+}
+
+async function fetchProperties(): Promise<Map<string, Property>> {
+  const connStr = process.env.EXTERNAL_DATABASE_URL || process.env.DATABASE_URL;
+  if (!connStr) {
+    console.warn("  No database URL found; property pages will render as skeletons.");
+    return new Map();
+  }
+
+  const pool = new Pool({ connectionString: connStr, ssl: { rejectUnauthorized: false } });
+  try {
+    const { rows } = await pool.query<Property>(`
+      SELECT id, slug, name, type, location, description, price,
+             bedrooms, bathrooms, guests, amenities, image_url AS "imageUrl",
+             images, featured
+      FROM properties
+      WHERE slug IN ('villa-homestay-golf-city', 'luxe-studio-omaxe-hazratganj')
+    `);
+    const map = new Map<string, Property>();
+    for (const row of rows) {
+      if (row.slug) map.set(row.slug, row);
+    }
+    return map;
+  } finally {
+    await pool.end();
+  }
 }
 
 async function buildAll() {
@@ -99,6 +151,9 @@ async function buildAll() {
     },
   });
 
+  console.log("fetching property data for prerender...");
+  const propertiesBySlug = await fetchProperties();
+
   console.log("pre-rendering routes...");
   const templateHtml = await readFile(
     path.resolve(import.meta.dirname, "..", "dist/public/index.html"),
@@ -111,16 +166,31 @@ async function buildAll() {
     "dist/server/entry-server.js",
   );
   const { render } = (await import(pathToFileURL(entryServerPath).href)) as {
-    render: (url: string) => {
+    render: (
+      url: string,
+      queryData?: Array<{ key: unknown[]; value: unknown }>,
+    ) => {
       html: string;
-      helmet: Record<string, { toString(): string }>;
+      helmet: Helmet;
+      dehydratedState: unknown;
     };
   };
 
   for (const route of SSG_ROUTES) {
     try {
-      const { html, helmet } = render(route.url);
-      const outHtml = injectSSR(templateHtml, html, helmet);
+      const queryData: Array<{ key: unknown[]; value: unknown }> = [];
+
+      if (route.propertySlug) {
+        const property = propertiesBySlug.get(route.propertySlug);
+        if (property) {
+          queryData.push({ key: ["/api/properties", route.propertySlug], value: property });
+        } else {
+          console.warn(`  Property not found for slug: ${route.propertySlug}`);
+        }
+      }
+
+      const { html, helmet, dehydratedState } = render(route.url, queryData.length > 0 ? queryData : undefined);
+      const outHtml = injectSSR(templateHtml, html, helmet, dehydratedState);
 
       const outPath = path.resolve(
         import.meta.dirname,
