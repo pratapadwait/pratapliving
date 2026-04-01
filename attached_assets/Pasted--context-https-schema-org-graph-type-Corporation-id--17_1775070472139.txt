@@ -1,0 +1,105 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Corporation",
+      "@id": "https://www.pratapliving.com/#organization",
+      "name": "Pratap Living",
+      "url": "https://www.pratapliving.com",
+      "logo": "https://ik.imagekit.io/livincompany/pratapliving-com/site/logo_S22qr-ktq?tr=w-200,h-200,q-100",
+      "sameAs": [
+        "https://www.instagram.com/pratapliving/",
+        "https://www.youtube.com/@pratapliving",
+        "https://www.facebook.com/pratapliving",
+        "https://www.airbnb.co.in/users/profile/1470674723986469804"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Lucknow",
+        "addressRegion": "UP",
+        "addressCountry": "IN"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Lucknow"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "500"
+      },
+      "founder": [
+        { "@id": "https://www.pratapliving.com/#author-pratap" },
+        { "@id": "https://www.pratapliving.com/#author-samiksha" }
+      ]
+    },
+    {
+      "@type": "Hotel",
+      "@id": "https://www.pratapliving.com/luxe-studio-omaxe-hazratganj/#hotel",
+      "name": "Pratap Living | Luxe Studio Stays - Omaxe Hazratganj",
+      "parentOrganization": { "@id": "https://www.pratapliving.com/#organization" },
+      "url": "https://www.pratapliving.com/luxe-studio-omaxe-hazratganj",
+      "description": "Luxury boutique designer rooms in Omaxe Hazratganj. Managed by Pratap Living.",
+      "telephone": "+917460985009",
+      "priceRange": "₹2200 - ₹5000",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Omaxe Hazratganj, Arjunganj (Gomti Nagar Extension)",
+        "addressLocality": "Lucknow",
+        "addressRegion": "UP",
+        "postalCode": "226002",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "26.8118521",
+        "longitude": "80.9978897"
+      }
+    },
+    {
+      "@type": "Hotel",
+      "@id": "https://www.pratapliving.com/villa-homestay-golf-city/#hotel",
+      "name": "Pratap Living - The Villa and Homestay Golf City",
+      "parentOrganization": { "@id": "https://www.pratapliving.com/#organization" },
+      "url": "https://www.pratapliving.com/villa-homestay-golf-city",
+      "description": "Premium 6BHK private luxury villa in Sushant Golf City. Managed by Pratap Living.",
+      "telephone": "+917460985009",
+      "priceRange": "₹15000 - ₹45000",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Sushant Golf City",
+        "addressLocality": "Lucknow",
+        "addressRegion": "UP",
+        "postalCode": "226030",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "26.7842783",
+        "longitude": "81.0061884"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.pratapliving.com/#author-pratap",
+      "name": "Pratap Adwait Singh",
+      "jobTitle": "Co-Founder",
+      "worksFor": { "@id": "https://www.pratapliving.com/#organization" },
+      "sameAs": [
+        "https://www.youtube.com/@pratapadwaitsingh",
+        "https://www.instagram.com/pratapadwaitsingh/"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.pratapliving.com/#author-samiksha",
+      "name": "Samiksha Singh",
+      "jobTitle": "Co-Founder",
+      "worksFor": { "@id": "https://www.pratapliving.com/#organization" },
+      "sameAs": [
+        "https://www.youtube.com/@samikshasinghofficial",
+        "https://www.instagram.com/samikshasingh.official/"
+      ]
+    }
+  ]
+}
