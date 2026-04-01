@@ -245,55 +245,45 @@ const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
   "villa-homestay-golf-city": {
     "@context": "https://schema.org",
     "@type": "Hotel",
-    "@id": "https://www.pratapliving.com/#location-golfcity",
     "name": "Pratap Living - The Villa and Homestay Golf City",
-    "url": "https://www.pratapliving.com",
-    "description": "Premium 6BHK private luxury villa and homestay in Sushant Golf City. Ideal for weddings, birthdays, get-togethers, families, parties, and group stays in Lucknow.",
-    "telephone": "+917460985009",
-    "priceRange": "₹15000 - ₹45000",
-    "image": "https://www.pratapliving.com/images/villa-main.jpg",
+    "description": "Premium 6BHK private luxury villa in Sushant Golf City. Couple-friendly and Local ID accepted. Ideal for weddings and group stays. Managed by Pratap Living.",
     "parentOrganization": {
-      "@type": "Organization",
-      "name": "Pratap Living",
-      "url": "https://www.pratapliving.com",
-      "sameAs": [
-        "https://www.instagram.com/pratapliving/",
-        "https://www.youtube.com/@pratapliving",
-        "https://www.facebook.com/pratapliving"
-      ]
+      "@id": "https://www.pratapliving.com/#organization"
     },
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Sushant Golf City",
+      "streetAddress": "Pocket 7, Villa 23, Sushant Golf City",
       "addressLocality": "Lucknow",
       "addressRegion": "UP",
       "postalCode": "226030",
       "addressCountry": "IN"
-    }
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "26.7842783",
+      "longitude": "81.0061884"
+    },
+    "numberOfRooms": "6",
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Couple Friendly", "value": "true" },
+      { "@type": "LocationFeatureSpecification", "name": "Local ID Accepted", "value": "true" },
+      { "@type": "LocationFeatureSpecification", "name": "Event Friendly", "value": "true" },
+      { "@type": "LocationFeatureSpecification", "name": "Private Parking", "value": "true" }
+    ],
+    "checkinTime": "11:00:00",
+    "checkoutTime": "10:00:00"
   },
   "luxe-studio-omaxe-hazratganj": {
     "@context": "https://schema.org",
     "@type": "Hotel",
-    "@id": "https://www.pratapliving.com/#location-omaxe",
     "name": "Pratap Living | Luxe Studio Stays - Omaxe Hazratganj",
-    "url": "https://www.pratapliving.com",
-    "description": "Experience the best hotel in Lucknow for privacy and style at Pratap Living. Our boutique designer rooms in Omaxe Hazratganj offer the premier choice for hotels in Gomti Nagar Lucknow, featuring couple friendly hotels Lucknow standards with luxury studio stays. Ideally located in Arjunganj, Gomti Nagar Extension, we provide flexible stay options including luxury stays on an hourly basis near Ekana Stadium.",
-    "telephone": "+917460985009",
-    "priceRange": "₹2200 - ₹4500",
-    "image": "https://www.pratapliving.com/images/studio-main.jpg",
+    "description": "Luxury boutique designer rooms in Omaxe Hazratganj. Couple-friendly environment and Local ID accepted. Managed by Pratap Living.",
     "parentOrganization": {
-      "@type": "Organization",
-      "name": "Pratap Living",
-      "url": "https://www.pratapliving.com",
-      "sameAs": [
-        "https://www.instagram.com/pratapliving/",
-        "https://www.youtube.com/@pratapliving",
-        "https://www.facebook.com/pratapliving"
-      ]
+      "@id": "https://www.pratapliving.com/#organization"
     },
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Omaxe Hazratganj, Arjunganj (Gomti Nagar Extension)",
+      "streetAddress": "Omaxe Hazratganj, Arjunganj",
       "addressLocality": "Lucknow",
       "addressRegion": "UP",
       "postalCode": "226002",
@@ -301,9 +291,17 @@ const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": "26.8118525",
-      "longitude": "80.9953619"
-    }
+      "latitude": "26.8118521",
+      "longitude": "80.9978897"
+    },
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Couple Friendly", "value": "true" },
+      { "@type": "LocationFeatureSpecification", "name": "Local ID Accepted", "value": "true" },
+      { "@type": "LocationFeatureSpecification", "name": "High-speed WiFi", "value": "true" },
+      { "@type": "LocationFeatureSpecification", "name": "Kitchen Access", "value": "true" }
+    ],
+    "checkinTime": "14:00:00",
+    "checkoutTime": "11:00:00"
   }
 };
 
