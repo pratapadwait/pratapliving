@@ -114,7 +114,7 @@ async function fetchProperties(): Promise<Map<string, Property>> {
     return new Map();
   }
 
-  const pool = new Pool({ connectionString: connStr, ssl: { rejectUnauthorized: false } });
+  const pool = new Pool({ connectionString: connStr });
   try {
     const { rows } = await pool.query<Property>(`
       SELECT id, slug, name, type, location, description, price,

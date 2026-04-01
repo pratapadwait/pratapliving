@@ -18,7 +18,7 @@ import BlogHourlyHotelsLucknowUnmarriedCouples from "@/pages/blog-hourly-hotels-
 import BlogCoupleFriendlyHotelsLucknow from "@/pages/blog-couple-friendly-hotels-lucknow";
 
 const ssrQueryState =
-  typeof window !== "undefined" ? (window as any).__REACT_QUERY_STATE__ : undefined;
+  typeof window !== "undefined" ? window.__REACT_QUERY_STATE__ : undefined;
 
 function RedirectTo({ to }: { to: string }) {
   const [, navigate] = useLocation();
