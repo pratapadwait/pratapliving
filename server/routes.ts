@@ -85,6 +85,7 @@ export async function registerRoutes(
         return res.status(400).json({ message: validationError.toString() });
       }
       const property = await storage.createProperty(parsed.data);
+      // Call scheduleRevalidation directly (internal, no HTTP overhead) — equivalent to POST /api/revalidate
       scheduleRevalidation(['/', '/properties', ...(property.slug ? [`/${property.slug}`] : [])]);
       res.status(201).json(property);
     } catch (error) {
