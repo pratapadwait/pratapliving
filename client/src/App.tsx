@@ -1,7 +1,7 @@
 import { Switch, Route, useLocation } from "wouter";
 import { useEffect } from "react";
 import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider, HydrationBoundary } from "@tanstack/react-query";
+import { QueryClientProvider, HydrationBoundary, type DehydratedState } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
@@ -17,8 +17,18 @@ import BlogBestHotelsGomtiNagar from "@/pages/blog-best-hotels-gomti-nagar";
 import BlogHourlyHotelsLucknowUnmarriedCouples from "@/pages/blog-hourly-hotels-lucknow-unmarried-couples";
 import BlogCoupleFriendlyHotelsLucknow from "@/pages/blog-couple-friendly-hotels-lucknow";
 
-const ssrQueryState =
-  typeof window !== "undefined" ? window.__REACT_QUERY_STATE__ : undefined;
+function readSSRQueryState(): DehydratedState | undefined {
+  if (typeof document === "undefined") return undefined;
+  const el = document.getElementById("__TANSTACK_QUERY_DEHYDRATED_STATE__");
+  if (!el?.textContent) return undefined;
+  try {
+    return JSON.parse(el.textContent) as DehydratedState;
+  } catch {
+    return undefined;
+  }
+}
+
+const ssrQueryState = readSSRQueryState();
 
 function RedirectTo({ to }: { to: string }) {
   const [, navigate] = useLocation();

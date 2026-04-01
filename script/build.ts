@@ -51,19 +51,11 @@ interface Property {
   featured: boolean | null;
 }
 
-const SSG_ROUTES = [
-  { url: "/", file: "index.html" },
-  { url: "/properties", file: "properties.html" },
-  { url: "/villa-homestay-golf-city", file: "villa-homestay-golf-city.html", propertySlug: "villa-homestay-golf-city" },
-  { url: "/luxe-studio-omaxe-hazratganj", file: "luxe-studio-omaxe-hazratganj.html", propertySlug: "luxe-studio-omaxe-hazratganj" },
-  { url: "/about", file: "about.html" },
-  { url: "/blog", file: "blog.html" },
-  { url: "/blog/best-hotels-gomti-nagar-lucknow", file: "blog/best-hotels-gomti-nagar-lucknow.html" },
-  { url: "/blog/hourly-hotels-lucknow-unmarried-couples", file: "blog/hourly-hotels-lucknow-unmarried-couples.html" },
-  { url: "/blog/couple-friendly-hotels-lucknow-safe-private", file: "blog/couple-friendly-hotels-lucknow-safe-private.html" },
-  { url: "/partner", file: "partner.html" },
-  { url: "/contact", file: "contact.html" },
-];
+interface StaticRoute {
+  url: string;
+  file: string;
+  queryData?: Array<{ key: unknown[]; value: unknown }>;
+}
 
 type Helmet = Record<string, { toString(): string }>;
 
@@ -100,18 +92,18 @@ function injectSSR(
   }
 
   if (dehydratedState) {
-    const stateScript = `<script>window.__REACT_QUERY_STATE__ = ${JSON.stringify(dehydratedState)}</script>`;
+    const stateScript = `<script id="__TANSTACK_QUERY_DEHYDRATED_STATE__" type="application/json">${JSON.stringify(dehydratedState)}</script>`;
     result = result.replace("</body>", `  ${stateScript}\n</body>`);
   }
 
   return result;
 }
 
-async function fetchProperties(): Promise<Map<string, Property>> {
+async function fetchAllProperties(): Promise<Property[]> {
   const connStr = process.env.EXTERNAL_DATABASE_URL || process.env.DATABASE_URL;
   if (!connStr) {
     console.warn("  No database URL found; property pages will render as skeletons.");
-    return new Map();
+    return [];
   }
 
   const pool = new Pool({ connectionString: connStr });
@@ -121,16 +113,53 @@ async function fetchProperties(): Promise<Map<string, Property>> {
              bedrooms, bathrooms, guests, amenities, image_url AS "imageUrl",
              images, featured
       FROM properties
-      WHERE slug IN ('villa-homestay-golf-city', 'luxe-studio-omaxe-hazratganj')
+      ORDER BY featured DESC, name ASC
     `);
-    const map = new Map<string, Property>();
-    for (const row of rows) {
-      if (row.slug) map.set(row.slug, row);
-    }
-    return map;
+    return rows;
   } finally {
     await pool.end();
   }
+}
+
+function buildRoutes(allProperties: Property[]): StaticRoute[] {
+  const staticRoutes: StaticRoute[] = [
+    {
+      url: "/",
+      file: "index.html",
+      queryData: [
+        { key: ["/api/properties"], value: allProperties },
+      ],
+    },
+    {
+      url: "/properties",
+      file: "properties.html",
+      queryData: [
+        { key: ["/api/properties"], value: allProperties },
+      ],
+    },
+    { url: "/about", file: "about.html" },
+    { url: "/blog", file: "blog.html" },
+    { url: "/blog/best-hotels-gomti-nagar-lucknow", file: "blog/best-hotels-gomti-nagar-lucknow.html" },
+    { url: "/blog/hourly-hotels-lucknow-unmarried-couples", file: "blog/hourly-hotels-lucknow-unmarried-couples.html" },
+    { url: "/blog/couple-friendly-hotels-lucknow-safe-private", file: "blog/couple-friendly-hotels-lucknow-safe-private.html" },
+    { url: "/partner", file: "partner.html" },
+    { url: "/contact", file: "contact.html" },
+  ];
+
+  for (const property of allProperties) {
+    if (!property.slug) continue;
+    const slug = property.slug;
+    staticRoutes.push({
+      url: `/${slug}`,
+      file: `${slug}.html`,
+      queryData: [
+        { key: ["/api/properties", slug], value: property },
+        { key: ["/api/properties"], value: allProperties },
+      ],
+    });
+  }
+
+  return staticRoutes;
 }
 
 async function buildAll() {
@@ -152,7 +181,10 @@ async function buildAll() {
   });
 
   console.log("fetching property data for prerender...");
-  const propertiesBySlug = await fetchProperties();
+  const allProperties = await fetchAllProperties();
+  console.log(`  found ${allProperties.length} properties`);
+
+  const routes = buildRoutes(allProperties);
 
   console.log("pre-rendering routes...");
   const templateHtml = await readFile(
@@ -176,20 +208,12 @@ async function buildAll() {
     };
   };
 
-  for (const route of SSG_ROUTES) {
+  for (const route of routes) {
     try {
-      const queryData: Array<{ key: unknown[]; value: unknown }> = [];
-
-      if (route.propertySlug) {
-        const property = propertiesBySlug.get(route.propertySlug);
-        if (property) {
-          queryData.push({ key: ["/api/properties", route.propertySlug], value: property });
-        } else {
-          console.warn(`  Property not found for slug: ${route.propertySlug}`);
-        }
-      }
-
-      const { html, helmet, dehydratedState } = render(route.url, queryData.length > 0 ? queryData : undefined);
+      const { html, helmet, dehydratedState } = render(
+        route.url,
+        route.queryData,
+      );
       const outHtml = injectSSR(templateHtml, html, helmet, dehydratedState);
 
       const outPath = path.resolve(
