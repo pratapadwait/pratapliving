@@ -2,16 +2,16 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Phone, Mail } from "lucide-react";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { PageHead } from "@/components/page-head";
 
 export default function Contact() {
-  useDocumentTitle(
-    "Contact Us | Pratap Living - Get in Touch",
-    "Have questions about our properties or services? Contact Pratap Living. We're here to help with your accommodation needs in Lucknow."
-  );
-
   return (
     <div className="min-h-screen">
+      <PageHead
+        title="Contact Us | Pratap Living - Get in Touch"
+        description="Have questions about our properties or services? Contact Pratap Living. We're here to help with your accommodation needs in Lucknow."
+        canonicalUrl="https://www.pratapliving.com/contact"
+      />
       <Navigation />
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">

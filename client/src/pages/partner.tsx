@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { insertPartnerInquirySchema, type InsertPartnerInquiry } from "@shared/schema";
 import { TrendingUp, Shield, Users, Home, Sparkles, Phone } from "lucide-react";
 import { z } from "zod";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { PageHead } from "@/components/page-head";
 
 const partnerFormSchema = insertPartnerInquirySchema.extend({
   email: z.string().email("Please enter a valid email address"),
@@ -55,10 +55,6 @@ const benefits = [
 ];
 
 export default function Partner() {
-  useDocumentTitle(
-    "Partner With Us | Pratap Living - List Your Property",
-    "Join Lucknow's premier hospitality network. List your property with Pratap Living and enjoy hassle-free earnings while we handle everything."
-  );
 
   const { toast } = useToast();
 
@@ -100,6 +96,11 @@ export default function Partner() {
 
   return (
     <div className="min-h-screen">
+      <PageHead
+        title="Partner With Us | Pratap Living - List Your Property"
+        description="Join Lucknow's premier hospitality network. List your property with Pratap Living and enjoy hassle-free earnings while we handle everything."
+        canonicalUrl="https://www.pratapliving.com/partner"
+      />
       <Navigation />
       <main className="pt-24 pb-16">
         <section className="bg-primary py-16 mb-16">

@@ -1,18 +1,18 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { PageHead } from "@/components/page-head";
 import { Link } from "wouter";
 import { ChevronRight, ArrowLeft } from "lucide-react";
 
 export default function BlogCoupleFriendlyHotelsLucknow() {
-  useDocumentTitle(
-    "Couple-Friendly Hotels in Lucknow | Safe, Private & Affordable Stays – Pratap Living",
-    "Discover safe and private couple-friendly hotels in Lucknow with Pratap Living. Enjoy boutique luxury, secure locations, and affordable stays starting at ₹2500/-.",
-    "couple-friendly hotels in lucknow, safe hotels for unmarried couples lucknow, private places for couples in lucknow, boutique luxury lucknow"
-  );
-
   return (
     <div className="min-h-screen">
+      <PageHead
+        title="Couple-Friendly Hotels in Lucknow | Safe, Private & Affordable Stays – Pratap Living"
+        description="Discover safe and private couple-friendly hotels in Lucknow with Pratap Living. Enjoy boutique luxury, secure locations, and affordable stays starting at ₹2500/-."
+        keywords="couple-friendly hotels in lucknow, safe hotels for unmarried couples lucknow, private places for couples in lucknow, boutique luxury lucknow"
+        canonicalUrl="https://www.pratapliving.com/blog/couple-friendly-hotels-lucknow-safe-private"
+      />
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">

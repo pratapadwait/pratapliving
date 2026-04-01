@@ -16,6 +16,14 @@ export function serveStatic(app: Express) {
     if (req.originalUrl.startsWith("/api") || req.originalUrl.startsWith("/objects")) {
       return next();
     }
+
+    const urlPath = req.path === "/" ? "index" : req.path.replace(/^\/+/, "");
+    const prerenderPath = path.resolve(distPath, `${urlPath}.html`);
+
+    if (fs.existsSync(prerenderPath)) {
+      return res.sendFile(prerenderPath);
+    }
+
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }

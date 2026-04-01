@@ -1,18 +1,18 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { PageHead } from "@/components/page-head";
 import { Link } from "wouter";
 import { ChevronRight, ArrowLeft } from "lucide-react";
 
 export default function BlogHourlyHotelsLucknowUnmarriedCouples() {
-  useDocumentTitle(
-    "Hourly Hotels in Lucknow for Unmarried Couples | Safe & Private Stays – Pratap Living",
-    "Book safe, judgment-free hourly hotels in Lucknow for unmarried couples. Enjoy privacy-first luxury at Pratap Living starting at ₹2500. Secure your flexible stay today!",
-    "hourly hotels in lucknow for unmarried couples, day use hotels lucknow, couple friendly hotels lucknow, safe stays lucknow"
-  );
-
   return (
     <div className="min-h-screen">
+      <PageHead
+        title="Hourly Hotels in Lucknow for Unmarried Couples | Safe & Private Stays – Pratap Living"
+        description="Book safe, judgment-free hourly hotels in Lucknow for unmarried couples. Enjoy privacy-first luxury at Pratap Living starting at ₹2500. Secure your flexible stay today!"
+        keywords="hourly hotels in lucknow for unmarried couples, day use hotels lucknow, couple friendly hotels lucknow, safe stays lucknow"
+        canonicalUrl="https://www.pratapliving.com/blog/hourly-hotels-lucknow-unmarried-couples"
+      />
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">

@@ -2,7 +2,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { PageHead } from "@/components/page-head";
 import { Link } from "wouter";
 import { CalendarDays, ArrowRight } from "lucide-react";
 
@@ -34,13 +34,13 @@ const posts = [
 ];
 
 export default function Blog() {
-  useDocumentTitle(
-    "Blog | Pratap Living",
-    "Insights, guides, and stories from Pratap Living — Lucknow's premier boutique stays platform."
-  );
-
   return (
     <div className="min-h-screen">
+      <PageHead
+        title="Blog | Pratap Living"
+        description="Insights, guides, and stories from Pratap Living — Lucknow's premier boutique stays platform."
+        canonicalUrl="https://www.pratapliving.com/blog"
+      />
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">

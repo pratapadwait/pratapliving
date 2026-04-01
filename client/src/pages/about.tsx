@@ -2,7 +2,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { PageHead } from "@/components/page-head";
 import { Phone, MapPin, Star, Heart, Building2, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
@@ -29,10 +29,6 @@ function FaqItem({ question, answer, index }: { question: string; answer: string
 }
 
 export default function About() {
-  useDocumentTitle(
-    "About Pratap Living | Boutique Luxury Stays by Pratap Adwait Singh",
-    "Meet Pratap Adwait Singh, founder of Pratap Living. Discover Lucknow's premier 6BHK+ villas and luxury suites in Sushant Golf City and Omaxe Hazratganj."
-  );
 
   const comfortCards = [
     {
@@ -130,6 +126,11 @@ export default function About() {
 
   return (
     <div className="min-h-screen">
+      <PageHead
+        title="About Pratap Living | Boutique Luxury Stays by Pratap Adwait Singh"
+        description="Meet Pratap Adwait Singh, founder of Pratap Living. Discover Lucknow's premier 6BHK+ villas and luxury suites in Sushant Golf City and Omaxe Hazratganj."
+        canonicalUrl="https://www.pratapliving.com/about"
+      />
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">

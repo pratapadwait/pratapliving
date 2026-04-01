@@ -1,18 +1,18 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { PageHead } from "@/components/page-head";
 import { Link } from "wouter";
 import { ChevronRight, ArrowLeft } from "lucide-react";
 
 export default function BlogBestHotelsGomtiNagar() {
-  useDocumentTitle(
-    "Luxury Traveler's Guide to Gomti Nagar, Lucknow | Pratap Living",
-    "Discover Gomti Nagar's best premium stays. Learn why Pratap Living's boutique studios offer superior privacy and luxury compared to traditional 5-star hotels.",
-    "hotels in gomti nagar lucknow, best hotels in lucknow, boutique stays lucknow, couple friendly hotels lucknow, Pratap Living"
-  );
-
   return (
     <div className="min-h-screen">
+      <PageHead
+        title="Luxury Traveler's Guide to Gomti Nagar, Lucknow | Pratap Living"
+        description="Discover Gomti Nagar's best premium stays. Learn why Pratap Living's boutique studios offer superior privacy and luxury compared to traditional 5-star hotels."
+        keywords="hotels in gomti nagar lucknow, best hotels in lucknow, boutique stays lucknow, couple friendly hotels lucknow, Pratap Living"
+        canonicalUrl="https://www.pratapliving.com/blog/best-hotels-gomti-nagar-lucknow"
+      />
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">

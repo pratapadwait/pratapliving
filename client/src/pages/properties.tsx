@@ -10,13 +10,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, useMemo } from "react";
 import { useSearch } from "wouter";
 import type { Property } from "@shared/schema";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { PageHead } from "@/components/page-head";
 
 export default function Properties() {
-  useDocumentTitle(
-    "Our Properties | Pratap Living - Premium Stays in Lucknow",
-    "Browse our curated collection of premium homestays, suites, apartments, and villas in Lucknow. Find your perfect accommodation."
-  );
   const search = useSearch();
   const params = new URLSearchParams(search);
   const initialType = params.get("type") || "all";
@@ -54,6 +50,11 @@ export default function Properties() {
 
   return (
     <div className="min-h-screen">
+      <PageHead
+        title="Our Properties | Pratap Living - Premium Stays in Lucknow"
+        description="Browse our curated collection of premium homestays, suites, apartments, and villas in Lucknow. Find your perfect accommodation."
+        canonicalUrl="https://www.pratapliving.com/properties"
+      />
       <Navigation />
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">

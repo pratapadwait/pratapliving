@@ -6,16 +6,16 @@ import { FeaturedPropertiesSection } from "@/components/featured-properties-sect
 import { WhyChooseUsSection } from "@/components/why-choose-us-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { CTASection } from "@/components/cta-section";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { PageHead } from "@/components/page-head";
 
 export default function Home() {
-  useDocumentTitle(
-    "Pratap Living | Premium Homestays, Suites & Villas in Lucknow",
-    "Experience exceptional hospitality with Pratap Living. Discover premium homestays, suites, apartments, and villas in Lucknow. Book your perfect stay or partner with us."
-  );
-
   return (
     <div className="min-h-screen">
+      <PageHead
+        title="Pratap Living | Premium Homestays, Suites & Villas in Lucknow"
+        description="Experience exceptional hospitality with Pratap Living. Discover premium homestays, suites, apartments, and villas in Lucknow. Book your perfect stay or partner with us."
+        canonicalUrl="https://www.pratapliving.com/"
+      />
       <Navigation />
       <main>
         <HeroSection />

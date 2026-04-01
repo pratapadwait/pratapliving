@@ -8,8 +8,7 @@ import { OptimizedImage } from "@/components/optimized-image";
 import { useQuery } from "@tanstack/react-query";
 import { useRoute, Link } from "wouter";
 import type { Property } from "@shared/schema";
-import { useDocumentTitle } from "@/hooks/use-document-title";
-import { useJsonLd } from "@/hooks/use-json-ld";
+import { Helmet } from "react-helmet-async";
 import {
   ArrowLeft,
   Bed,
@@ -231,6 +230,10 @@ const SEO_OVERRIDES: Record<string, { title: string; metaDescription: string }> 
     title: "6BHK+ Luxury Villa in Sushant Golf City Lucknow | Pratap Living",
     metaDescription: "Book the premier 6BHK+ villa in Sushant Golf City, Lucknow. Perfect for wedding guests at The Centrum & Viviana Greens. Managed by Pratap Adwait Singh. Call +917460985009.",
   },
+  "luxe-studio-omaxe-hazratganj": {
+    title: "Luxe Studio Stays in Omaxe Hazratganj Lucknow | Pratap Living",
+    metaDescription: "Book a designer studio stay at Omaxe Hazratganj, Gomti Nagar Extension, Lucknow. Couple-friendly, private, and flexible hourly stays near Ekana Stadium. Call +917460985009.",
+  },
 };
 
 const PROPERTY_MAPS: Record<string, string> = {
@@ -304,6 +307,27 @@ const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
   }
 };
 
+const BREADCRUMB_SCHEMAS: Record<string, Record<string, unknown>> = {
+  "villa-homestay-golf-city": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.pratapliving.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Properties", "item": "https://www.pratapliving.com/properties" },
+      { "@type": "ListItem", "position": 3, "name": "Private Villa at Golf City", "item": "https://www.pratapliving.com/villa-homestay-golf-city" }
+    ]
+  },
+  "luxe-studio-omaxe-hazratganj": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.pratapliving.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Properties", "item": "https://www.pratapliving.com/properties" },
+      { "@type": "ListItem", "position": 3, "name": "Luxe Studio Stays at Omaxe Hazratganj", "item": "https://www.pratapliving.com/luxe-studio-omaxe-hazratganj" }
+    ]
+  },
+};
+
 export default function PropertyDetail() {
   const [, propertiesParams] = useRoute("/properties/:id");
   const [matchesVilla] = useRoute("/villa-homestay-golf-city");
@@ -324,11 +348,10 @@ export default function PropertyDetail() {
   const isLuxeStudio = propertyId === "luxe-studio-omaxe-hazratganj";
   const seoOverride = propertyId ? SEO_OVERRIDES[propertyId] : undefined;
 
-  useDocumentTitle(
-    seoOverride?.title || (property ? `${property.name} | Pratap Living` : "Property Details | Pratap Living"),
-    seoOverride?.metaDescription || (property ? property.description.slice(0, 160) : "View property details and photos.")
-  );
-  useJsonLd(propertyId ? JSON_LD_SCHEMAS[propertyId] ?? null : null);
+  const pageTitle = seoOverride?.title || (property ? `${property.name} | Pratap Living` : "Property Details | Pratap Living");
+  const pageDesc = seoOverride?.metaDescription || (property ? property.description.slice(0, 160) : "View property details and photos.");
+  const pageJsonLd = propertyId ? JSON_LD_SCHEMAS[propertyId] ?? null : null;
+  const breadcrumbJsonLd = propertyId ? BREADCRUMB_SCHEMAS[propertyId] ?? null : null;
 
   const isValidImage = (url: string | null | undefined) =>
     url && (url.startsWith("/objects/") || url.startsWith("http"));
@@ -347,6 +370,22 @@ export default function PropertyDetail() {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
+        {propertyId === "villa-homestay-golf-city" && (
+          <link rel="canonical" href="https://www.pratapliving.com/villa-homestay-golf-city" />
+        )}
+        {propertyId === "luxe-studio-omaxe-hazratganj" && (
+          <link rel="canonical" href="https://www.pratapliving.com/luxe-studio-omaxe-hazratganj" />
+        )}
+        {pageJsonLd && (
+          <script type="application/ld+json">{JSON.stringify(pageJsonLd)}</script>
+        )}
+        {breadcrumbJsonLd && (
+          <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
+        )}
+      </Helmet>
       <Navigation />
       <main className="pt-20 pb-28 lg:pb-16">
         {isLoading ? (

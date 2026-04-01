@@ -18,7 +18,7 @@ import { insertPropertySchema, type InsertProperty, type Property } from "@share
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Pencil, Trash2, Bed, Bath, Users, ImagePlus, Link2 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { PageHead } from "@/components/page-head";
 import { z } from "zod";
 import { ImageUploadManager } from "@/components/image-upload-manager";
 import { OptimizedImage } from "@/components/optimized-image";
@@ -470,7 +470,6 @@ function PropertyFormDialog({
 }
 
 export default function AdminProperties() {
-  useDocumentTitle("Property Management | Pratap Living CMS");
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProperty, setEditingProperty] = useState<Property | undefined>();
@@ -525,6 +524,7 @@ export default function AdminProperties() {
 
   return (
     <div className="min-h-screen">
+      <PageHead title="Property Management | Pratap Living CMS" />
       <Navigation />
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
