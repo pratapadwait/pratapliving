@@ -3,38 +3,27 @@ import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PageHead } from "@/components/page-head";
+import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { CalendarDays, ArrowRight } from "lucide-react";
+import { blogPosts } from "@/lib/blog-data";
 
-const posts = [
-  {
-    slug: "/blog/couple-friendly-hotels-lucknow-safe-private",
-    title: "Safe and Private Couple-Friendly Hotels in Lucknow",
-    excerpt:
-      "Finding safe hotels for unmarried couples in Lucknow that are judgment-free and high-quality shouldn't be stressful. At Pratap Living, we've built our brand on a \"Privacy-First\" philosophy — boutique luxury with privacy, discretion, and safety for every couple.",
-    date: "March 30, 2026",
-    dateISO: "2026-03-30T09:17:00+05:30",
-    category: "Stays Guide",
+const blogJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Pratap Living Blog",
+  "description": "Travel guides, local insights, and stories from Pratap Living — Lucknow's premier boutique stays platform.",
+  "publisher": {
+    "@id": "https://www.pratapliving.com/#organization"
   },
-  {
-    slug: "/blog/hourly-hotels-lucknow-unmarried-couples",
-    title: "Safe Hourly Hotels in Lucknow for Unmarried Couples",
-    excerpt:
-      "Finding safe, comfortable, and secure hourly hotels in Lucknow for unmarried couples should never feel stressful. Day use hotels in Lucknow now provide flexible, judgment-free stays that prioritize comfort and safety — without the cost of an overnight stay.",
-    date: "March 30, 2026",
-    dateISO: "2026-03-30T10:43:00+05:30",
-    category: "Stays Guide",
-  },
-  {
-    slug: "/blog/best-hotels-gomti-nagar-lucknow",
-    title: "The Ultimate Guide to the Best Hotels in Gomti Nagar Lucknow",
-    excerpt:
-      "Lucknow is famous for its stunning historical monuments, but it's also growing into a lively, modern city. In the heart of this growth is Lucknow Gomti Nagar. This vibrant district brings together major businesses, upscale shopping, and lively nightlife. For the modern luxury traveler, it offers an unmatched mix of convenience, culture, and high-end living.",
-    date: "March 30, 2026",
-    dateISO: "2026-03-30T11:58:00+05:30",
-    category: "Travel Guide",
-  },
-];
+  "blogPost": blogPosts.map((post) => ({
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "author": { "@id": "https://www.pratapliving.com/#author-samiksha" },
+    "datePublished": post.dateISO,
+    "url": `https://www.pratapliving.com/blog/${post.slug}`,
+  })),
+};
 
 export default function Blog() {
   return (
@@ -44,6 +33,9 @@ export default function Blog() {
         description="Insights, guides, and stories from Pratap Living — Lucknow's premier boutique stays platform."
         canonicalUrl="https://www.pratapliving.com/blog"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(blogJsonLd)}</script>
+      </Helmet>
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
@@ -57,7 +49,7 @@ export default function Blog() {
           </div>
 
           <div className="space-y-6" data-testid="list-blog-posts">
-            {posts.map((post, i) => (
+            {blogPosts.map((post, i) => (
               <Card key={i} data-testid={`card-blog-post-${i}`}>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
@@ -75,7 +67,7 @@ export default function Blog() {
                   <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3" data-testid={`text-blog-excerpt-${i}`}>
                     {post.excerpt}
                   </p>
-                  <Link href={post.slug}>
+                  <Link href={`/blog/${post.slug}`}>
                     <Button variant="outline" size="sm" data-testid={`link-blog-read-${i}`}>
                       Read article
                       <ArrowRight className="h-3.5 w-3.5 ml-1.5" />

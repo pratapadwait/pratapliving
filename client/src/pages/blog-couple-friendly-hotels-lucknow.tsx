@@ -1,8 +1,34 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { PageHead } from "@/components/page-head";
+import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { ChevronRight, ArrowLeft } from "lucide-react";
+import { getBlogPost } from "@/lib/blog-data";
+
+const post = getBlogPost("couple-friendly-hotels-lucknow-safe-private")!;
+
+const blogPostingJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `https://www.pratapliving.com/blog/${post.slug}`,
+  },
+  "headline": post.title,
+  "description": post.excerpt,
+  "image": `https://ik.imagekit.io/livincompany/pratapliving-com/blog/${post.slug}-banner.jpg`,
+  "author": {
+    "@id": "https://www.pratapliving.com/#author-samiksha",
+  },
+  "publisher": {
+    "@id": "https://www.pratapliving.com/#organization",
+  },
+  "datePublished": post.dateISO,
+  "dateModified": post.dateModified,
+  "keywords": post.keywords,
+  "articleSection": post.category,
+};
 
 export default function BlogCoupleFriendlyHotelsLucknow() {
   return (
@@ -10,9 +36,12 @@ export default function BlogCoupleFriendlyHotelsLucknow() {
       <PageHead
         title="Couple-Friendly Hotels in Lucknow | Safe, Private & Affordable Stays – Pratap Living"
         description="Discover safe and private couple-friendly hotels in Lucknow with Pratap Living. Enjoy boutique luxury, secure locations, and affordable stays starting at ₹2500/-."
-        keywords="couple-friendly hotels in lucknow, safe hotels for unmarried couples lucknow, private places for couples in lucknow, boutique luxury lucknow"
+        keywords={post.keywords}
         canonicalUrl="https://www.pratapliving.com/blog/couple-friendly-hotels-lucknow-safe-private"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(blogPostingJsonLd)}</script>
+      </Helmet>
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
@@ -37,8 +66,8 @@ export default function BlogCoupleFriendlyHotelsLucknow() {
             </Link>
 
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
-              <span className="bg-primary/10 text-primary font-medium px-2 py-0.5 rounded-full" data-testid="text-article-category">Stays Guide</span>
-              <span data-testid="text-article-date">March 30, 2026</span>
+              <span className="bg-primary/10 text-primary font-medium px-2 py-0.5 rounded-full" data-testid="text-article-category">{post.category}</span>
+              <time dateTime={post.dateISO} data-testid="text-article-date">{post.date}</time>
             </div>
           </div>
 

@@ -1,8 +1,34 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { PageHead } from "@/components/page-head";
+import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { ChevronRight, ArrowLeft } from "lucide-react";
+import { getBlogPost } from "@/lib/blog-data";
+
+const post = getBlogPost("hourly-hotels-lucknow-unmarried-couples")!;
+
+const blogPostingJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `https://www.pratapliving.com/blog/${post.slug}`,
+  },
+  "headline": post.title,
+  "description": post.excerpt,
+  "image": `https://ik.imagekit.io/livincompany/pratapliving-com/blog/${post.slug}-banner.jpg`,
+  "author": {
+    "@id": "https://www.pratapliving.com/#author-samiksha",
+  },
+  "publisher": {
+    "@id": "https://www.pratapliving.com/#organization",
+  },
+  "datePublished": post.dateISO,
+  "dateModified": post.dateModified,
+  "keywords": post.keywords,
+  "articleSection": post.category,
+};
 
 export default function BlogHourlyHotelsLucknowUnmarriedCouples() {
   return (
@@ -10,9 +36,12 @@ export default function BlogHourlyHotelsLucknowUnmarriedCouples() {
       <PageHead
         title="Hourly Hotels in Lucknow for Unmarried Couples | Safe & Private Stays – Pratap Living"
         description="Book safe, judgment-free hourly hotels in Lucknow for unmarried couples. Enjoy privacy-first luxury at Pratap Living starting at ₹2500. Secure your flexible stay today!"
-        keywords="hourly hotels in lucknow for unmarried couples, day use hotels lucknow, couple friendly hotels lucknow, safe stays lucknow"
+        keywords={post.keywords}
         canonicalUrl="https://www.pratapliving.com/blog/hourly-hotels-lucknow-unmarried-couples"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(blogPostingJsonLd)}</script>
+      </Helmet>
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
@@ -37,8 +66,8 @@ export default function BlogHourlyHotelsLucknowUnmarriedCouples() {
             </Link>
 
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
-              <span className="bg-primary/10 text-primary font-medium px-2 py-0.5 rounded-full" data-testid="text-article-category">Stays Guide</span>
-              <span data-testid="text-article-date">March 30, 2026</span>
+              <span className="bg-primary/10 text-primary font-medium px-2 py-0.5 rounded-full" data-testid="text-article-category">{post.category}</span>
+              <time dateTime={post.dateISO} data-testid="text-article-date">{post.date}</time>
             </div>
           </div>
 

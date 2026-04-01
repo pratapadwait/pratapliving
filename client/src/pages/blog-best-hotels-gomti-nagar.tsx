@@ -1,8 +1,34 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { PageHead } from "@/components/page-head";
+import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { ChevronRight, ArrowLeft } from "lucide-react";
+import { getBlogPost } from "@/lib/blog-data";
+
+const post = getBlogPost("best-hotels-gomti-nagar-lucknow")!;
+
+const blogPostingJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `https://www.pratapliving.com/blog/${post.slug}`,
+  },
+  "headline": post.title,
+  "description": post.excerpt,
+  "image": `https://ik.imagekit.io/livincompany/pratapliving-com/blog/${post.slug}-banner.jpg`,
+  "author": {
+    "@id": "https://www.pratapliving.com/#author-samiksha",
+  },
+  "publisher": {
+    "@id": "https://www.pratapliving.com/#organization",
+  },
+  "datePublished": post.dateISO,
+  "dateModified": post.dateModified,
+  "keywords": post.keywords,
+  "articleSection": post.category,
+};
 
 export default function BlogBestHotelsGomtiNagar() {
   return (
@@ -10,9 +36,12 @@ export default function BlogBestHotelsGomtiNagar() {
       <PageHead
         title="Luxury Traveler's Guide to Gomti Nagar, Lucknow | Pratap Living"
         description="Discover Gomti Nagar's best premium stays. Learn why Pratap Living's boutique studios offer superior privacy and luxury compared to traditional 5-star hotels."
-        keywords="hotels in gomti nagar lucknow, best hotels in lucknow, boutique stays lucknow, couple friendly hotels lucknow, Pratap Living"
+        keywords={post.keywords}
         canonicalUrl="https://www.pratapliving.com/blog/best-hotels-gomti-nagar-lucknow"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(blogPostingJsonLd)}</script>
+      </Helmet>
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
@@ -37,8 +66,8 @@ export default function BlogBestHotelsGomtiNagar() {
             </Link>
 
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
-              <span className="bg-primary/10 text-primary font-medium px-2 py-0.5 rounded-full" data-testid="text-article-category">Travel Guide</span>
-              <span data-testid="text-article-date">March 30, 2026</span>
+              <span className="bg-primary/10 text-primary font-medium px-2 py-0.5 rounded-full" data-testid="text-article-category">{post.category}</span>
+              <time dateTime={post.dateISO} data-testid="text-article-date">{post.date}</time>
             </div>
           </div>
 
