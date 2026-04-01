@@ -3,6 +3,7 @@ import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PageHead } from "@/components/page-head";
+import { Helmet } from "react-helmet-async";
 import { Link } from "wouter";
 import { CalendarDays, ArrowRight } from "lucide-react";
 
@@ -13,6 +14,7 @@ const posts = [
     excerpt:
       "Finding safe hotels for unmarried couples in Lucknow that are judgment-free and high-quality shouldn't be stressful. At Pratap Living, we've built our brand on a \"Privacy-First\" philosophy — boutique luxury with privacy, discretion, and safety for every couple.",
     date: "March 30, 2026",
+    dateISO: "2026-03-30T09:17:00+05:30",
     category: "Stays Guide",
   },
   {
@@ -21,6 +23,7 @@ const posts = [
     excerpt:
       "Finding safe, comfortable, and secure hourly hotels in Lucknow for unmarried couples should never feel stressful. Day use hotels in Lucknow now provide flexible, judgment-free stays that prioritize comfort and safety — without the cost of an overnight stay.",
     date: "March 30, 2026",
+    dateISO: "2026-03-30T10:43:00+05:30",
     category: "Stays Guide",
   },
   {
@@ -29,9 +32,43 @@ const posts = [
     excerpt:
       "Lucknow is famous for its stunning historical monuments, but it's also growing into a lively, modern city. In the heart of this growth is Lucknow Gomti Nagar. This vibrant district brings together major businesses, upscale shopping, and lively nightlife. For the modern luxury traveler, it offers an unmatched mix of convenience, culture, and high-end living.",
     date: "March 30, 2026",
+    dateISO: "2026-03-30T11:58:00+05:30",
     category: "Travel Guide",
   },
 ];
+
+const blogJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Pratap Living Blog",
+  "description": "Travel guides, local insights, and stories from Pratap Living — Lucknow's premier boutique stays platform.",
+  "publisher": {
+    "@id": "https://www.pratapliving.com/#organization"
+  },
+  "blogPost": [
+    {
+      "@type": "BlogPosting",
+      "headline": "Safe and Private Couple-Friendly Hotels in Lucknow",
+      "author": { "@id": "https://www.pratapliving.com/#author-samiksha" },
+      "datePublished": "2026-03-30T09:17:00+05:30",
+      "url": "https://www.pratapliving.com/blog/couple-friendly-hotels-lucknow-safe-private"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Safe Hourly Hotels in Lucknow for Unmarried Couples",
+      "author": { "@id": "https://www.pratapliving.com/#author-samiksha" },
+      "datePublished": "2026-03-30T10:43:00+05:30",
+      "url": "https://www.pratapliving.com/blog/hourly-hotels-lucknow-unmarried-couples"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "The Ultimate Guide to the Best Hotels in Gomti Nagar Lucknow",
+      "author": { "@id": "https://www.pratapliving.com/#author-samiksha" },
+      "datePublished": "2026-03-30T11:58:00+05:30",
+      "url": "https://www.pratapliving.com/blog/best-hotels-gomti-nagar-lucknow"
+    }
+  ]
+};
 
 export default function Blog() {
   return (
@@ -41,6 +78,9 @@ export default function Blog() {
         description="Insights, guides, and stories from Pratap Living — Lucknow's premier boutique stays platform."
         canonicalUrl="https://www.pratapliving.com/blog"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(blogJsonLd)}</script>
+      </Helmet>
       <Navigation />
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4 max-w-3xl">
@@ -61,10 +101,10 @@ export default function Blog() {
                     <span className="bg-primary/10 text-primary font-medium px-2 py-0.5 rounded-full" data-testid={`text-blog-category-${i}`}>
                       {post.category}
                     </span>
-                    <span className="flex items-center gap-1" data-testid={`text-blog-date-${i}`}>
+                    <time dateTime={post.dateISO} className="flex items-center gap-1" data-testid={`text-blog-date-${i}`}>
                       <CalendarDays className="h-3 w-3" />
                       {post.date}
-                    </span>
+                    </time>
                   </div>
                   <h2 className="font-serif text-xl font-semibold text-foreground mb-3 leading-snug" data-testid={`text-blog-title-${i}`}>
                     {post.title}
