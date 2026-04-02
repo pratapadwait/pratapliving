@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Allow: /api/properties/
 Disallow: /api/
 Sitemap: https://www.pratapliving.com/sitemap.xml
