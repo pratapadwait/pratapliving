@@ -1,0 +1,61 @@
+const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
+  "villa-homestay-golf-city": {
+    "@context": "https://schema.org",
+    "@type": "Hotel",
+    "@id": "https://www.pratapliving.com/#location-golfcity",
+    "name": "Pratap Living - The Villa and Homestay Golf City",
+    "description": "Premium 6BHK private luxury villa in Sushant Golf City. Ideal for weddings, families, and group stays. Couple-friendly and Local ID accepted.",
+    "parentOrganization": { "@id": "https://www.pratapliving.com/#organization" },
+    "url": "https://www.pratapliving.com/villa-homestay-golf-city",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Pocket 7, Villa 23, Sushant Golf City",
+      "addressLocality": "Lucknow",
+      "addressRegion": "UP",
+      "postalCode": "226030",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "26.7842783",
+      "longitude": "81.0061884"
+    },
+    "numberOfRooms": "6",
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Couple Friendly", "value": "true" },
+      { "@type": "LocationFeatureSpecification", "name": "Local ID Accepted", "value": "true" },
+      { "@type": "LocationFeatureSpecification", "name": "Private Kitchen", "value": "true" }
+    ],
+    "checkinTime": "11:00:00",
+    "checkoutTime": "10:00:00"
+  },
+  "luxe-studio-omaxe-hazratganj": {
+    "@context": "https://schema.org",
+    "@type": "Hotel",
+    "@id": "https://www.pratapliving.com/#location-omaxe",
+    "name": "Pratap Living | Luxe Studio Stays - Omaxe Hazratganj",
+    "description": "Luxury boutique designer studio in Omaxe Hazratganj. Premier choice for couple-friendly hotels in Gomti Nagar Lucknow.",
+    "parentOrganization": { "@id": "https://www.pratapliving.com/#organization" },
+    "url": "https://www.pratapliving.com/luxe-studio-omaxe-hazratganj",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Omaxe Hazratganj, Arjunganj",
+      "addressLocality": "Lucknow",
+      "addressRegion": "UP",
+      "postalCode": "226002",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "26.8118521",
+      "longitude": "80.9978897"
+    },
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Couple Friendly", "value": "true" },
+      { "@type": "LocationFeatureSpecification", "name": "Local ID Accepted", "value": "true" },
+      { "@type": "LocationFeatureSpecification", "name": "High-speed WiFi", "value": "true" }
+    ],
+    "checkinTime": "14:00:00",
+    "checkoutTime": "11:00:00"
+  }
+};
