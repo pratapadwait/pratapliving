@@ -245,11 +245,11 @@ const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
   "villa-homestay-golf-city": {
     "@context": "https://schema.org",
     "@type": "Hotel",
+    "@id": "https://www.pratapliving.com/#location-golfcity",
     "name": "Pratap Living - The Villa and Homestay Golf City",
-    "description": "Premium 6BHK private luxury villa in Sushant Golf City. Couple-friendly and Local ID accepted. Ideal for weddings and group stays. Managed by Pratap Living.",
-    "parentOrganization": {
-      "@id": "https://www.pratapliving.com/#organization"
-    },
+    "description": "Premium 6BHK private luxury villa in Sushant Golf City. Ideal for weddings, families, and group stays. Couple-friendly and Local ID accepted.",
+    "parentOrganization": { "@id": "https://www.pratapliving.com/#organization" },
+    "url": "https://www.pratapliving.com/villa-homestay-golf-city",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Pocket 7, Villa 23, Sushant Golf City",
@@ -267,8 +267,7 @@ const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
     "amenityFeature": [
       { "@type": "LocationFeatureSpecification", "name": "Couple Friendly", "value": "true" },
       { "@type": "LocationFeatureSpecification", "name": "Local ID Accepted", "value": "true" },
-      { "@type": "LocationFeatureSpecification", "name": "Event Friendly", "value": "true" },
-      { "@type": "LocationFeatureSpecification", "name": "Private Parking", "value": "true" }
+      { "@type": "LocationFeatureSpecification", "name": "Private Kitchen", "value": "true" }
     ],
     "checkinTime": "11:00:00",
     "checkoutTime": "10:00:00"
@@ -276,11 +275,11 @@ const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
   "luxe-studio-omaxe-hazratganj": {
     "@context": "https://schema.org",
     "@type": "Hotel",
+    "@id": "https://www.pratapliving.com/#location-omaxe",
     "name": "Pratap Living | Luxe Studio Stays - Omaxe Hazratganj",
-    "description": "Luxury boutique designer rooms in Omaxe Hazratganj. Couple-friendly environment and Local ID accepted. Managed by Pratap Living.",
-    "parentOrganization": {
-      "@id": "https://www.pratapliving.com/#organization"
-    },
+    "description": "Luxury boutique designer studio in Omaxe Hazratganj. Premier choice for couple-friendly hotels in Gomti Nagar Lucknow.",
+    "parentOrganization": { "@id": "https://www.pratapliving.com/#organization" },
+    "url": "https://www.pratapliving.com/luxe-studio-omaxe-hazratganj",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Omaxe Hazratganj, Arjunganj",
@@ -297,8 +296,7 @@ const JSON_LD_SCHEMAS: Record<string, Record<string, unknown>> = {
     "amenityFeature": [
       { "@type": "LocationFeatureSpecification", "name": "Couple Friendly", "value": "true" },
       { "@type": "LocationFeatureSpecification", "name": "Local ID Accepted", "value": "true" },
-      { "@type": "LocationFeatureSpecification", "name": "High-speed WiFi", "value": "true" },
-      { "@type": "LocationFeatureSpecification", "name": "Kitchen Access", "value": "true" }
+      { "@type": "LocationFeatureSpecification", "name": "High-speed WiFi", "value": "true" }
     ],
     "checkinTime": "14:00:00",
     "checkoutTime": "11:00:00"
