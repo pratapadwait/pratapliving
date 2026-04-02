@@ -3,7 +3,6 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { OptimizedImage } from "@/components/optimized-image";
 import { useQuery } from "@tanstack/react-query";
 import { useRoute, Link } from "wouter";
@@ -324,6 +323,21 @@ const BREADCRUMB_SCHEMAS: Record<string, Record<string, unknown>> = {
   },
 };
 
+function PropertyNotFound() {
+  return (
+    <div className="container mx-auto px-4 text-center py-20">
+      <h2 className="font-serif text-2xl font-bold text-foreground mb-4">Property Not Found</h2>
+      <p className="text-muted-foreground mb-6">The property you're looking for doesn't exist or has been removed.</p>
+      <Link href="/properties">
+        <Button data-testid="button-back-to-properties">
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Properties
+        </Button>
+      </Link>
+    </div>
+  );
+}
+
 export default function PropertyDetail() {
   const [, propertiesParams] = useRoute("/properties/:id");
   const [matchesVilla] = useRoute("/villa-homestay-golf-city");
@@ -365,6 +379,14 @@ export default function PropertyDetail() {
     allImages.push(fallbackImages[firstType] || PROPERTY_HOMESTAY);
   }
 
+  if (isLoading) {
+    return <div className="min-h-screen bg-background" />;
+  }
+
+  if (!isLoading && !property) {
+    return <PropertyNotFound />;
+  }
+
   return (
     <div className="min-h-screen">
       <Helmet>
@@ -385,32 +407,7 @@ export default function PropertyDetail() {
       </Helmet>
       <Navigation />
       <main className="pt-20 pb-28 lg:pb-16">
-        {isLoading ? (
-          <div className="container mx-auto px-4">
-            <Skeleton className="h-8 w-32 mb-6 mt-4" />
-            <Skeleton className="aspect-[4/3] md:aspect-[16/9] rounded-md mb-4" />
-            <div className="flex gap-2 mb-4">
-              {[1, 2, 3, 4].map(i => (
-                <Skeleton key={i} className="w-16 h-16 md:w-20 md:h-20 rounded-md shrink-0" />
-              ))}
-            </div>
-            <Skeleton className="h-8 w-3/4 mb-2" />
-            <Skeleton className="h-5 w-1/2 mb-6" />
-            <Skeleton className="h-40 w-full" />
-          </div>
-        ) : error || !property ? (
-          <div className="container mx-auto px-4 text-center py-20">
-            <h2 className="font-serif text-2xl font-bold text-foreground mb-4">Property Not Found</h2>
-            <p className="text-muted-foreground mb-6">The property you're looking for doesn't exist or has been removed.</p>
-            <Link href="/properties">
-              <Button data-testid="button-back-to-properties">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Properties
-              </Button>
-            </Link>
-          </div>
-        ) : (
-          <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4">
             <Link href="/properties">
               <Button variant="ghost" className="mb-4 -ml-2 mt-2" data-testid="button-back">
                 <ArrowLeft className="h-4 w-4 mr-2" />
@@ -795,7 +792,6 @@ export default function PropertyDetail() {
               </div>
             </div>
           </div>
-        )}
       </main>
       <Footer />
 
