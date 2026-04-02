@@ -11,17 +11,31 @@ import { blogPosts } from "@/lib/blog-data";
 const blogJsonLd = {
   "@context": "https://schema.org",
   "@type": "Blog",
+  "@id": "https://www.pratapliving.com/blog/#blog",
   "name": "Pratap Living Blog",
   "description": "Travel guides, local insights, and stories from Pratap Living — Lucknow's premier boutique stays platform.",
   "publisher": {
     "@id": "https://www.pratapliving.com/#organization"
   },
+  "author": {
+    "@id": "https://www.pratapliving.com/#author-samiksha"
+  },
   "blogPost": blogPosts.map((post) => ({
     "@type": "BlogPosting",
     "headline": post.title,
-    "author": { "@id": "https://www.pratapliving.com/#author-samiksha" },
+    "description": post.excerpt,
+    "author": {
+      "@type": "Person",
+      "@id": "https://www.pratapliving.com/#author-samiksha",
+      "name": "Samiksha Singh"
+    },
+    "publisher": { "@id": "https://www.pratapliving.com/#organization" },
     "datePublished": post.dateISO,
     "url": `https://www.pratapliving.com/blog/${post.slug}`,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://www.pratapliving.com/blog/${post.slug}`
+    }
   })),
 };
 
