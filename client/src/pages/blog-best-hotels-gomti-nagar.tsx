@@ -19,13 +19,15 @@ const blogPostingJsonLd = {
   "description": post.excerpt,
   "image": `https://ik.imagekit.io/livincompany/pratapliving-com/blog/${post.slug}-banner.jpg`,
   "author": {
+    "@type": "Person",
     "@id": "https://www.pratapliving.com/#author-samiksha",
+    "name": "Samiksha Singh"
   },
   "publisher": {
     "@id": "https://www.pratapliving.com/#organization",
   },
   "datePublished": post.dateISO,
-  "dateModified": post.dateModified,
+  "dateModified": "2026-04-02T15:00:00+05:30",
   "keywords": post.keywords,
   "articleSection": post.category,
 };
